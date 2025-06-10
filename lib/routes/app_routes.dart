@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:maignanka_app/features/views/auth/Interests/Interests_screen.dart';
+import 'package:maignanka_app/features/views/auth/forget/forget_screen.dart';
+import 'package:maignanka_app/features/views/auth/goals/goals_screen.dart';
+import 'package:maignanka_app/features/views/auth/location/location_screen.dart';
+import 'package:maignanka_app/features/views/auth/login/log_in_screen.dart';
+import 'package:maignanka_app/features/views/auth/otp/otp_screen.dart';
+import 'package:maignanka_app/features/views/auth/reset_pass/reset_password_screen.dart';
+import 'package:maignanka_app/features/views/auth/sign_up/sign_up_screen.dart';
+import 'package:maignanka_app/features/views/auth/upload_photos/upload_photo_screen.dart';
+import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav.dart';
+import 'package:maignanka_app/features/views/comment/comment_screen.dart';
+import 'package:maignanka_app/features/views/message/chat_screen.dart';
+import 'package:maignanka_app/features/views/onboarding_screen/onboarding_screen.dart';
+import 'package:maignanka_app/features/views/profile/profile_update.dart';
+import 'package:maignanka_app/features/views/profile/setting/about_screen.dart';
+import 'package:maignanka_app/features/views/profile/setting/change%20password/change_password.dart';
+import 'package:maignanka_app/features/views/profile/setting/privacy_policy_screen.dart';
+import 'package:maignanka_app/features/views/profile/setting/setting_screen.dart';
+import 'package:maignanka_app/features/views/profile/setting/terms_screen.dart';
+import 'package:maignanka_app/features/views/profile/support_screen.dart';
+import 'package:maignanka_app/features/views/profile/wallet/wallet_screen.dart';
+import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
+
+import '../features/views/notification/notification_screen.dart';
+
+abstract class AppRoutes {
+
+
+  ///  ============= > initialRoute < ==============
+  static const String initialRoute = splashScreen;
+
+
+
+  ///  ============= > routes name < ==============
+  static const String splashScreen = '/';
+  static const String onboardingScreen = '/onboardingScreen';
+  static const String loginScreen = '/loginScreen';
+  static const String signUpScreen = '/signUpScreen';
+  static const String forgotScreen = '/forgotScreen';
+  static const String otpScreen = '/otpScreen';
+  static const String resetPasswordScreen = '/resetPasswordScreen';
+  static const String uploadPhotoScreen = '/uploadPhotoScreen';
+  static const String goalsScreen = '/goalsScreen';
+  static const String interestsScreen = '/interestsScreen';
+  static const String enableLocationScreen = '/enableLocationScreen';
+  static const String customBottomNavBar = '/customBottomNavBar';
+  static const String notificationScreen = '/notificationScreen';
+  static const String commentScreen = '/commentScreen';
+  static const String settingScreen = '/settingScreen';
+  static const String termsScreen = '/termsScreen';
+  static const String policyScreen = '/policyScreen';
+  static const String aboutScreen = '/aboutScreen';
+  static const String changePassScreen = '/changePassScreen';
+  static const String supportScreen = '/supportScreen';
+  static const String editProfileScreen = '/editProfileScreen';
+  static const String walletScreen = '/walletScreen';
+  static const String chatScreen = '/chatScreen';
+
+
+
+
+  ///  ============= > routes < ==============
+  static final routes = <String, WidgetBuilder>{
+    splashScreen : (context) => SplashScreen(),
+    onboardingScreen : (context) => OnboardingScreen(),
+    loginScreen : (context) => LoginScreen(),
+    forgotScreen : (context) => ForgetScreen(),
+    otpScreen : (context) => OtpScreen(),
+    resetPasswordScreen : (context) => ResetPasswordScreen(),
+    signUpScreen : (context) => SignUpScreen(),
+    uploadPhotoScreen : (context) => UploadPhotoScreen(),
+    goalsScreen : (context) => GoalsScreen(),
+    interestsScreen : (context) => InterestsScreen(),
+    enableLocationScreen : (context) => EnableLocationScreen(),
+    customBottomNavBar : (context) => CustomBottomNavBar(),
+    notificationScreen : (context) => NotificationScreen(),
+    commentScreen : (context) => CommentScreen(),
+    settingScreen : (context) => SettingScreen(),
+    aboutScreen : (context) => AboutScreen(),
+    policyScreen : (context) => PrivacyPolicyScreen(),
+    termsScreen : (context) => TermsScreen(),
+    changePassScreen : (context) => ChangePasswordScreen(),
+    supportScreen : (context) => SupportScreen(),
+    editProfileScreen : (context) => EditProfileScreen(),
+    walletScreen : (context) => WalletScreen(),
+    chatScreen : (context) => ChatScreen(),
+  };
+}

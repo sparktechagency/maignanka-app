@@ -1,0 +1,68 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // for .sp
+import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
+
+class PrivacyAndTermsHelper extends StatelessWidget {
+  PrivacyAndTermsHelper({Key? key}) : super(key: key);
+
+  final PrivacyController _controller = Get.put(PrivacyController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Obx(() => Checkbox(
+          value: _controller.isChecked.value,
+          onChanged: _controller.toggleCheckbox,
+          activeColor: AppColors.primaryColor,
+        )),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 11.sp,
+                color: AppColors.appGreyColor,
+              ),
+              children: [
+                const TextSpan(text: "I agree with "),
+                TextSpan(
+                  text: "terms of services ",
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      //Get.toNamed(AppRoutes.termsScreen);
+                    },
+                ),
+                const TextSpan(text: "and "),
+                TextSpan(
+                  text: "privacy policy.",
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      //Get.toNamed(AppRoutes.privacyPolicyScreen); // example navigation
+                    },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PrivacyController extends GetxController {
+  var isChecked = false.obs;
+
+  void toggleCheckbox(bool? value) {
+    isChecked.value = value ?? false;
+  }
+}
+
