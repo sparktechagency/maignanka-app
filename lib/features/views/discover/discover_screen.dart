@@ -123,7 +123,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 ),
               ),
               CustomContainer(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(AppRoutes.giftsScreen);
+                },
                 color: Colors.white,
                 elevation: true,
                 shape: BoxShape.circle,

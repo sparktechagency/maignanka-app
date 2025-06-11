@@ -12,6 +12,8 @@ class CustomNetworkImage extends StatelessWidget {
   final Color? backgroundColor;
   final Widget? child;
   final ColorFilter? colorFilter;
+  final List<BoxShadow>? boxShadow;
+  final bool elevation;
 
   const CustomNetworkImage(
       {super.key,
@@ -23,7 +25,7 @@ class CustomNetworkImage extends StatelessWidget {
        this.width,
       this.border,
       this.borderRadius,
-      this.boxShape = BoxShape.rectangle,});
+      this.boxShape = BoxShape.rectangle, this.boxShadow,  this.elevation = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,16 @@ class CustomNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               decoration: BoxDecoration(
+                boxShadow: boxShadow ??
+                    (elevation
+                        ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 20,
+                        spreadRadius: 6,
+                      ),
+                    ]
+                        : null),
                 border: border,
                 borderRadius: borderRadius != null ?  BorderRadius.circular(borderRadius ?? 0) : null,
                 shape: boxShape,
@@ -51,6 +63,16 @@ class CustomNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               decoration: BoxDecoration(
+                boxShadow: boxShadow ??
+                    (elevation
+                        ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 20,
+                        spreadRadius: 6,
+                      ),
+                    ]
+                        : null),
                 border: border,
                 color: Colors.grey.withOpacity(0.6),
                 borderRadius: borderRadius != null ?  BorderRadius.circular(borderRadius ?? 0) : null,
@@ -61,6 +83,16 @@ class CustomNetworkImage extends StatelessWidget {
               height: height,
               width: width,
               decoration: BoxDecoration(
+                boxShadow: boxShadow ??
+                    (elevation
+                        ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 20,
+                        spreadRadius: 6,
+                      ),
+                    ]
+                        : null),
                 border: border,
                 color: Colors.grey.withOpacity(0.6),
                 borderRadius: borderRadius != null ?  BorderRadius.circular(borderRadius ?? 0) : null,
