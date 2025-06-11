@@ -82,4 +82,34 @@ class HelperData {
 
 
 
+  // Fake data
+  static final List<Map<String, String>> fakeData = [
+    {
+      'image': 'https://randomuser.me/api/portraits/women/1.jpg',
+      'title': 'Alisha 23',
+      'subtitle': '40 Km'
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/2.jpg',
+      'title': 'Faria 32',
+      'subtitle': '40 Km'
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/3.jpg',
+      'title': 'Angel 44',
+      'subtitle': '40 Km'
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/4.jpg',
+      'title': 'Forida 76',
+      'subtitle': '40 Km'
+    },
+    {
+      'image': 'https://randomuser.me/api/portraits/women/5.jpg',
+      'title': 'malkova 21',
+      'subtitle': '40 Km'
+    },
+  ];
+
+
 }

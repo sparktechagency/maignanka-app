@@ -21,6 +21,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/chat.svg
   SvgGenImage get chat => const SvgGenImage('assets/icons/chat.svg');
 
+  /// File path: assets/icons/clean_icon.svg
+  SvgGenImage get cleanIcon => const SvgGenImage('assets/icons/clean_icon.svg');
+
   /// File path: assets/icons/coin.svg
   SvgGenImage get coin => const SvgGenImage('assets/icons/coin.svg');
 
@@ -35,6 +38,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/email.svg
   SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
+
+  /// File path: assets/icons/filter_icon.svg
+  SvgGenImage get filterIcon =>
+      const SvgGenImage('assets/icons/filter_icon.svg');
 
   /// File path: assets/icons/gender.svg
   SvgGenImage get gender => const SvgGenImage('assets/icons/gender.svg');
@@ -121,11 +128,13 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
     about,
     chat,
+    cleanIcon,
     coin,
     comment,
     date,
     delete,
     email,
+    filterIcon,
     gender,
     gift,
     height,

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/views/discover/discover_screen.dart';
 import 'package:maignanka_app/features/views/home/home_screen.dart';
 import 'package:maignanka_app/features/views/message/message_screen.dart';
 import 'package:maignanka_app/features/views/profile/profile_screen.dart';
@@ -18,7 +19,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    ProfileScreen(),
+    DiscoverScreen(),
     MessageScreen(),
     ProfileScreen(),
   ];

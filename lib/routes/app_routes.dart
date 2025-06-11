@@ -10,6 +10,7 @@ import 'package:maignanka_app/features/views/auth/sign_up/sign_up_screen.dart';
 import 'package:maignanka_app/features/views/auth/upload_photos/upload_photo_screen.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav.dart';
 import 'package:maignanka_app/features/views/comment/comment_screen.dart';
+import 'package:maignanka_app/features/views/love/love_screen.dart';
 import 'package:maignanka_app/features/views/message/chat_screen.dart';
 import 'package:maignanka_app/features/views/onboarding_screen/onboarding_screen.dart';
 import 'package:maignanka_app/features/views/profile/profile_update.dart';
@@ -56,6 +57,7 @@ abstract class AppRoutes {
   static const String editProfileScreen = '/editProfileScreen';
   static const String walletScreen = '/walletScreen';
   static const String chatScreen = '/chatScreen';
+  static const String loveScreen = '/loveScreen';
 
 
 
@@ -85,5 +87,6 @@ abstract class AppRoutes {
     editProfileScreen : (context) => EditProfileScreen(),
     walletScreen : (context) => WalletScreen(),
     chatScreen : (context) => ChatScreen(),
+    loveScreen : (context) => LoveScreen(),
   };
 }

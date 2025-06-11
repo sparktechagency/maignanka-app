@@ -38,6 +38,8 @@ dependencies:
   geolocator: ^11.0.0
   badges:
   grouped_list: ^6.0.0
+  flutter_card_swiper: ^7.0.2
+
 
 dev_dependencies:
   flutter_test:
