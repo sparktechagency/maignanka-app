@@ -12,8 +12,10 @@ import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav
 import 'package:maignanka_app/features/views/comment/comment_screen.dart';
 import 'package:maignanka_app/features/views/gifts/gifts_screen.dart';
 import 'package:maignanka_app/features/views/love/love_screen.dart';
+import 'package:maignanka_app/features/views/media/media_screen.dart';
 import 'package:maignanka_app/features/views/message/chat_screen.dart';
 import 'package:maignanka_app/features/views/onboarding_screen/onboarding_screen.dart';
+import 'package:maignanka_app/features/views/post_create/post_create_screen.dart';
 import 'package:maignanka_app/features/views/profile/profile_update.dart';
 import 'package:maignanka_app/features/views/profile/setting/about_screen.dart';
 import 'package:maignanka_app/features/views/profile/setting/change%20password/change_password.dart';
@@ -22,6 +24,8 @@ import 'package:maignanka_app/features/views/profile/setting/setting_screen.dart
 import 'package:maignanka_app/features/views/profile/setting/terms_screen.dart';
 import 'package:maignanka_app/features/views/profile/support_screen.dart';
 import 'package:maignanka_app/features/views/profile/wallet/wallet_screen.dart';
+import 'package:maignanka_app/features/views/report/report_details_screen.dart';
+import 'package:maignanka_app/features/views/report/report_screen.dart';
 import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
 
 import '../features/views/notification/notification_screen.dart';
@@ -60,6 +64,10 @@ abstract class AppRoutes {
   static const String chatScreen = '/chatScreen';
   static const String loveScreen = '/loveScreen';
   static const String giftsScreen = '/giftsScreen';
+  static const String postCreateScreen = '/postCreateScreen';
+  static const String reportScreen = '/reportScreen';
+  static const String reportDetailsScreen = '/reportDetailsScreen';
+  static const String mediaScreen = '/mediaScreen';
 
 
 
@@ -91,5 +99,9 @@ abstract class AppRoutes {
     chatScreen : (context) => ChatScreen(),
     loveScreen : (context) => LoveScreen(),
     giftsScreen : (context) => GiftsScreen(),
+    postCreateScreen : (context) => PostCreateScreen(),
+    reportScreen : (context) => ReportScreen(),
+    reportDetailsScreen : (context) => ReportDetailsScreen(),
+    mediaScreen : (context) => MediaScreen(),
   };
 }

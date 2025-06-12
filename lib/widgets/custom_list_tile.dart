@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_image_avatar.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
 class CustomListTile extends StatelessWidget {
-  const CustomListTile({super.key, this.title, this.subTitle, this.image, this.imageRadius = 24, this.trailing,  this.selectedColor, this.onTap, this.activeColor, this.statusColor, this.borderColor, this.borderRadius});
+  const CustomListTile({super.key, this.title, this.subTitle, this.image, this.imageRadius = 18, this.trailing,  this.selectedColor, this.onTap, this.activeColor, this.statusColor, this.borderColor, this.borderRadius});
 
   final String? title,subTitle,image;
   final double imageRadius;
@@ -35,9 +36,13 @@ class CustomListTile extends StatelessWidget {
           ),
           if(activeColor != null)
           Positioned(
-            right: 5.w,
-              bottom: 2.h,
-              child: Icon(Icons.circle,color: activeColor,size: 14.r,)),
+            right: 0.w,
+              bottom: 0.h,
+              child: CustomContainer(
+                paddingAll: 1,
+                shape: BoxShape.circle,
+                color: Colors.white,
+                  child: Icon(Icons.circle,color: activeColor,size: 12.r,))),
         ],
       ),
       title: CustomText(

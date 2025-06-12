@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/helper_data.dart';
 import 'package:maignanka_app/app/helpers/menu_show_helper.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/views/message/widgets/chat_card.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
@@ -29,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           GestureDetector(
             onTapDown: (details) {
-              _showHeightMenu(details, MenuShowHelper.chatTopPopupOptions);
+              _showHeightMenu(details, MenuShowHelper.chatTopPopupOptions,);
             },
             child: SizedBox(
               width: 40.w,
@@ -115,6 +117,16 @@ class _ChatScreenState extends State<ChatScreen> {
       options: options,
     );
     if (selected != null) {
+      if(selected == 'View Profile'){
+
+      }else if(selected == 'Media'){
+        Get.toNamed(AppRoutes.mediaScreen);
+
+      }else if(selected == 'Block Profile'){
+
+      }else if(selected == 'Report'){
+        Get.toNamed(AppRoutes.reportScreen);
+      }
       setState(() {});
     }
   }

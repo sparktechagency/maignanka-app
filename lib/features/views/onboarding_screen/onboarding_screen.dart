@@ -63,10 +63,15 @@ class OnboardingScreen extends StatelessWidget {
             SizedBox(height: 14.h),
             CustomText(text: 'Or'),
             SizedBox(height: 14.h),
-            CustomText(
-              text: 'Join as Guest',
-              fontSize: 18.sp,
-              decoration: TextDecoration.underline,
+            GestureDetector(
+              onTap: (){
+                Get.offAllNamed(AppRoutes.customBottomNavBar);
+              },
+              child: CustomText(
+                text: 'Join as Guest',
+                fontSize: 18.sp,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ],
         ),

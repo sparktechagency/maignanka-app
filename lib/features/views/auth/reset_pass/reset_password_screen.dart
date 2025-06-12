@@ -8,7 +8,6 @@ import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/auth_title_widgets.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
-import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
@@ -83,7 +82,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
 
   void _onResetPassword(){
-    if(_globalKey.currentState!.validate()) return;
+    if(!_globalKey.currentState!.validate()) return;
     //_controller.resetPassword(context);
     showDialog(
       barrierDismissible: false,

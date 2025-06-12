@@ -58,6 +58,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/image_add.svg
   SvgGenImage get imageAdd => const SvgGenImage('assets/icons/image_add.svg');
 
+  /// File path: assets/icons/image_post.svg
+  SvgGenImage get imagePost => const SvgGenImage('assets/icons/image_post.svg');
+
   /// File path: assets/icons/image_remove.svg
   SvgGenImage get imageRemove =>
       const SvgGenImage('assets/icons/image_remove.svg');
@@ -140,6 +143,7 @@ class $AssetsIconsGen {
     height,
     home,
     imageAdd,
+    imagePost,
     imageRemove,
     like,
     logoSvg,

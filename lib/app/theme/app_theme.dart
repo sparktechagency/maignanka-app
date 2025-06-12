@@ -14,8 +14,7 @@ class AppThemeData {
 
 
       bottomSheetTheme: BottomSheetThemeData(
-      )
-
+      ),
     );
   }
 

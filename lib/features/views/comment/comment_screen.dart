@@ -34,6 +34,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     child: Column(
                       children: [
                         CustomListTile(
+                          image: '',
                           title: 'Annette Black',
                           subTitle: 'abc@gmail.com',
                         ),

@@ -14,7 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showLeading = true,
     this.showBorder = false,
     this.actions,
-    this.backAction,
+    this.backAction, this.leading,
   });
 
   final String? title;
@@ -26,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBorder;
   final List<Widget>? actions;
   final VoidCallback? backAction;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +46,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: Colors.white,
       scrolledUnderElevation: 0,
       flexibleSpace: flexibleSpace,
-      leading: showLeading && (parentRoute?.canPop ?? false)
-          ? IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new,color: AppColors.darkColor,),
-        onPressed: backAction ?? () => Navigator.pop(context),
-      )
-          : null,
+      leading: leading ??
+          ((showLeading && (parentRoute?.canPop ?? false))
+              ? IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.darkColor),
+            onPressed: backAction ?? () => Navigator.pop(context),
+          )
+              : null),
       title: title != null && title!.isNotEmpty
           ? Text(
         title!,

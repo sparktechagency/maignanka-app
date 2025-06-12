@@ -24,7 +24,6 @@ class CustomTextField extends StatefulWidget {
   final String? hintText;
   final double? contentPaddingHorizontal;
   final double? contentPaddingVertical;
-  final int? maxLine;
   final double? hintextSize;
   final Widget? suffixIcon;
   final FormFieldValidator? validator;
@@ -36,6 +35,7 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final Color? cursorColor;
   final int? maxLength;
+  final int? maxLines;
   final bool? enabled;
   final FocusNode? focusNode;
   final bool autofocus;
@@ -52,7 +52,6 @@ class CustomTextField extends StatefulWidget {
       this.hintText,
       this.prefixIcon,
       this.suffixIcon,
-      this.maxLine,
       this.validator,
       this.hintextColor,
       this.borderColor,
@@ -78,7 +77,7 @@ class CustomTextField extends StatefulWidget {
       this.fontFamily,
       this.textInputAction,
       this.inputFormatter,
-      this.minLines});
+      this.minLines, this.maxLines});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -140,7 +139,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             fontName: FontFamily.inter,
             color: AppColors.appGreyColor,
             bottom: 4.h,
-            fontSize: 16.sp,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
           ),
         SizedBox(
@@ -165,7 +164,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           textInputAction: widget.textInputAction,
           obscuringCharacter: widget.obscure!,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          minLines: widget.minLines ?? 1,
+          minLines: widget.isPassword ? 1 : (widget.minLines ?? 1),
+          maxLines: widget.isPassword ? 1 : (widget.maxLines ?? 8),
+
 
           validator: widget.validator ??
               (value) {

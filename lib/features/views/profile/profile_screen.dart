@@ -75,6 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ProfileListTile(
+              noIcon: true,
               title: "Show my profile",
               onTap: () {
               },

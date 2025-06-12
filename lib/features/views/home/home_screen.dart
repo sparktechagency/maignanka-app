@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(onPressed: (){
+            Get.toNamed(AppRoutes.postCreateScreen);
           }, icon: Assets.icons.postUpload.svg()),
           Padding(
             padding:  EdgeInsets.only(right: 8.0.w),

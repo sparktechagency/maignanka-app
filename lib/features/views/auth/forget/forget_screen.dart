@@ -58,7 +58,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
 
 
   void _onGetVerificationCode(){
-    if(_globalKey.currentState!.validate()) return;
+    if(!_globalKey.currentState!.validate()) return;
     //_controller.forgetPassword(context);
     Get.toNamed(AppRoutes.otpScreen,arguments: {'screenType' : 'forgot'});
   }

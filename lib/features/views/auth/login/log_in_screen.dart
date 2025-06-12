@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onLogin() {
-    if (_globalKey.currentState!.validate()) return;
+    if (!_globalKey.currentState!.validate()) return;
     // _controller.login(context);
     Get.offAllNamed(AppRoutes.customBottomNavBar);
   }

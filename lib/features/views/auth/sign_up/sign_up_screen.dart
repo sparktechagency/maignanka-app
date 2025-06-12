@@ -193,7 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
   void _onSignUp() {
-    if (_globalKey.currentState!.validate()) return;
+    if (!_globalKey.currentState!.validate()) return;
     if(_controller.isChecked.value){
       return ToastMessageHelper.showToastMessage('Please confirm that you agree to the Terms of Service and Privacy Policy.');
     }
