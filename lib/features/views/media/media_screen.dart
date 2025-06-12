@@ -23,7 +23,6 @@ class MediaScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // Handle full screen navigation
               Navigator.push(
                 context,
                 MaterialPageRoute(
