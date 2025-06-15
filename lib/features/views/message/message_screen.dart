@@ -67,12 +67,13 @@ class _MessageScreenState extends State<MessageScreen> {
                   return Padding(
                     padding:  EdgeInsets.only(bottom: 8.0.h),
                     child: CustomListTile(
+                      statusColor: index == 0 ? AppColors.darkColor : null,
+                        selectedColor: index == 0 ? AppColors.secondaryColor.withOpacity(0.1) : null,
                       borderRadius: 8.r,
-                      borderColor: AppColors.borderColor,
                       onTap: () {
                         Get.toNamed(AppRoutes.chatScreen);
                       },
-                      selectedColor: AppColors.primaryColor.withOpacity(0.8),
+                     // selectedColor: AppColors.primaryColor.withOpacity(0.8),
                       image: message['image']!,
                       title: message['name']!,
                       activeColor: Colors.green,

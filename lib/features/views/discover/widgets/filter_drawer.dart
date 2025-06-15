@@ -23,7 +23,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.secondaryColor.withOpacity(0.05),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.horizontal(left: Radius.circular(30)),
       ),
