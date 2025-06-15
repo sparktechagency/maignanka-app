@@ -15,6 +15,11 @@ class HelperData {
     "Boat", "Skating", "Circus"
   ];
 
+  static final List<String> interests = [
+    "Traveling", "Movie", "Sports", "Fishing", "Yoga",
+
+  ];
+
 
   /// fake data
   static final List<Map<String, dynamic>> notifications = [
@@ -85,31 +90,32 @@ class HelperData {
   // Fake data
   static final List<Map<String, String>> fakeData = [
     {
-      'image': 'https://randomuser.me/api/portraits/women/1.jpg',
+      'image': 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',  // new 1st image
       'title': 'Alisha 23',
       'subtitle': '40 Km'
     },
     {
-      'image': 'https://randomuser.me/api/portraits/women/2.jpg',
+      'image': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80',
       'title': 'Faria 32',
       'subtitle': '40 Km'
     },
     {
-      'image': 'https://randomuser.me/api/portraits/women/3.jpg',
+      'image': 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=800&q=80',  // new 3rd image
       'title': 'Angel 44',
       'subtitle': '40 Km'
     },
     {
-      'image': 'https://randomuser.me/api/portraits/women/4.jpg',
+      'image': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80',
       'title': 'Forida 76',
       'subtitle': '40 Km'
     },
     {
-      'image': 'https://randomuser.me/api/portraits/women/5.jpg',
-      'title': 'malkova 21',
+      'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
+      'title': 'Malkova 21',
       'subtitle': '40 Km'
     },
   ];
+
 
 
 }

@@ -24,6 +24,7 @@ import 'package:maignanka_app/features/views/profile/setting/setting_screen.dart
 import 'package:maignanka_app/features/views/profile/setting/terms_screen.dart';
 import 'package:maignanka_app/features/views/profile/support_screen.dart';
 import 'package:maignanka_app/features/views/profile/wallet/wallet_screen.dart';
+import 'package:maignanka_app/features/views/profile_details/profile_details_screen.dart';
 import 'package:maignanka_app/features/views/report/report_details_screen.dart';
 import 'package:maignanka_app/features/views/report/report_screen.dart';
 import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
@@ -68,6 +69,7 @@ abstract class AppRoutes {
   static const String reportScreen = '/reportScreen';
   static const String reportDetailsScreen = '/reportDetailsScreen';
   static const String mediaScreen = '/mediaScreen';
+  static const String profileDetailsScreen = '/profileDetailsScreen';
 
 
 
@@ -103,5 +105,6 @@ abstract class AppRoutes {
     reportScreen : (context) => ReportScreen(),
     reportDetailsScreen : (context) => ReportDetailsScreen(),
     mediaScreen : (context) => MediaScreen(),
+    profileDetailsScreen : (context) => ProfileDetailsScreen(),
   };
 }

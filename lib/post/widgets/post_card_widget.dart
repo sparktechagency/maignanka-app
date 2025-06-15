@@ -51,9 +51,9 @@ class _PostCardWidgetState extends State<PostCardWidget> {
           SizedBox(height: 6.h),
           CustomListTile(
             onTap: () {},
-            image: "https://randomuser.me/api/portraits/women/9.jpg",
-            title: 'Asif',
-            subTitle: 'asif@gmail.com',
+            image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
+            title: 'Zara',
+            subTitle: 'zara3124@gmail.com',
             trailing:
                 widget.isMyPost
                     ? CustomPopupMenu(
@@ -99,7 +99,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                           borderRadius: BorderRadius.circular(13.r),
                           child: CustomNetworkImage(
                             imageUrl:
-                                'https://randomuser.me/api/portraits/women/${index}.jpg',
+                                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
                           ),
                         ),
                   ),

@@ -29,13 +29,13 @@ class MediaScreen extends StatelessWidget {
                   builder:
                       (_) => FullScreenImage(
                         imageUrl:
-                            'https://randomuser.me/api/portraits/women/$index.jpg',
+                            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80',
                       ),
                 ),
               );
             },
             child: CustomNetworkImage(
-              imageUrl: 'https://randomuser.me/api/portraits/women/$index.jpg',
+              imageUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80',
               borderRadius: 7.r,
             ),
           );
