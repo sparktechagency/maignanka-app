@@ -40,75 +40,77 @@ class _InterestsScreenState extends State<InterestsScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar(title: 'Interests'),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20.h),
-          CustomText(
-            text: "Choose up to 5 Interests to Highlight Your Profile!",
-            color: AppColors.appGreyColor,
-            fontWeight: FontWeight.w300,
-            fontSize: 13.sp,
-          ),
-          SizedBox(height: 30.h),
-
-
-          if (selectedInterests.isNotEmpty) ...[
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: selectedInterests.map((interest) {
-                return Chip(
-                  label: CustomText(
-                    text: interest,
-                    color: Colors.white,
-                    fontSize: 13.sp,
-                  ),
-                  backgroundColor: AppColors.secondaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                );
-              }).toList(),
-            ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             SizedBox(height: 20.h),
-          ],
-
-          CustomText(
-            text: "You might like...",
-            color: AppColors.appGreyColor,
-            fontWeight: FontWeight.w300,
-            fontSize: 13.sp,
-            bottom: 8.h,
-          ),
-
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children:
-                HelperData.allInterests.map((interest) {
-                  final isSelected = selectedInterests.contains(interest);
-                  return GestureDetector(
-                    onTap: () => _onInterestTap(interest),
-                    child: Chip(
-                      label: CustomText(
-                        text: interest,
-                        color: Colors.white,
-                        fontSize: 13.sp,
-                      ),
-                      backgroundColor:
-                          isSelected
-                              ? AppColors.secondaryColor
-                              : AppColors.secondaryColorShade300,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
+            CustomText(
+              text: "Choose up to 5 Interests to Highlight Your Profile!",
+              color: AppColors.appGreyColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 13.sp,
+            ),
+            SizedBox(height: 30.h),
+        
+        
+            if (selectedInterests.isNotEmpty) ...[
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: selectedInterests.map((interest) {
+                  return Chip(
+                    label: CustomText(
+                      text: interest,
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                    ),
+                    backgroundColor: AppColors.secondaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
                   );
                 }).toList(),
-          ),
-          Spacer(),
-        ],
+              ),
+              SizedBox(height: 20.h),
+            ],
+        
+            CustomText(
+              text: "You might like...",
+              color: AppColors.appGreyColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 13.sp,
+              bottom: 8.h,
+            ),
+        
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children:
+                  HelperData.allInterests.map((interest) {
+                    final isSelected = selectedInterests.contains(interest);
+                    return GestureDetector(
+                      onTap: () => _onInterestTap(interest),
+                      child: Chip(
+                        label: CustomText(
+                          text: interest,
+                          color: Colors.white,
+                          fontSize: 13.sp,
+                        ),
+                        backgroundColor:
+                            isSelected
+                                ? AppColors.secondaryColor
+                                : AppColors.secondaryColorShade300,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+            ),
+            //Spacer(),
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: CustomContainer(
