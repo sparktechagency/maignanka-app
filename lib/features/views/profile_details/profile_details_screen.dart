@@ -86,7 +86,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text:  'Alisha',
+                        text:  'Alisha 21',
                         color: Colors.white,
                         fontSize: 30.sp,
                         fontWeight: FontWeight.w700,
@@ -142,36 +142,38 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
 
 
                 infoRow(
-                  icon: Assets.icons.person.svg(),
+                  icon: Assets.icons.person.svg(height: 16.h,width: 16.w),
                   label: 'Name',
                   value: 'Janet Haniya',
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 12.h),
                 infoRow(
-                  icon: Assets.icons.gender.svg(),
+                  icon: Assets.icons.gender.svg(height: 16.h,width: 16.w),
                   label: 'Gender',
                   value: 'Female',
                 ),
-                SizedBox(height: 8.h),
+
+                SizedBox(height: 12.h),
                 infoRow(
-                  icon: Assets.icons.date.svg(),
-                  label: 'Birthday',
-                  value: 'Jan 15, 1998',
-                ),
-                SizedBox(height: 8.h),
-                infoRow(
-                  icon: Assets.icons.height.svg(),
+                  icon: Assets.icons.height.svg(height: 16.h,width: 16.w),
                   label: 'Height',
                   value: '5\'7"',
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 12.h),
 
                 infoRow(
-                  icon: Assets.icons.weight.svg(),
+                  icon: Assets.icons.weight.svg(height: 16.h,width: 16.w),
                   label: 'Weight',
                   value: '57 kg',
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 12.h),
+
+                infoRow(
+                  icon: Assets.icons.goal.svg(height: 16.h,width: 16.w),
+                  label: 'Goal',
+                  value: 'Here to chat and vibe',
+                ),
+                SizedBox(height: 12.h),
 
 
 
@@ -219,9 +221,9 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
       children: [
         icon,
         SizedBox(width: 8.w),
-        CustomText(text: '$label:', fontSize: fontSize.sp),
+        CustomText(text: '$label:', fontSize: fontSize.sp,color: Colors.grey.shade700,),
         Spacer(),
-        CustomText(text: value, fontSize: fontSize.sp),
+        CustomText(text: value, fontSize: fontSize.sp,color: AppColors.appGreyColor,),
       ],
     );
   }

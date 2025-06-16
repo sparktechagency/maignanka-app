@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
-import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/features/views/profile/controller/profile_controller.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
-import 'package:maignanka_app/services/socket_services.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_dialog.dart';
 import 'package:maignanka_app/widgets/custom_image_avatar.dart';
@@ -27,6 +24,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   
   
   final ProfileController _controller = Get.put(ProfileController());
+
+
+  bool _showProfile = true;
 
 
   @override
@@ -75,6 +75,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ProfileListTile(
+              paddingVertical: 3.h,
+              trailing: Switch(value: _showProfile, onChanged: (value){
+                _showProfile = value;
+                setState(() {
+
+                });
+              },activeColor: AppColors.secondaryColor,),
               noIcon: true,
               title: "Show my profile",
               onTap: () {

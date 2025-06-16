@@ -49,6 +49,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/gift.svg
   SvgGenImage get gift => const SvgGenImage('assets/icons/gift.svg');
 
+  /// File path: assets/icons/goal.svg
+  SvgGenImage get goal => const SvgGenImage('assets/icons/goal.svg');
+
   /// File path: assets/icons/height.svg
   SvgGenImage get height => const SvgGenImage('assets/icons/height.svg');
 
@@ -140,6 +143,7 @@ class $AssetsIconsGen {
     filterIcon,
     gender,
     gift,
+    goal,
     height,
     home,
     imageAdd,

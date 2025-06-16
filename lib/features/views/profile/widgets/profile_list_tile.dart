@@ -11,7 +11,7 @@ class ProfileListTile extends StatelessWidget {
       this.textColor,
       this.noIcon,
       required this.title,
-      required this.onTap,  this.icon});
+      required this.onTap,  this.icon, this.trailing, this.paddingVertical});
 
   final Color? color;
   final Color? textColor;
@@ -19,6 +19,8 @@ class ProfileListTile extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
    final Widget? icon;
+   final Widget? trailing;
+   final double? paddingVertical;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class ProfileListTile extends StatelessWidget {
         )
       ],
       onTap: onTap,
-      paddingVertical: 12.h,
+      paddingVertical: paddingVertical ?? 12.h,
       paddingHorizontal: 8.w,
       verticalMargin: 7.h,
       color: color ?? const Color(0xFFFCE6E8),
@@ -53,6 +55,8 @@ class ProfileListTile extends StatelessWidget {
               Icons.arrow_right,
               color: Colors.black,
             ),
+          if(trailing != null)
+          trailing!
         ],
       ),
     );
