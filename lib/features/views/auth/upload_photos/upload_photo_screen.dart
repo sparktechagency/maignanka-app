@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/auth/upload_photos_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
@@ -23,22 +25,23 @@ class UploadPhotoScreen extends StatefulWidget {
 }
 
 class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
-  final List<File> photos = [];
   final picker = ImagePicker();
+
+  final UploadPhotosController _controller = Get.find<UploadPhotosController>();
 
   Future<void> addPhoto() async {
     PhotoPickerHelper.showPicker(
       context: context,
       onImagePicked: (XFile file) {
-        if (photos.length < 6) {
-          setState(() => photos.add(File(file.path)));
+        if (_controller.images.length < 6) {
+          setState(() => _controller.images.add(File(file.path)));
         }
       },
     );
   }
 
   void removePhoto(int index) {
-    setState(() => photos.removeAt(index));
+    setState(() => _controller.images.removeAt(index));
   }
 
   @override
@@ -59,7 +62,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
             spacing: 16.w,
             runSpacing: 16.h,
             children: List.generate(6, (index) {
-              if (index < photos.length) {
+              if (index < _controller.images.length) {
                 return _buildPhotoCard(index);
               } else {
                 return _buildAddButton();
@@ -67,14 +70,20 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
             }),
           ),
           const Spacer(),
-          CustomButton(onPressed: () {
-            if(photos.length >= 3){
-              Get.toNamed(AppRoutes.goalsScreen);
-
-            }else{
-              ToastMessageHelper.showToastMessage('Please upload at least 3 images to continue.');
+          GetBuilder<UploadPhotosController>(
+            builder: (controller) {
+              return CustomButton(
+                onPressed: (){
+                  if(controller.images.length >= 4){
+                    controller.uploadPhotos();
+                    Get.toNamed(AppRoutes.goalsScreen);
+                  }else{
+                    ToastMessageHelper.showToastMessage('Please upload at least 3 images to continue.');
+                  }
+                },
+                label: 'Next',);
             }
-          }  ,label: 'Next',),
+          ),
         ],
       ),
     );
@@ -97,7 +106,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
             radiusAll: 15.r,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15.r),
-              child: Image.file(photos[index], fit: BoxFit.cover),
+              child: Image.file(_controller.images[index], fit: BoxFit.cover),
             ),
           ),
         ),

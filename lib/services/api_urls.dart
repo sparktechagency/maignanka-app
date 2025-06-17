@@ -1,11 +1,12 @@
 class ApiUrls {
-  static const String baseUrl = "https://courtconnect-asifur-rahman.sarv.live/api/v1";
+  static const String baseUrl = "http://vibely-ifti.sarv.live";
 
 
-  static const String imageBaseUrl = "https://courtconnect-asifur-rahman.sarv.live";
+  static const String imageBaseUrl = "http://vibely-ifti.sarv.live";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
+  static const String uploadPhoto = '/gallery/upload';
   static const String login = '/auth/login';
   static const String forgetPassword = '/auth/forget-password';
   static  const String  resendOtp = '/auth/resend-otp';

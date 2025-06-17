@@ -6,16 +6,15 @@ import 'package:maignanka_app/app/helpers/menu_show_helper.dart';
 import 'package:maignanka_app/app/helpers/privacy_and_terms_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
-import 'package:maignanka_app/features/views/auth/sign_up/controller/register_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/register_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/auth_title_widgets.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
-import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,13 +24,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final RegisterController _controller = Get.put(RegisterController());
+  final RegisterController _controller = Get.find<RegisterController>();
 
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +54,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.text,
               ),
 
-
               CustomTextField(
                 prefixIcon: Assets.icons.email.svg(),
                 controller: _controller.emailController,
@@ -75,7 +69,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               GestureDetector(
                 onTapDown: (TapDownDetails details) {
-                  _showHeightMenu(details,MenuShowHelper.genderOptions,_controller.genderController);
+                  _controller.showHeightMenu(
+                    details,
+                    MenuShowHelper.genderOptions,
+                    _controller.genderController,
+                    context,
+                  );
                 },
                 child: AbsorbPointer(
                   child: CustomTextField(
@@ -97,7 +96,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               GestureDetector(
                 onTapDown: (TapDownDetails details) {
-                  _showHeightMenu(details,MenuShowHelper.heightOptions,_controller.heightController);
+                  _controller.showHeightMenu(
+                    details,
+                    MenuShowHelper.heightOptions,
+                    _controller.heightController,
+                    context,
+                  );
                 },
                 child: AbsorbPointer(
                   child: CustomTextField(
@@ -112,7 +116,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               GestureDetector(
                 onTapDown: (TapDownDetails details) {
-                  _showHeightMenu(details,MenuShowHelper.weightOptions,_controller.weightController);
+                  _controller.showHeightMenu(
+                    details,
+                    MenuShowHelper.weightOptions,
+                    _controller.weightController,
+                    context,
+                  );
                 },
                 child: AbsorbPointer(
                   child: CustomTextField(
@@ -123,7 +132,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-
 
               CustomTextField(
                 prefixIcon: Assets.icons.password.svg(),
@@ -147,28 +155,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               PrivacyAndTermsHelper(),
               SizedBox(height: 36.h),
-          CustomButton(label: "Sign Up", onPressed: _onSignUp),
+              GetBuilder<RegisterController>(
+                builder: (controller) {
+                  return controller.isLoading ? CustomLoader() : CustomButton(
+                      label: "Sign Up", onPressed: _onSignUp,
+                  );
+                }
+              ),
               SizedBox(height: 18.h),
 
-              RichText(text: TextSpan(
+              RichText(
+                text: TextSpan(
                   style: TextStyle(
-                      color: AppColors.appGreyColor,
-                      fontSize: 14.sp
+                    color: AppColors.appGreyColor,
+                    fontSize: 14.sp,
                   ),
                   text: "Already have an account? ",
                   children: [
                     TextSpan(
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                        ),
-                        text: ' Sign In',
-                      recognizer: TapGestureRecognizer()..onTap = (){
-                        Get.toNamed(AppRoutes.loginScreen);
-
-                      }
-                    )
-                  ]
-              )),
+                      style: TextStyle(color: AppColors.primaryColor),
+                      text: ' Sign In',
+                      recognizer:
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              Get.toNamed(AppRoutes.loginScreen);
+                            },
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 18.h),
             ],
           ),
@@ -177,28 +192,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
-  void _showHeightMenu(TapDownDetails details,List<String>options,TextEditingController controller) async {
-    final selected = await MenuShowHelper.showCustomMenu(
-      context: context,
-      details: details,
-      options: options,
-    );
-    if (selected != null) {
-      setState(() {
-        controller.text = selected;
-      });
-    }
-  }
-
-
   void _onSignUp() {
     if (!_globalKey.currentState!.validate()) return;
-    if(_controller.isChecked.value){
-      return ToastMessageHelper.showToastMessage('Please confirm that you agree to the Terms of Service and Privacy Policy.');
+    if (!Get.find<PrivacyController>().isChecked.value) {
+      return ToastMessageHelper.showToastMessage(
+        'Please confirm that you agree to the Terms of Service and Privacy Policy.',
+      );
     }
-    Get.toNamed(AppRoutes.otpScreen,arguments: {'screenType' : 'sign-up'});
+      _controller.registerAccount();
 
-    // _controller.registerAccount(context);
   }
 }

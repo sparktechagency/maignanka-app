@@ -1,14 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // for .sp
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
-import 'package:maignanka_app/routes/app_routes.dart';
 
 class PrivacyAndTermsHelper extends StatelessWidget {
   PrivacyAndTermsHelper({Key? key}) : super(key: key);
 
-  final PrivacyController _controller = Get.put(PrivacyController());
+  final PrivacyController _controller = Get.find<PrivacyController>();
 
   @override
   Widget build(BuildContext context) {

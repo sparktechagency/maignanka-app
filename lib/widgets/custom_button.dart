@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
-import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
 class CustomButton extends StatelessWidget {
@@ -24,7 +23,6 @@ class CustomButton extends StatelessWidget {
       this.bordersColor,
       this.suffixIconShow = false,
       this.prefixIconShow = false,
-      this.isLoading = false,
       this.title,
       this.iconHeight,
       this.iconWidth,
@@ -49,62 +47,57 @@ class CustomButton extends StatelessWidget {
   final bool prefixIconShow;
   final double? iconHeight;
   final double? iconWidth;
-  final bool isLoading;
   final bool elevation;
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: !isLoading,
-      replacement: const CustomLoader(),
-      child: CustomContainer(
-        elevation: elevation,
-        onTap: onPressed,
-        color: backgroundColor ?? AppColors.primaryColor,
-        height: height ?? 42.h,
-        width: width ?? double.infinity,
-        radiusAll: radius ?? 100.r,
-        bordersColor: bordersColor,
-        child:child?? Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /// Prefix Icon
-            if (prefixIcon != null || prefixIconShow == true) ...[
-              Icon(
-                size: 18.r,
-                prefixIcon ?? Icons.arrow_back,
+    return CustomContainer(
+      elevation: elevation,
+      onTap: onPressed,
+      color: backgroundColor ?? AppColors.primaryColor,
+      height: height ?? 42.h,
+      width: width ?? double.infinity,
+      radiusAll: radius ?? 100.r,
+      bordersColor: bordersColor,
+      child:child?? Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          /// Prefix Icon
+          if (prefixIcon != null || prefixIconShow == true) ...[
+            Icon(
+              size: 18.r,
+              prefixIcon ?? Icons.arrow_back,
 
-                /// Use prefixIcon or fallback
-                color: foregroundColor ?? AppColors.darkColor,
-              ),
-              SizedBox(width: 8.w),
-            ],
-
-            if (title != null) title!,
-
-            /// Label Text
-            if (label != null)
-              Flexible(
-                child: CustomText(
-                  text: label ?? '',
-                  color: foregroundColor ?? Colors.white,
-                  fontName: fontName ?? 'Inter',
-                  fontWeight: fontWeight ?? FontWeight.w500,
-                  fontSize: fontSize ?? 18.sp,
-                ),
-              ),
-
-            /// Suffix Icon
-            if (suffixIcon != null || suffixIconShow == true) ...[
-              SizedBox(width: 8.w),
-              // Use SvgPicture for SVG icons
-              suffixIcon != null
-                  ? suffixIcon! // If a custom widget is passed as suffixIcon
-                  : Icon(Icons.arrow_forward_ios),
-            ],
+              /// Use prefixIcon or fallback
+              color: foregroundColor ?? AppColors.darkColor,
+            ),
+            SizedBox(width: 8.w),
           ],
-        ),
+
+          if (title != null) title!,
+
+          /// Label Text
+          if (label != null)
+            Flexible(
+              child: CustomText(
+                text: label ?? '',
+                color: foregroundColor ?? Colors.white,
+                fontName: fontName ?? 'Inter',
+                fontWeight: fontWeight ?? FontWeight.w500,
+                fontSize: fontSize ?? 18.sp,
+              ),
+            ),
+
+          /// Suffix Icon
+          if (suffixIcon != null || suffixIconShow == true) ...[
+            SizedBox(width: 8.w),
+            // Use SvgPicture for SVG icons
+            suffixIcon != null
+                ? suffixIcon! // If a custom widget is passed as suffixIcon
+                : Icon(Icons.arrow_forward_ios),
+          ],
+        ],
       ),
     );
   }

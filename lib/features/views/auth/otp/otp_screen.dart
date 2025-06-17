@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
-import 'package:maignanka_app/features/views/auth/otp/controller/otp_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/otp_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/auth_title_widgets.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
@@ -24,7 +24,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  final OTPController _controller = Get.put(OTPController());
+  final OTPController _controller = Get.find<OTPController>();
 
    final String screenType =  Get.arguments['screenType'];
 
@@ -76,9 +76,13 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
 
             SizedBox(height: 36.h),
-            CustomButton(
-              label: "Verify",
-              onPressed: _onTapNextScreen,
+            GetBuilder<OTPController>(
+              builder: (controller) {
+                return controller.isLoading ? CustomLoader(): CustomButton(
+                  label: "Verify",
+                  onPressed: _onTapNextScreen,
+                );
+              }
             ),
             SizedBox(height: 18.h),
           ],
@@ -89,12 +93,16 @@ class _OtpScreenState extends State<OtpScreen> {
 
   void _onTapNextScreen()async {
     if (!_globalKey.currentState!.validate()) return;
-   // final bool success = await _controller.otpSubmit();
-    if(screenType == 'forgot'){
-      Get.toNamed(AppRoutes.resetPasswordScreen);
-    }else{
-      Get.toNamed(AppRoutes.uploadPhotoScreen);
+   final bool success = await _controller.otpSubmit();
 
-    }
+   if(success){
+     if(screenType == 'forgot'){
+       Get.toNamed(AppRoutes.resetPasswordScreen);
+     }else{
+       Get.toNamed(AppRoutes.uploadPhotoScreen);
+
+     }
+   }
+
   }
 }
