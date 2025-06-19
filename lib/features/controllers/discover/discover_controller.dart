@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/models/swipe_data_model.dart';
@@ -16,45 +19,51 @@ class DiscoverController extends GetxController {
   int totalPage = -1;
 
   String goal = '';
- // String interest = 'Male';
+  // String interest = 'Male';
   double distance = 40;
   RangeValues ageRange = RangeValues(0, 24);
 
-
-
-  void onChangeGoal(String value){
+  void onChangeGoal(String value) {
     goal = value;
     update();
   }
 
-  void onChangeDistance(double value){
+  void onChangeDistance(double value) {
     distance = value;
     update();
   }
 
   void onChangeAgeRange(RangeValues values) {
-      ageRange = values;
-      update();
+    ageRange = values;
+    update();
   }
 
-  void clean(){
+  void clean() {
     goal = '';
-   // interest = 'Male';
+    // interest = 'Male';
     distance = 40;
     ageRange = RangeValues(0, 28);
     update();
   }
 
+  void onLoveTapped(heartController, swiperController, BuildContext context) {
+    final size = heartController.getSize() * 2;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final random = Random();
 
-  void filterApply(){
+    for (int i = 0; i < 4; i++) {
+      final offset = Offset(
+        (width - size) / 1.2 + random.nextInt(100) - 40,
+        height - size - 170 - random.nextInt(100),
+      );
+      heartController.showIcon(offset: offset);
+    }
 
+    Future.delayed(const Duration(milliseconds: 800), () {
+      swiperController.swipe(CardSwiperDirection.right);
+    });
   }
-
-
-
-
-
-
 
   Future<void> swipeProfileGet() async {
     swipeDataList.clear();
@@ -68,7 +77,13 @@ class DiscoverController extends GetxController {
     }
 
     final response = await ApiClient.getData(
-      ApiUrls.swipeProfile(limit, page, goal, '${ageRange.start.toInt()}-${ageRange.end.toInt()}', distance.toInt()),
+      ApiUrls.swipeProfile(
+        limit,
+        page,
+        goal,
+        '${ageRange.start.toInt()}-${ageRange.end.toInt()}',
+        distance.toInt(),
+      ),
     );
 
     final responseBody = response.body;
@@ -76,7 +91,8 @@ class DiscoverController extends GetxController {
     if (response.statusCode == 200) {
       final List data = responseBody['data'] ?? [];
 
-      final swipeData = data.map((json) => SwipeDataModel.fromJson(json)).toList();
+      final swipeData =
+          data.map((json) => SwipeDataModel.fromJson(json)).toList();
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 

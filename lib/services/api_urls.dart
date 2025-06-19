@@ -14,7 +14,9 @@ class ApiUrls {
   static  const String  profiles = '/profiles';
   static  const String  interest = '/profiles/interest-values';
   static  const String  location = '/profiles/location';
-  static   String  swipeProfile(limit,page,goal,age,minimumDistance) => '/profiles/v2?limit=$limit&page=$page&interest=$interest&goal=$goal&age=$age&minimumDistance=$minimumDistance';
+  static   String  swipeProfile(limit,page,goal,age,minimumDistance) => '/profiles/v2?limit=$limit&page=$page&goal=$goal&age=$age&minimumDistance=$minimumDistance';
+  static   String  matchCreate(String userId) => '/match?userID=$userId';
+
 
 
   static  const String  myProfile = '/auth/my-profile';

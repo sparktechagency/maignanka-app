@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -9,13 +7,12 @@ import 'package:heart_overlay/heart_overlay.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/views/discover/widgets/filter_drawer.dart';
+import 'package:maignanka_app/features/views/discover/widgets/swipe_card_widget.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
-import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
-import 'package:maignanka_app/widgets/custom_network_image.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
 class DiscoverScreen extends StatefulWidget {
@@ -88,7 +85,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
                     if (controller.swipeDataList.isEmpty) {
                       return Center(
-                        child:CustomText(text: 'No profiles found.'),
+                        child: CustomText(text: 'No profiles found.'),
                       );
                     }
 
@@ -99,60 +96,12 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       onEnd: () async {
                         await controller.loadMore();
                       },
-                      numberOfCardsDisplayed: controller.swipeDataList.length >= 2 ? 2 : 1,
+                      numberOfCardsDisplayed:
+                          controller.swipeDataList.length >= 2 ? 2 : 1,
 
                       cardBuilder: (context, index, _, __) {
                         final swipeData = controller.swipeDataList[index];
-                        return CustomContainer(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.profileDetailsScreen);
-                          },
-                          color: AppColors.secondaryColor,
-                          width: double.infinity,
-                          height: double.infinity,
-                          radiusAll: 16.r,
-                          bordersColor: AppColors.secondaryColor,
-                          borderWidth: 0.5,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.r),
-                                child: CustomNetworkImage(
-                                  imageUrl:
-                                  '${ApiUrls.imageBaseUrl}${swipeData.pictures?.first.imageURL}',
-                                ),
-                              ),
-                              Positioned(
-                                left: 10.w,
-                                right: 10.w,
-                                bottom: 10.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      text: '${swipeData.name} ${swipeData.age}',
-                                      color: Colors.white,
-                                      fontSize: 30.sp,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(Icons.location_on, color: Colors.white),
-                                        Flexible(
-                                          child: CustomText(
-                                            text: swipeData.distance?.toStringAsFixed(2) ?? '',
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                        return SwipeCardWidget(swipeData: swipeData);
                       },
                     );
                   },
@@ -164,7 +113,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   _actionButton(
                     icon: Assets.icons.cleanIcon.svg(height: 24.r, width: 24.r),
                     color: Colors.white,
-                    onTap: () => _swiperController.swipe(CardSwiperDirection.left),
+                    onTap:
+                        () => _swiperController.swipe(CardSwiperDirection.left),
                   ),
                   _actionButton(
                     icon: Assets.icons.love.svg(
@@ -173,7 +123,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       color: Colors.white,
                     ),
                     color: AppColors.secondaryColor,
-                    onTap: _onLoveTapped,
+                    onTap: () {
+
+                    }
                   ),
                   _actionButton(
                     icon: Assets.icons.gift.svg(height: 24.r, width: 24.r),
@@ -203,24 +155,5 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       paddingAll: 16.r,
       child: icon,
     );
-  }
-
-  void _onLoveTapped() {
-    final size = _heartController.getSize() * 2;
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    final random = Random();
-
-    for (int i = 0; i < 4; i++) {
-      final offset = Offset(
-        (width - size) / 1.2 + random.nextInt(100) - 40,
-        height - size - 170 - random.nextInt(100),
-      );
-      _heartController.showIcon(offset: offset);
-    }
-
-    Future.delayed(const Duration(milliseconds: 800), () {
-      _swiperController.swipe(CardSwiperDirection.right);
-    });
   }
 }
