@@ -8,32 +8,34 @@ class ResetPasswordController extends GetxController {
   final  passController = TextEditingController();
   final  confirmPassController = TextEditingController();
 
-  final RxBool isLoading = false.obs;
+   bool isLoading = false;
 
-  Future<void> resetPassword(BuildContext context) async {
-    isLoading.value = true;
+  Future<bool> resetPassword() async {
+    isLoading = true;
+    update();
+
+   bool  isSuccess =  false;
 
     var bodyParams = {
       "password": passController.text,
+      "confirmPassword": confirmPassController.text,
     };
 
-    try {
       final response = await ApiClient.postData(
         ApiUrls.resetPassword,
         bodyParams,
       );
 
       final responseBody = response.body;
-      if (response.statusCode == 200 && responseBody['success'] == true) {
-          ToastMessageHelper.showToastMessage(responseBody['message'] ?? "change your password successfully");
+      if (response.statusCode == 200) {
+        isSuccess = true;
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "failed.");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Error: $e");
-    } finally {
-      isLoading.value = false;
-    }
+      isLoading = false;
+      update();
+
+      return isSuccess;
   }
 
   @override

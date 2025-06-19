@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:maignanka_app/features/views/auth/forget/controller/forget_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/forget_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/auth_title_widgets.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
@@ -21,7 +21,7 @@ class ForgetScreen extends StatefulWidget {
 
 class _ForgetScreenState extends State<ForgetScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  final ForgetController _controller = Get.put(ForgetController());
+  final ForgetController _controller = Get.find<ForgetController>();
 
 
   @override
@@ -44,9 +44,13 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 isEmail: true,
               ),
               SizedBox(height: 44.h),
-              CustomButton(
-                label: "Get Verification Code",
-                onPressed: _onGetVerificationCode,
+              GetBuilder<ForgetController>(
+                builder: (controller) {
+                  return controller.isLoading ? CustomLoader() :  CustomButton(
+                    label: "Get Verification Code",
+                    onPressed: _onGetVerificationCode,
+                  );
+                }
               ),
               SizedBox(height: 18.h),
             ],
@@ -59,8 +63,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
 
   void _onGetVerificationCode(){
     if(!_globalKey.currentState!.validate()) return;
-    //_controller.forgetPassword(context);
-    Get.toNamed(AppRoutes.otpScreen,arguments: {'screenType' : 'forgot'});
+    _controller.forgetPassword();
   }
 
 

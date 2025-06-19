@@ -17,7 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final CustomBottomNavBarController _navBarController = Get.find<CustomBottomNavBarController>();
 
 
-  final List<Widget> _screens = const [
+  final List<Widget> _screens =  [
     HomeScreen(),
     DiscoverScreen(),
     MessageScreen(),

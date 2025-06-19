@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
-import 'package:maignanka_app/features/views/auth/login/controller/login_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/login_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/auth_title_widgets.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
@@ -62,7 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 111.h),
-              CustomButton(label: "Sign In", onPressed: _onLogin),
+              GetBuilder<LoginController>(
+                builder: (controller) {
+                  return controller.isLoading ? CustomLoader() : CustomButton(label: "Sign In", onPressed: _onLogin);
+                }
+              ),
               SizedBox(height: 18.h),
               RichText(text: TextSpan(
                 style: TextStyle(
@@ -94,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onLogin() {
     if (!_globalKey.currentState!.validate()) return;
-    // _controller.login(context);
-    Get.offAllNamed(AppRoutes.customBottomNavBar);
+    _controller.login();
   }
 }

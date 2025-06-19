@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/post/controller/post_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
@@ -11,6 +13,25 @@ class UploadPhotosController extends GetxController {
   bool isLoading = false;
   List<File> images = [];
 
+
+
+
+  Future<void> addPhoto(BuildContext context) async {
+    PhotoPickerHelper.showPicker(
+      context: context,
+      onImagePicked: (XFile file) {
+        if (images.length < 6) {
+          images.add(File(file.path));
+          update();
+        }
+      },
+    );
+  }
+
+  void removePhoto(int index) {
+    images.removeAt(index);
+update();
+  }
 
 
 

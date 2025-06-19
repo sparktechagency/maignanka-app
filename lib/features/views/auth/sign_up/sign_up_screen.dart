@@ -201,5 +201,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
       _controller.registerAccount();
 
+
   }
 }

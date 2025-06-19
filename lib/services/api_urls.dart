@@ -2,15 +2,21 @@ class ApiUrls {
   static const String baseUrl = "http://vibely-ifti.sarv.live";
 
 
-  static const String imageBaseUrl = "http://vibely-ifti.sarv.live";
+  static const String imageBaseUrl = "http://vibely-ifti.sarv.live/";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
   static const String uploadPhoto = '/gallery/upload';
   static const String login = '/auth/login';
-  static const String forgetPassword = '/auth/forget-password';
+  static const String forgetPassword = '/auth/resend-otp-forget';
   static  const String  resendOtp = '/auth/resend-otp';
-  static  const String  resetPassword = '/auth/reset-password';
+  static  const String  resetPassword = '/auth/forget-password';
+  static  const String  profiles = '/profiles';
+  static  const String  interest = '/profiles/interest-values';
+  static  const String  location = '/profiles/location';
+  static   String  swipeProfile(limit,page,goal,age,minimumDistance) => '/profiles/v2?limit=$limit&page=$page&interest=$interest&goal=$goal&age=$age&minimumDistance=$minimumDistance';
+
+
   static  const String  myProfile = '/auth/my-profile';
   static  const String  updateProfile = '/auth/profile-update';
   static   String  accountDelete(String id) => '/auth/account-delete?id=$id';

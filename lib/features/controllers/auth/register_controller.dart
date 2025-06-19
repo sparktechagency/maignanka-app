@@ -80,8 +80,7 @@ class RegisterController extends GetxController {
       Get.toNamed(AppRoutes.otpScreen, arguments: {'screenType': 'sign-up'});
 
     } else {
-      ToastMessageHelper.showToastMessage(
-        responseBody['message'] ?? "Registration failed.",
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Registration failed.",
       );
     }
 

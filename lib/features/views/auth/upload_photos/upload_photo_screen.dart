@@ -25,24 +25,10 @@ class UploadPhotoScreen extends StatefulWidget {
 }
 
 class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
-  final picker = ImagePicker();
 
   final UploadPhotosController _controller = Get.find<UploadPhotosController>();
 
-  Future<void> addPhoto() async {
-    PhotoPickerHelper.showPicker(
-      context: context,
-      onImagePicked: (XFile file) {
-        if (_controller.images.length < 6) {
-          setState(() => _controller.images.add(File(file.path)));
-        }
-      },
-    );
-  }
 
-  void removePhoto(int index) {
-    setState(() => _controller.images.removeAt(index));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +44,20 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
             fontWeight: FontWeight.w500,
             color: AppColors.appGreyColor,
           ),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            children: List.generate(6, (index) {
-              if (index < _controller.images.length) {
-                return _buildPhotoCard(index);
-              } else {
-                return _buildAddButton();
-              }
-            }),
+          GetBuilder<UploadPhotosController>(
+            builder: (controller) {
+              return Wrap(
+                spacing: 16.w,
+                runSpacing: 16.h,
+                children: List.generate(6, (index) {
+                  if (index < controller.images.length) {
+                    return _buildPhotoCard(index);
+                  } else {
+                    return _buildAddButton();
+                  }
+                }),
+              );
+            }
           ),
           const Spacer(),
           GetBuilder<UploadPhotosController>(
@@ -76,9 +66,9 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                 onPressed: (){
                   if(controller.images.length >= 4){
                     controller.uploadPhotos();
-                    Get.toNamed(AppRoutes.goalsScreen);
+                    Get.toNamed(AppRoutes.bioScreen);
                   }else{
-                    ToastMessageHelper.showToastMessage('Please upload at least 3 images to continue.');
+                    ToastMessageHelper.showToastMessage('Please upload at least 4 images to continue.');
                   }
                 },
                 label: 'Next',);
@@ -130,9 +120,13 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
-            child: GestureDetector(
-              onTap: () => removePhoto(index),
-              child: Assets.icons.imageRemove.svg(),
+            child: GetBuilder<UploadPhotosController>(
+              builder: (controller) {
+                return GestureDetector(
+                  onTap: () => controller.removePhoto(index),
+                  child: Assets.icons.imageRemove.svg(),
+                );
+              }
             ),
           ),
         ),
@@ -147,15 +141,19 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       dashPattern: const [4, 3],
       strokeWidth: 1.5,
       color: AppColors.primaryColor,
-      child: InkWell(
-        onTap: addPhoto,
-        child: CustomContainer(
-          height: 130.h,
-          width: 90.w,
-          radiusAll: 15.r,
-          color: AppColors.secondaryColorShade100,
-          child:  Center(child: Assets.icons.imageAdd.svg()),
-        ),
+      child: GetBuilder<UploadPhotosController>(
+        builder: (controller) {
+          return InkWell(
+            onTap: () => controller.addPhoto(context),
+            child: CustomContainer(
+              height: 130.h,
+              width: 90.w,
+              radiusAll: 15.r,
+              color: AppColors.secondaryColorShade100,
+              child:  Center(child: Assets.icons.imageAdd.svg()),
+            ),
+          );
+        }
       ),
     );
   }

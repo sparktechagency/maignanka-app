@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/features/views/profile/controller/profile_controller.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
@@ -118,9 +120,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onCancel: () {
                       Get.back();
                     },
-                    onConfirm: () {
-                      Get.back();
-                      // await PrefsHelper.remove(AppConstants.bearerToken);
+                    onConfirm: ()async {
+                      await PrefsHelper.remove(AppConstants.bearerToken);
+                      Get.offAllNamed(AppRoutes.onboardingScreen);
                       //final socket = SocketServices();
                      // socket.disconnect();
                     },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maignanka_app/features/views/auth/Interests/Interests_screen.dart';
+import 'package:maignanka_app/features/views/auth/bio/bio_screen.dart';
 import 'package:maignanka_app/features/views/auth/forget/forget_screen.dart';
 import 'package:maignanka_app/features/views/auth/goals/goals_screen.dart';
 import 'package:maignanka_app/features/views/auth/location/location_screen.dart';
@@ -49,6 +50,7 @@ abstract class AppRoutes {
   static const String resetPasswordScreen = '/resetPasswordScreen';
   static const String uploadPhotoScreen = '/uploadPhotoScreen';
   static const String goalsScreen = '/goalsScreen';
+  static const String bioScreen = '/bioScreen';
   static const String interestsScreen = '/interestsScreen';
   static const String enableLocationScreen = '/enableLocationScreen';
   static const String customBottomNavBar = '/customBottomNavBar';
@@ -106,5 +108,6 @@ abstract class AppRoutes {
     reportDetailsScreen : (context) => ReportDetailsScreen(),
     mediaScreen : (context) => MediaScreen(),
     profileDetailsScreen : (context) => ProfileDetailsScreen(),
+    bioScreen : (context) => BioScreen(),
   };
 }
