@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
+import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
@@ -107,7 +108,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
             onPageChanged: (index) => setState(() => _currentPage = index),
             itemBuilder: (context, index) => CustomNetworkImage(
               borderRadius: 13.r,
-              imageUrl: pictures?[index].imageURL ?? '',
+              imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}' ?? '',
             ),
           ),
           if ((pictures?.length ?? 0) > 1)
