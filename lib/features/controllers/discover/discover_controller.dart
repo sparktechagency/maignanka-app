@@ -47,24 +47,6 @@ class DiscoverController extends GetxController {
     update();
   }
 
-  void onLoveTapped(heartController, swiperController, BuildContext context) {
-    final size = heartController.getSize() * 2;
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    final random = Random();
-
-    for (int i = 0; i < 4; i++) {
-      final offset = Offset(
-        (width - size) / 1.2 + random.nextInt(100) - 40,
-        height - size - 170 - random.nextInt(100),
-      );
-      heartController.showIcon(offset: offset);
-    }
-
-    Future.delayed(const Duration(milliseconds: 800), () {
-      swiperController.swipe(CardSwiperDirection.right);
-    });
-  }
 
   Future<void> swipeProfileGet() async {
     swipeDataList.clear();

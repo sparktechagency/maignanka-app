@@ -29,9 +29,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final _drawerController = AdvancedDrawerController();
   final _heartController = HeartOverlayController();
   final DiscoverController _discoverController = Get.find<DiscoverController>();
-  //final MatchController _matchController = Get.find<MatchController>();
 
-  bool _animate = true;
 
 
   @override
@@ -140,7 +138,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                               color: Colors.white,
                             ),
                             color: AppColors.secondaryColor,
-                            onTap: () => controller.matchCreate(_discoverController.currentUserId),
+                            onTap: () => controller.matchCreate(_discoverController.currentUserId,_swiperController,_heartController,context),
                         ),
                       );
                     }
