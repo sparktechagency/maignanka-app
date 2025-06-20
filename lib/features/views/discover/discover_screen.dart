@@ -116,7 +116,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         }
                         final swipeData = controller.swipeDataList[index];
                         return SwipeCardWidget(swipeData: swipeData, onTap: () {
-                          Get.toNamed(AppRoutes.profileDetailsScreen,arguments: {'userId' : swipeData.userId!});
+                          Get.toNamed(AppRoutes.profileDetailsScreen,arguments: {'userId' : swipeData.userId ?? ''});
 
                         },);
                       },

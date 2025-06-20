@@ -23,7 +23,6 @@ class ProfileController extends GetxController {
 
     if (response.statusCode == 200) {
       profileDetailsModelData = ProfileDetailsModelData.fromJson(responseBody['data'] ?? {});
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");

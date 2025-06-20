@@ -23,7 +23,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
   final _pageController = PageController();
   int _currentPage = 0;
 
-  final String userId = Get.arguments['userId'] ?? '';
+   String userId = Get.arguments['userId'] ?? '';
 
   @override
   void initState() {
