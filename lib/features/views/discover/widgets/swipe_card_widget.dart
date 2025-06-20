@@ -12,17 +12,16 @@ import 'package:maignanka_app/widgets/custom_text.dart';
 class SwipeCardWidget extends StatelessWidget {
   const SwipeCardWidget({
     super.key,
-    required this.swipeData,
+    required this.swipeData, required this.onTap,
   });
 
   final SwipeDataModel swipeData;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      onTap: () {
-        Get.toNamed(AppRoutes.profileDetailsScreen);
-      },
+      onTap: onTap,
       color: AppColors.secondaryColor,
       width: double.infinity,
       height: double.infinity,

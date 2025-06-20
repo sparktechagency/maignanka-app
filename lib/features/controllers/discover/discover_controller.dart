@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/models/swipe_data_model.dart';

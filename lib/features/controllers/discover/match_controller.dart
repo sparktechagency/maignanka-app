@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
+import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
@@ -11,13 +11,24 @@ class MatchController extends GetxController {
 
   bool isLoading = false;
 
+  final DiscoverController _discoverController = Get.find<DiscoverController>();
 
-  void onLoveTapped(heartController, swiperController, BuildContext context) {
+
+
+
+
+  void onLoveTapped(
+      dynamic heartController,
+      CardSwiperController swiperController,
+      BuildContext context,
+      String userId,
+      ) {
     final size = heartController.getSize() * 2;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final random = Random();
 
+    // Show 4 flying hearts at random positions
     for (int i = 0; i < 4; i++) {
       final offset = Offset(
         (width - size) / 1.2 + random.nextInt(100) - 40,
@@ -26,8 +37,17 @@ class MatchController extends GetxController {
       heartController.showIcon(offset: offset);
     }
 
+    // Swipe and remove the user card after animation
     Future.delayed(const Duration(milliseconds: 800), () {
       swiperController.swipe(CardSwiperDirection.right);
+
+      final index = _discoverController.swipeDataList
+          .indexWhere((item) => item.userId == userId);
+
+      if (index != -1) {
+        _discoverController.swipeDataList.removeAt(index);
+        _discoverController.update();
+      }
     });
   }
 
@@ -47,7 +67,7 @@ class MatchController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      onLoveTapped(heartController,swiperController,context);
+      onLoveTapped(heartController,swiperController,context,userId);
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
 
     } else {

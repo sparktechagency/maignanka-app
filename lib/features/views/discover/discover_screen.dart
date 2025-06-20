@@ -96,17 +96,29 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     return CardSwiper(
                       controller: _swiperController,
                       cardsCount: controller.swipeDataList.length,
-                      //isLoop: false,
+                      numberOfCardsDisplayed: controller.swipeDataList.length >= 2 ? 2 : 1,
+
+                      onSwipe: (oldIndex, newIndex, direction) {
+                        if (newIndex! >= 0 && newIndex < controller.swipeDataList.length) {
+                          controller.currentUserId = controller.swipeDataList[newIndex].userId ?? '';
+                          controller.update();
+                        }
+                        return true;
+                      },
+
                       onEnd: () async {
                         await controller.loadMore();
                       },
-                      numberOfCardsDisplayed:
-                          controller.swipeDataList.length >= 2 ? 2 : 1,
 
                       cardBuilder: (context, index, _, __) {
+                        if (index < 0 || index >= controller.swipeDataList.length) {
+                          return Center(child: CustomText(text: 'No profiles found.'));
+                        }
                         final swipeData = controller.swipeDataList[index];
-                        controller.currentUserId  = controller.swipeDataList[index].userId ?? '';
-                        return SwipeCardWidget(swipeData: swipeData);
+                        return SwipeCardWidget(swipeData: swipeData, onTap: () {
+                          Get.toNamed(AppRoutes.profileDetailsScreen,arguments: {'userId' : swipeData.userId!});
+
+                        },);
                       },
                     );
                   },
@@ -138,7 +150,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                               color: Colors.white,
                             ),
                             color: AppColors.secondaryColor,
-                            onTap: () => controller.matchCreate(_discoverController.currentUserId,_swiperController,_heartController,context),
+                            onTap: () {
+                              if(_discoverController.swipeDataList.isEmpty) return;
+                              controller.matchCreate(_discoverController.currentUserId,_swiperController,_heartController,context);
+                            },
                         ),
                       );
                     }

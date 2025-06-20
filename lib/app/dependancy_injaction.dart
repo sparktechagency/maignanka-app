@@ -10,6 +10,7 @@ import 'package:maignanka_app/features/controllers/auth/reset_password_controlle
 import 'package:maignanka_app/features/controllers/auth/upload_photos_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 
 class DependencyInjection implements Bindings {
@@ -27,4 +28,5 @@ class DependencyInjection implements Bindings {
     Get.put(LocationController());
     Get.put(DiscoverController());
     Get.put(MatchController());
+    Get.put(ProfileController());
   }}
