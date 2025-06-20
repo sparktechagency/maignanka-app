@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:heart_overlay/heart_overlay.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
+import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/views/discover/widgets/filter_drawer.dart';
 import 'package:maignanka_app/features/views/discover/widgets/swipe_card_widget.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
@@ -27,6 +29,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final _drawerController = AdvancedDrawerController();
   final _heartController = HeartOverlayController();
   final DiscoverController _discoverController = Get.find<DiscoverController>();
+  //final MatchController _matchController = Get.find<MatchController>();
+
+  bool _animate = true;
+
 
   @override
   void initState() {
@@ -101,6 +107,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
                       cardBuilder: (context, index, _, __) {
                         final swipeData = controller.swipeDataList[index];
+                        controller.currentUserId  = controller.swipeDataList[index].userId ?? '';
                         return SwipeCardWidget(swipeData: swipeData);
                       },
                     );
@@ -116,17 +123,29 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     onTap:
                         () => _swiperController.swipe(CardSwiperDirection.left),
                   ),
-                  _actionButton(
-                    icon: Assets.icons.love.svg(
-                      height: 34.r,
-                      width: 34.r,
-                      color: Colors.white,
-                    ),
-                    color: AppColors.secondaryColor,
-                    onTap: () {
 
+                  GetBuilder<MatchController>(
+                    builder: (controller) {
+                      return AvatarGlow(
+                        duration: const Duration(milliseconds: 500),
+                        startDelay: const Duration(microseconds: 1000),
+                        glowColor: AppColors.secondaryColor,
+                        glowShape: BoxShape.circle,
+                        animate: controller.isLoading,
+                        curve: Curves.fastOutSlowIn,
+                        child:   _actionButton(
+                            icon: Assets.icons.love.svg(
+                              height: 34.r,
+                              width: 34.r,
+                              color: Colors.white,
+                            ),
+                            color: AppColors.secondaryColor,
+                            onTap: () => controller.matchCreate(_discoverController.currentUserId),
+                        ),
+                      );
                     }
                   ),
+
                   _actionButton(
                     icon: Assets.icons.gift.svg(height: 24.r, width: 24.r),
                     color: Colors.white,

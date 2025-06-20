@@ -13,6 +13,7 @@ class DiscoverController extends GetxController {
 
   bool isLoading = false;
   bool isLoadingMore = false;
+  String currentUserId = '';
 
   int limit = 20;
   int page = 1;

@@ -7,6 +7,10 @@ class MatchController extends GetxController {
 
   bool isLoading = false;
 
+
+
+
+
   Future<void> matchCreate(String userId) async {
 
       isLoading = true;
