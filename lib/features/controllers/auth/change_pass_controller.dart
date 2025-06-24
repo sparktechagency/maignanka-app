@@ -9,33 +9,30 @@ class ChangePassController extends GetxController{
   final  oldPassTEController = TextEditingController();
   final  passTEController = TextEditingController();
   final  rePassTEController = TextEditingController();
-  RxBool isLoading = false.obs;
+  bool isLoading = false;
   
   
-  Future<void> changePass(BuildContext context)async{
+  Future<void> changePass()async{
     
-    isLoading.value = true;
+    isLoading = true;
+    update();
 
     final requestBody = {
       "oldPassword":oldPassTEController.text,
       "newPassword":passTEController.text,
-      "confirmPassword":rePassTEController.text,
     };
-    
-    try {
-      final response = await ApiClient.postData(ApiUrls.changePassword, requestBody);
+
+    final response = await ApiClient.postData(ApiUrls.changePassword, requestBody);
 
       final responseBody = response.body;
-      if(response.statusCode == 200 && responseBody['success'] == true){
+      if(response.statusCode == 200){
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Success");
+        Get.back();
       }else{
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "failed.");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Error: $e");
-    }finally{
-      isLoading.value = false;
-    }
+      isLoading = false;
+      update();
   }
 
   @override

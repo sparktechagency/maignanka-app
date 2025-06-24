@@ -7,11 +7,11 @@ import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
 class SettingController extends GetxController {
-  RxBool isLoading = false.obs;
+  bool isLoading = false;
 
-  RxString aboutDescription = ''.obs;
-  RxString termsDescription = ''.obs;
-  RxString privacyDescription = ''.obs;
+  String aboutDescription = '';
+  String termsDescription = '';
+  String privacyDescription = '';
 
   @override
   void onInit() {
@@ -22,71 +22,64 @@ class SettingController extends GetxController {
   }
 
   Future<void> _getAbout() async {
-    isLoading.value = true;
+    isLoading = true;
+    update();
 
-    try {
       final response = await ApiClient.getData(ApiUrls.about,headers: {});
 
       final responseBody = response.body;
 
-      if (response.statusCode == 200 && responseBody['success'] == true) {
-        aboutDescription.value = responseBody['data']['description'] ?? '';
+      if (response.statusCode == 200) {
+        aboutDescription = responseBody['data']['content'] ?? '';
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Error: $e");
-    } finally {
-      isLoading.value = false;
-    }
+      isLoading = false;
+      update();
   }
 
 
   Future<void> _getTerms() async {
-    isLoading.value = true;
+    isLoading = true;
+    update();
 
-    try {
+
       final response = await ApiClient.getData(ApiUrls.terms,headers: {});
 
       final responseBody = response.body;
 
-      if (response.statusCode == 200 && responseBody['success'] == true) {
-        termsDescription.value = responseBody['data']['description'] ?? '';
+      if (response.statusCode == 200) {
+        termsDescription = responseBody['data']['content'] ?? '';
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Error: $e");
-    } finally {
-      isLoading.value = false;
-    }
+    isLoading = false;
+    update();
   }
 
 
   Future<void> _getPrivacy() async {
-    isLoading.value = true;
+    isLoading = true;
+    update();
 
-    try {
       final response = await ApiClient.getData(ApiUrls.terms,headers: {});
 
       final responseBody = response.body;
 
-      if (response.statusCode == 200 && responseBody['success'] == true) {
-        privacyDescription.value = responseBody['data']['description'] ?? '';
+      if (response.statusCode == 200 ) {
+        privacyDescription = responseBody['data']['content'] ?? '';
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Error: $e");
-    } finally {
-      isLoading.value = false;
-    }
+
+      isLoading = false;
+      update();
   }
 
 
-  Future<void> deleteAccount(BuildContext context,String userId) async {
-    try {
-      isLoading.value = true;
+  Future<void> deleteAccount(String userId) async {
+      isLoading = true;
+      update();
 
       final response = await ApiClient.deleteData(ApiUrls.accountDelete(userId));
       final responseBody = response.body;
@@ -98,11 +91,9 @@ class SettingController extends GetxController {
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
-    } catch (e) {
-      ToastMessageHelper.showToastMessage("Something went wrong: $e");
-    } finally {
-      isLoading.value = false;
-    }
+      isLoading = false;
+      update();
+
   }
 
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maignanka_app/features/views/auth/Interests/Interests_screen.dart';
 import 'package:maignanka_app/features/views/auth/bio/bio_screen.dart';
+import 'package:maignanka_app/features/views/auth/change%20password/change_password.dart';
 import 'package:maignanka_app/features/views/auth/forget/forget_screen.dart';
 import 'package:maignanka_app/features/views/auth/goals/goals_screen.dart';
 import 'package:maignanka_app/features/views/auth/location/location_screen.dart';
@@ -17,18 +18,17 @@ import 'package:maignanka_app/features/views/media/media_screen.dart';
 import 'package:maignanka_app/features/views/message/chat_screen.dart';
 import 'package:maignanka_app/features/views/onboarding_screen/onboarding_screen.dart';
 import 'package:maignanka_app/features/views/post_create/post_create_screen.dart';
-import 'package:maignanka_app/features/views/profile/profile_update.dart';
-import 'package:maignanka_app/features/views/profile/setting/about_screen.dart';
-import 'package:maignanka_app/features/views/profile/setting/change%20password/change_password.dart';
-import 'package:maignanka_app/features/views/profile/setting/privacy_policy_screen.dart';
-import 'package:maignanka_app/features/views/profile/setting/setting_screen.dart';
-import 'package:maignanka_app/features/views/profile/setting/terms_screen.dart';
-import 'package:maignanka_app/features/views/profile/support_screen.dart';
-import 'package:maignanka_app/features/views/profile/wallet/wallet_screen.dart';
+import 'package:maignanka_app/features/views/profile/profile_edit.dart';
+import 'package:maignanka_app/features/views/setting/support_screen.dart';
 import 'package:maignanka_app/features/views/profile_details/profile_details_screen.dart';
 import 'package:maignanka_app/features/views/report/report_details_screen.dart';
 import 'package:maignanka_app/features/views/report/report_screen.dart';
+import 'package:maignanka_app/features/views/setting/about_screen.dart';
+import 'package:maignanka_app/features/views/setting/privacy_policy_screen.dart';
+import 'package:maignanka_app/features/views/setting/setting_screen.dart';
+import 'package:maignanka_app/features/views/setting/terms_screen.dart';
 import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
+import 'package:maignanka_app/features/views/wallet/wallet_screen.dart';
 
 import '../features/views/notification/notification_screen.dart';
 
@@ -98,7 +98,7 @@ abstract class AppRoutes {
     termsScreen : (context) => TermsScreen(),
     changePassScreen : (context) => ChangePasswordScreen(),
     supportScreen : (context) => SupportScreen(),
-    editProfileScreen : (context) => EditProfileScreen(),
+   editProfileScreen : (context) => EditProfileScreen(),
     walletScreen : (context) => WalletScreen(),
     chatScreen : (context) => ChatScreen(),
     loveScreen : (context) => LoveScreen(),

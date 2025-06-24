@@ -45,7 +45,7 @@ class SwipeCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: '${swipeData.name} ${swipeData.age}',
+                  text: '${swipeData.name?.split(' ').first} ${swipeData.age}',
                   color: Colors.white,
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
@@ -55,7 +55,7 @@ class SwipeCardWidget extends StatelessWidget {
                     const Icon(Icons.location_on, color: Colors.white),
                     Flexible(
                       child: CustomText(
-                        text: swipeData.distance?.toStringAsFixed(2) ?? '',
+                        text: '${swipeData.distance?.toStringAsFixed(2) ?? ''} km',
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),

@@ -6,7 +6,7 @@ import 'package:maignanka_app/widgets/custom_image_avatar.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
 class CustomListTile extends StatelessWidget {
-  const CustomListTile({super.key, this.title, this.subTitle, this.image, this.imageRadius = 18, this.trailing,  this.selectedColor, this.onTap, this.activeColor, this.statusColor, this.borderColor, this.borderRadius,});
+  const CustomListTile({super.key, this.title, this.subTitle, this.image, this.imageRadius = 18, this.trailing,  this.selectedColor, this.onTap, this.activeColor, this.statusColor, this.borderColor, this.borderRadius, this.titleFontSize,});
 
   final String? title,subTitle,image;
   final double imageRadius;
@@ -17,6 +17,7 @@ class CustomListTile extends StatelessWidget {
   final Color? statusColor;
   final Color? borderColor;
   final double? borderRadius;
+  final double? titleFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class CustomListTile extends StatelessWidget {
         children: [
           CustomImageAvatar(
             radius: imageRadius.r,
-            image: '',
+            image: image,
           ),
           if(activeColor != null)
           Positioned(
@@ -49,6 +50,7 @@ class CustomListTile extends StatelessWidget {
       title: CustomText(
         textAlign: TextAlign.left,
         text: title ?? '',
+        fontSize: titleFontSize,
         fontWeight:  FontWeight.w500,
       ),
       subtitle: subTitle != null ? Row(

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
-import 'package:maignanka_app/features/views/profile/controller/profile_controller.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
@@ -25,17 +25,11 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   
   
-  final ProfileController _controller = Get.put(ProfileController());
 
 
   bool _showProfile = true;
 
 
-  @override
-  void initState() {
-   // _controller.getMyProfile();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -46,16 +40,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 12.h),
             // Profile Picture and Name Section
             Center(
-              child:  Column(
-                children: [
-                  CustomImageAvatar(
-                    showBorder: true,
-                    radius: 50.r,
-                    image:  '',
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomText(text: 'Hanif khan', fontSize: 18.h,color: AppColors.secondaryColor,),
-                ],
+              child:   GetBuilder<ProfileController>(
+                  builder: (controller) {
+                  return Column(
+                    children: [
+                      CustomImageAvatar(
+                        showBorder: true,
+                        radius: 50.r,
+                        image:  controller.myProfileModelData.profilePicture ?? '',
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomText(text: controller.myProfileModelData.name ?? 'N/A', fontSize: 18.h,color: AppColors.secondaryColor,),
+                      CustomText(text: controller.myProfileModelData.email ?? 'N/A',color: AppColors.secondaryColor,),
+
+                    ],
+                  );
+                }
               )
             ),
             SizedBox(height: 20.h),

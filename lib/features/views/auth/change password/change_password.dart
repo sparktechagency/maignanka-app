@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:maignanka_app/features/views/profile/setting/change%20password/controller/change_pass_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/change_pass_controller.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
@@ -17,7 +17,7 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final ChangePassController _controller = Get.put(ChangePassController());
+  final ChangePassController _controller = Get.find<ChangePassController>();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   @override
@@ -73,14 +73,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               },
             ),
             const Spacer(),
-            Obx(
-              () => _controller.isLoading.value
-                  ? const CustomLoader()
+            GetBuilder<ChangePassController>(builder: (controller){
+              return controller.isLoading
+                  ?  CustomLoader()
                   : CustomButton(
-                      label: "Change Password",
-                      onPressed: _onChangePassword,
-                    ),
-            ),
+                label: "Change Password",
+                onPressed: _onChangePassword,
+              );
+            }),
             SizedBox(
               height: 100.h,
             ),
@@ -92,6 +92,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   void _onChangePassword() {
     if (!_globalKey.currentState!.validate()) return;
-    _controller.changePass(context);
+    _controller.changePass();
   }
 }

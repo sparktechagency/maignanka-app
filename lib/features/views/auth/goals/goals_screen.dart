@@ -22,7 +22,7 @@ class GoalsScreen extends StatefulWidget {
 class _GoalsScreenState extends State<GoalsScreen> {
 
 
-  final ProfilesController _profilesController = Get.find<ProfilesController>();
+  final AuthProfilesController _profilesController = Get.find<AuthProfilesController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             final value = item['value'];
             final title = item['title'];
 
-            return GetBuilder<ProfilesController>(
+            return GetBuilder<AuthProfilesController>(
               builder: (controller) {
                 final isSelected = _profilesController.selectedValue == value;
 
@@ -82,7 +82,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           Spacer(),
 
           // Next Button
-          GetBuilder<ProfilesController>(
+          GetBuilder<AuthProfilesController>(
             builder: (controller) {
               return controller.isLoadingGoals ? CustomLoader() :  CustomButton(
                 onPressed:() {

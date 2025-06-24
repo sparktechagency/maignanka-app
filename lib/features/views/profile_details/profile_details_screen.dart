@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
@@ -21,16 +24,19 @@ class ProfileDetailsScreen extends StatefulWidget {
 
 class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
   final _controller = Get.find<ProfileController>();
+  final _matchController = Get.find<MatchController>();
   final _pageController = PageController();
   int _currentPage = 0;
 
-   String userId = Get.arguments['userId'] ?? '';
+  late String userId;
 
   @override
   void initState() {
-    _controller.profileDetailsGet(userId);
     super.initState();
+    userId = Get.arguments['userId'] ?? '';
+    _controller.profileDetailsGet(userId);
   }
+
 
   @override
   void dispose() {
@@ -60,11 +66,11 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                     _sectionTitle('Bio'),
                     _sectionText(data.bio),
                     _sectionTitle('Basic Info'),
-                    infoRow(icon: Assets.icons.person.svg(), label: 'Name', value: data.name ?? ''),
-                    infoRow(icon: Assets.icons.gender.svg(), label: 'Gender', value: data.gender ?? ''),
-                    infoRow(icon: Assets.icons.height.svg(), label: 'Height', value: data.height ?? ''),
-                    infoRow(icon: Assets.icons.weight.svg(), label: 'Weight', value: data. height ?? ''),
-                    infoRow(icon: Assets.icons.goal.svg(), label: 'Goal', value: data.goal ?? ''),
+                    infoRow(icon: Assets.icons.person.svg(), label: 'Name', value: data.name ?? 'N/A'),
+                    infoRow(icon: Assets.icons.gender.svg(), label: 'Gender', value: data.gender ?? 'N/A'),
+                    infoRow(icon: Assets.icons.height.svg(), label: 'Height', value: data.height ?? 'N/A'),
+                    infoRow(icon: Assets.icons.weight.svg(), label: 'Weight', value: data.weight ?? 'N/A'),
+                    infoRow(icon: Assets.icons.goal.svg(), label: 'Goal', value: data.goal ?? 'N/A'),
                     SizedBox(height: 16.h),
                     _sectionTitle('Interest'),
                     if (data.interest?.isNotEmpty == true)
@@ -89,12 +95,91 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                   ],
                 ),
               ),
+
+
+
+              buildMatchActionSection(data.status),
             ],
           ),
         );
       },
     );
   }
+
+  Widget buildMatchActionSection(String? status) {
+    final isLoading = _matchController.isLoading;
+    final padding = EdgeInsets.symmetric(horizontal: 16.w);
+
+    switch (status) {
+      case 'nothing':
+        return Padding(
+          padding: padding,
+          child: isLoading
+              ? const CustomLoader()
+              : CustomButton(
+            onPressed: () => _matchController.matchCreateDetails(userId),
+            label: 'Love',
+          ),
+        );
+
+      case 'liked_by_me':
+        return Padding(
+          padding: padding,
+          child: isLoading
+              ? const CustomLoader()
+              : CustomButton(
+            onPressed: () => _matchController.likeRewind(userId),
+
+            label: 'Cancel',
+          ),
+        );
+
+      case 'liked_by_opponent':
+        return Padding(
+          padding: padding,
+          child: isLoading
+              ? const CustomLoader()
+              : CustomButton(
+            height: 38.h,
+            onPressed: () => _matchController.matchCreateDetails(userId),
+            label: 'Accept',
+          ),
+        );
+
+      case 'both':
+        return Padding(
+          padding: padding,
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                  backgroundColor: AppColors.primaryColor.withOpacity(0.08),
+                  foregroundColor: AppColors.primaryColor,
+                  height: 38.h,
+                  onPressed: () => Get.toNamed(AppRoutes.giftsScreen),
+                  label: 'Gift',
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: isLoading
+                    ? const CustomLoader()
+                    : CustomButton(
+                  height: 38.h,
+                  onPressed: () {
+                  },
+                  label: 'Messages',
+                ),
+              ),
+            ],
+          ),
+        );
+
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
 
   Widget _buildImageSlider(List? pictures) {
     return SizedBox(
@@ -135,18 +220,21 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: '${_controller.profileDetailsModelData.name ?? ''} ${_controller.profileDetailsModelData.age ?? ''}',
+                  text: '${_controller.profileDetailsModelData.name?.split(' ').first ?? ''} ${_controller.profileDetailsModelData.age ?? ''}',
                   color: Colors.white,
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
+                  bottom: 6.h,
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.location_on, color: Colors.white, size: 18),
+                     Icon(Icons.location_on, color: Colors.white, size: 18.r),
                     Flexible(
                       child: CustomText(
-                        text: '${_controller.profileDetailsModelData.country ?? ''} Km',
+                        textAlign: TextAlign.start,
+                        text: '${_controller.profileDetailsModelData.address?.split(',').first ?? ''}',
                         color: Colors.white,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -4,12 +4,14 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
 class MatchController extends GetxController {
 
   bool isLoading = false;
+  bool isLoadingRewind = false;
 
   final DiscoverController _discoverController = Get.find<DiscoverController>();
 
@@ -75,6 +77,52 @@ class MatchController extends GetxController {
     }
 
     isLoading = false;
+    update();
+  }
+  Future<void> matchCreateDetails(String userId) async {
+
+      isLoading = true;
+      update();
+
+    final response = await ApiClient.postData(
+      ApiUrls.matchCreate(userId),{}
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      Get.find<ProfileController>().profileDetailsGet(userId);
+
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+    isLoading = false;
+    update();
+  }
+
+
+  Future<void> likeRewind(String userId) async {
+
+      isLoadingRewind = true;
+      update();
+
+    final response = await ApiClient.postData(
+      ApiUrls.likeRewind(userId),{}
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      Get.find<ProfileController>().profileDetailsGet(userId);
+
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+      isLoadingRewind = false;
     update();
   }
 }

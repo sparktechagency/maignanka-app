@@ -108,7 +108,7 @@ class ApiClient extends GetxService {
   }
 
   //==========================================> Post Multipart Data <======================================
-  static Future<Response> postMultipartData(String uri, Map<dynamic, dynamic> body, {required List<MultipartBody> multipartBody, Map<String, String>? headers}) async {
+  static Future<Response> postMultipartData(String uri, Map<dynamic, dynamic> body, {List<MultipartBody>? multipartBody, Map<String, String>? headers}) async {
     try {
       // Fetch Bearer Token
       bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
@@ -123,7 +123,7 @@ class ApiClient extends GetxService {
           '|📍📍📍|-----------------[[ POST MULTIPART ]] method details start -----------------|📍📍📍|');
       log.i('URL: $uri');
       log.i('Headers: ${headers ?? mainHeaders}');
-      log.i('API Body: $body with ${multipartBody.length} files');
+      log.i('API Body: $body with ${multipartBody?.length ?? 0} files');
 
       // Create Multipart Request
       var request = http.MultipartRequest('POST', Uri.parse(ApiUrls.baseUrl + uri));
@@ -137,19 +137,21 @@ class ApiClient extends GetxService {
       });
 
       // Add files
-      for (MultipartBody element in multipartBody) {
-        String? mimeType = mime(element.file.path);
-        if (mimeType != null) {
-          request.files.add(await http.MultipartFile.fromPath(
-            element.key,
-            element.file.path,
-            contentType: MediaType.parse(mimeType),
-          ));
-        } else {
-          log.e('MIME type not found for file: ${element.file.path}');
+      if (multipartBody != null && multipartBody.isNotEmpty) {
+        for (var element in multipartBody) {
+          log.i("File path: ${element.file.path}");
+          if (element.file.existsSync()) {
+            String? mimeType = mime(element.file.path);
+            request.files.add(await http.MultipartFile.fromPath(
+              element.key,
+              element.file.path,
+              contentType: MediaType.parse(mimeType!),
+            ));
+          } else {
+            log.e("File does not exist: ${element.file.path}");
+          }
         }
       }
-
       // Send the request
       http.StreamedResponse response = await request.send();
 

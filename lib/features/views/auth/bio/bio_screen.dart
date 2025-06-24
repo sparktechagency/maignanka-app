@@ -20,7 +20,7 @@ class BioScreen extends StatefulWidget {
 class _BioScreenState extends State<BioScreen> {
 
 
-  final ProfilesController _profilesController = Get.find<ProfilesController>();
+  final AuthProfilesController _profilesController = Get.find<AuthProfilesController>();
 
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
@@ -46,7 +46,7 @@ class _BioScreenState extends State<BioScreen> {
           Spacer(),
 
 
-          GetBuilder<ProfilesController>(
+          GetBuilder<AuthProfilesController>(
             builder: (controller) {
               return controller.isLoadingBio ? CustomLoader() : CustomButton(
                 onPressed: _nextAction,

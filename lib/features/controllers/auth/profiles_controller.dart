@@ -7,7 +7,7 @@ import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
-class ProfilesController extends GetxController {
+class AuthProfilesController extends GetxController {
 
   bool isLoadingGoals = false;
 

@@ -17,17 +17,20 @@ class ApiUrls {
   static   String  swipeProfile(limit,page,goal,age,minimumDistance) => '/profiles/v2?limit=$limit&page=$page&goal=$goal&age=$age&minimumDistance=$minimumDistance';
   static   String  matchCreate(String userId) => '/match?userID=$userId';
   static   String  profileDetails(String userId) => '/profiles/$userId';
+  static   String  likeRewind(String userId) => '/match/likes/rewind?userId=$userId';
+  static   String  notification(int page,int limit) => '/notification?page=$page&limit=$limit';
+  static  const String  myProfile = '/users/info/me';
+  static  const String  terms = '/settings/terms-and-conditions';
+  static  const String  about = '/settings/about-us';
+  static  const String  privacy = '/settings/privacy-policy';
+  static  const String  changePassword = '/auth/reset-password';
+  static  const String  updateProfile = '/users/update-profile';
 
 
 
-  static  const String  myProfile = '/auth/my-profile';
-  static  const String  updateProfile = '/auth/profile-update';
+
   static   String  accountDelete(String id) => '/auth/account-delete?id=$id';
   static  const String  getBanner = '/banner';
-  static  const String  terms = '/terms';
-  static  const String  about = '/about';
-  static  const String  privacy = '/privacy';
-  static  const String  changePassword = '/user/change-password';
   static  const String  paymentConfirm = '/payment/confirm';
   static  const String  sessionCreate = '/session/create';
   static  const String  communityCreate = '/community/create';
@@ -64,8 +67,6 @@ class ApiUrls {
   static   String  blockUser(String receiverId) => '/chat/block-user?receiverId=$receiverId';
   static   String  unblockUser(String receiverId) => '/chat/unblock-user?receiverId=$receiverId';
 
-
-  static  const String  notification = '/notification';
   static  const String  notificationBadge = '/notification/badge-count';
 
 }

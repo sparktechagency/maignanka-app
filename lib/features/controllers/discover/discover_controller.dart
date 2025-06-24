@@ -71,8 +71,7 @@ class DiscoverController extends GetxController {
     if (response.statusCode == 200) {
       final List data = responseBody['data'] ?? [];
 
-      final swipeData =
-          data.map((json) => SwipeDataModel.fromJson(json)).toList();
+      final swipeData = data.map((json) => SwipeDataModel.fromJson(json)).toList();
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 

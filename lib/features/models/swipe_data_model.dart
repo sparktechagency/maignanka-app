@@ -32,7 +32,7 @@ class SwipeDataModel {
         pictures!.add(new Pictures.fromJson(v));
       });
     }
-    distance = json['distance'];
+    distance = (json['distance'] as num?)?.toDouble();
   }
 
 }

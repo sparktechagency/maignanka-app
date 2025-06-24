@@ -56,7 +56,7 @@ class CustomImageAvatar extends StatelessWidget {
               : CustomNetworkImage(
             boxShape: BoxShape.circle,
             imageUrl: (image != null && image!.isNotEmpty)
-                ? "${ApiUrls.imageBaseUrl}/${image!}"
+                ? "${ApiUrls.imageBaseUrl}${image!}"
                 : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/discover/discover_screen.dart';
 import 'package:maignanka_app/features/views/home/home_screen.dart';
 import 'package:maignanka_app/features/views/message/message_screen.dart';
@@ -11,11 +12,23 @@ import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import '../bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 
-class CustomBottomNavBar extends StatelessWidget {
+class CustomBottomNavBar extends StatefulWidget {
   CustomBottomNavBar({super.key});
 
-  final CustomBottomNavBarController _navBarController = Get.find<CustomBottomNavBarController>();
+  @override
+  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
+}
 
+class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
+  final CustomBottomNavBarController _navBarController = Get.find<CustomBottomNavBarController>();
+  final ProfileController _profileController = Get.find<ProfileController>();
+
+
+  @override
+  void initState() {
+    _profileController.myProfileGet();
+    super.initState();
+  }
 
   final List<Widget> _screens =  [
     HomeScreen(),
