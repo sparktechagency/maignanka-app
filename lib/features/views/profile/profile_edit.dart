@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
+import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
@@ -30,13 +31,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-
     _controller.firstnameController.text = _controller.myProfileModelData.name?.split(' ').first ?? '';
     _controller.lastnameController.text = _controller.myProfileModelData.name?.split(' ').last ?? '';
     _controller.emailController.text = _controller.myProfileModelData.email ?? '';
     _controller.numberController.text = _controller.myProfileModelData.phone ?? '';
     _controller.genderController.text = _controller.myProfileModelData.profileID?.gender ?? '';
-    _controller.birthdayController.text = _controller.myProfileModelData.profileID?.dOB ?? '';
+    _controller.birthdayController.text = TimeFormatHelper.formatDate(DateTime.parse(_controller.myProfileModelData.profileID?.dOB ?? '')) ;
     _controller.heightController.text = _controller.myProfileModelData.profileID?.height ?? '';
     _controller.weightController.text = _controller.myProfileModelData.profileID?.weight ?? '';
   }
@@ -61,27 +61,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       CustomImageAvatar(
                         radius: 50.r,
                         image: controller.myProfileModelData.profilePicture ?? '',
-                        fileImage: controller.profileImage,
+                       // fileImage: controller.profileImage,
                       ),
                       Positioned(
                         bottom: 6.h,
                         right: 8.w,
                         child: CustomContainer(
                               onTap: () {
-                                if(controller.profileImage != null){
-
-                                }else{
                                   controller.selectedImage(context);
-
-                                }
-                              },
+                                },
                               height: 32.h,
                               width: 32.w,
                               color: AppColors.primaryColor,
                               shape: BoxShape.circle,
                               child: Center(
-                                  child: Icon(controller.profileImage != null ? Icons.upload :
-                                Icons.camera_alt,
+                                  child: Icon(Icons.camera_alt,
                                 color: Colors.white,
                                 size: 18.r,
                               )),
@@ -154,13 +148,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             SizedBox(height: 44.h),
             GetBuilder<ProfileController>(
               builder: (controller) {
-                return controller.isLoadingProfileImage ? CustomLoader() : CustomButton(onPressed: ()async{
-                  final bool successImage = await controller.editProfileImage();
-                  final bool successName = await controller.editProfileName();
-                  if(successName && successImage){
-                    controller.myProfileGet();
-                    Get.back();
-                  }
+                return controller.isLoadingProfileName ? CustomLoader() : CustomButton(
+                  onPressed: (){
+                  controller.editProfileName();
                 },label: 'Update',);
               }
             ),

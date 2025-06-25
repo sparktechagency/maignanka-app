@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
-import 'package:maignanka_app/widgets/custom_dialog.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 
@@ -54,7 +53,7 @@ class _SettingScreenState extends State<SettingScreen> {
             },
           ),
 
-          const Spacer(),
+          /*const Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30.h),
             child: ProfileListTile(
@@ -77,7 +76,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 noIcon: true,
                 color: Color(0xffF5F5F5),
             ),
-          ),
+          ),*/
         ],
       ),
     );

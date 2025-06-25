@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
@@ -14,6 +13,7 @@ import 'package:maignanka_app/services/api_urls.dart';
 class ProfileController extends GetxController {
   bool isLoading = false;
   bool isLoadingProfileImage = false;
+  bool isLoadingProfileName = false;
   bool isLoadingMyProfile = false;
   String userId = '';
   File? profileImage;
@@ -45,6 +45,7 @@ class ProfileController extends GetxController {
       onImagePicked: (file){
         profileImage = File(file.path);
         update();
+        editProfileImage();
       },
     );
 
@@ -102,11 +103,11 @@ class ProfileController extends GetxController {
 
 
 
-  Future<bool> editProfileImage() async {
+  Future<void> editProfileImage() async {
     isLoadingProfileImage = true;
     update();
 
-    bool success = false;
+
 
     List<MultipartBody>? multipartBody;
     if (profileImage != null) {
@@ -121,35 +122,36 @@ class ProfileController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      success = true;
+      myProfileGet();
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? '');
     } else {
       ToastMessageHelper.showToastMessage("Failed to fetch profile data");
     }
     isLoadingProfileImage = false;
     update();
-    return success;
+
   }
 
 
 
-  Future<bool> editProfileName() async {
-    isLoadingProfileImage = true;
+  Future<void> editProfileName() async {
+    isLoadingProfileName = true;
     update();
 
-    bool success = false;
 
-    final response = await ApiClient.postData(ApiUrls.profiles, {});
+    final response = await ApiClient.patch(ApiUrls.profiles, {
+      'name': '${firstnameController.text.trim()} ${lastnameController.text.trim()}',
+    });
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      success = true;
+      myProfileGet();
+      Get.back();
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? '');
     } else {
       ToastMessageHelper.showToastMessage("Failed to fetch profile data");
     }
-    isLoadingProfileImage = false;
+    isLoadingProfileName = false;
     update();
-    return success;
   }
 }

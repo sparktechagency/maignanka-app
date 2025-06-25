@@ -1,7 +1,7 @@
 /*
 import 'package:audioplayers/audioplayers.dart';
 import 'package:courtconnect/pregentaition/screens/home/controller/home_controller.dart';
-import 'package:courtconnect/pregentaition/screens/message/controller/chat_controller.dart';
+import 'package:courtconnect/pregentaition/screens/message/controller/conversations_controller.dart';
 import 'package:courtconnect/pregentaition/screens/message/models/chat_data.dart';
 import 'package:courtconnect/pregentaition/screens/notification/controller/notification_controller.dart';
 import 'package:courtconnect/services/socket_services.dart';

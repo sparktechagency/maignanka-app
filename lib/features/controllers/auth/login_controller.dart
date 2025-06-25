@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
+import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
@@ -64,6 +65,7 @@ class LoginController extends GetxController {
       }
       else{
         Get.offAllNamed(AppRoutes.customBottomNavBar);
+        Get.find<CustomBottomNavBarController>().onChange(0);
       }
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Login failed.");

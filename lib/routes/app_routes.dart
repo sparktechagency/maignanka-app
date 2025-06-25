@@ -12,10 +12,10 @@ import 'package:maignanka_app/features/views/auth/sign_up/sign_up_screen.dart';
 import 'package:maignanka_app/features/views/auth/upload_photos/upload_photo_screen.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav.dart';
 import 'package:maignanka_app/features/views/comment/comment_screen.dart';
+import 'package:maignanka_app/features/views/conversation/chat_screen.dart';
 import 'package:maignanka_app/features/views/gifts/gifts_screen.dart';
 import 'package:maignanka_app/features/views/love/love_screen.dart';
 import 'package:maignanka_app/features/views/media/media_screen.dart';
-import 'package:maignanka_app/features/views/message/chat_screen.dart';
 import 'package:maignanka_app/features/views/onboarding_screen/onboarding_screen.dart';
 import 'package:maignanka_app/features/views/post_create/post_create_screen.dart';
 import 'package:maignanka_app/features/views/profile/profile_edit.dart';
@@ -29,7 +29,6 @@ import 'package:maignanka_app/features/views/setting/setting_screen.dart';
 import 'package:maignanka_app/features/views/setting/terms_screen.dart';
 import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
 import 'package:maignanka_app/features/views/wallet/wallet_screen.dart';
-
 import '../features/views/notification/notification_screen.dart';
 
 abstract class AppRoutes {

@@ -47,7 +47,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               final date = DateTime.parse(element.createdAt ?? '');
               if (date.day == now.day) return 'Today';
               if (date.day == now.subtract(Duration(days: 1)).day) return 'Yesterday';
-              return 'Earlier';
+              return 'Now';
             },
             groupSeparatorBuilder: (String group) => CustomText(
               textAlign: TextAlign.start,

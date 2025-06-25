@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/conversations/conversations_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
+import 'package:maignanka_app/features/views/conversation/conversation_screen.dart';
 import 'package:maignanka_app/features/views/discover/discover_screen.dart';
 import 'package:maignanka_app/features/views/home/home_screen.dart';
-import 'package:maignanka_app/features/views/message/message_screen.dart';
 import 'package:maignanka_app/features/views/profile/profile_screen.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
@@ -22,18 +23,21 @@ class CustomBottomNavBar extends StatefulWidget {
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   final CustomBottomNavBarController _navBarController = Get.find<CustomBottomNavBarController>();
   final ProfileController _profileController = Get.find<ProfileController>();
+  final ConversationsController _conversationsController = Get.find<ConversationsController>();
 
 
   @override
   void initState() {
     _profileController.myProfileGet();
+    _conversationsController.conversationsGet();
+
     super.initState();
   }
 
   final List<Widget> _screens =  [
     HomeScreen(),
     DiscoverScreen(),
-    MessageScreen(),
+    ConversationScreen(),
     ProfileScreen(),
   ];
 

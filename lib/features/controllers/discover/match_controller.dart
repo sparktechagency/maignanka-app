@@ -19,12 +19,7 @@ class MatchController extends GetxController {
 
 
 
-  void onLoveTapped(
-      dynamic heartController,
-      CardSwiperController swiperController,
-      BuildContext context,
-      String userId,
-      ) {
+  void onLoveTapped(dynamic heartController, CardSwiperController swiperController, BuildContext context, String userId,) {
     final size = heartController.getSize() * 2;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

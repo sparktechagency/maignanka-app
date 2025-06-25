@@ -8,6 +8,8 @@ import 'package:maignanka_app/features/controllers/auth/profiles_controller.dart
 import 'package:maignanka_app/features/controllers/auth/register_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/reset_password_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/upload_photos_controller.dart';
+import 'package:maignanka_app/features/controllers/conversations/chat_controller.dart';
+import 'package:maignanka_app/features/controllers/conversations/conversations_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/notification/notification_controller.dart';
@@ -35,4 +37,6 @@ class DependencyInjection implements Bindings {
     Get.put(NotificationController());
     Get.put(SettingController());
     Get.put(ChangePassController());
+    Get.put(ConversationsController());
+    Get.put(ChatController());
   }}

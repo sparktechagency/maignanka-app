@@ -19,6 +19,8 @@ class ApiUrls {
   static   String  profileDetails(String userId) => '/profiles/$userId';
   static   String  likeRewind(String userId) => '/match/likes/rewind?userId=$userId';
   static   String  notification(int page,int limit) => '/notification?page=$page&limit=$limit';
+  static   String  conversation(int page,int limit) => '/conversation?limit=$limit&page=$page';
+  static   String  message(String conversationId, int page,int limit) => '/message/$conversationId?page=$page&limit=$limit';
   static  const String  myProfile = '/users/info/me';
   static  const String  terms = '/settings/terms-and-conditions';
   static  const String  about = '/settings/about-us';
