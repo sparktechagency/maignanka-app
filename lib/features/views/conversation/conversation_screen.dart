@@ -91,7 +91,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           },
                           image: message.profilePicture,
                           title: message.participantName,
-                          activeColor: Colors.green,
+                          activeColor: message.isActive == true ? Colors.green : Colors.grey,
                           subTitle: message.lastMessage,
                           trailing: CustomText(
                                 text: TimeFormatHelper.timeFormat(DateTime.parse(message.lastActive ?? '')) ?? '',

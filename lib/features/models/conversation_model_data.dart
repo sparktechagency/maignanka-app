@@ -9,6 +9,7 @@ class ConversationModelData {
   String? lastMessage;
   String? lastMessageCreatedAt;
   String? messageType;
+  bool? isActive;
   String? lastActive;
 
   ConversationModelData(
@@ -21,6 +22,7 @@ class ConversationModelData {
         this.lastMessage,
         this.lastMessageCreatedAt,
         this.messageType,
+        this.isActive = false,
         this.lastActive});
 
   ConversationModelData.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class ConversationModelData {
     lastMessage = json['lastMessage'];
     lastMessageCreatedAt = json['lastMessageCreatedAt'];
     messageType = json['messageType'];
+    isActive = json['isActive'];
     lastActive = json['lastActive'];
   }
 }

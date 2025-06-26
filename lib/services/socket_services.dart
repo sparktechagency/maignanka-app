@@ -21,11 +21,11 @@ class SocketServices {
     print("-------------------------------------------------------------\n Socket call \n token = $token");
 
     socket = IO.io(
-        'https://courtconnect-asifur-rahman.sarv.live/',
+        'https://vibely-ifti.sarv.live',
         // '${ApiConstants.imageBaseUrl}?token=$token',
         IO.OptionBuilder()
             .setTransports(['websocket'])
-            .setExtraHeaders({"token": "$token"})
+            .setExtraHeaders({"authorization": "Bearer $token"})
             .enableReconnection()
             .build()
     );

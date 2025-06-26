@@ -1,19 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
-import 'package:maignanka_app/features/controllers/conversations/socket_chat_controller.dart';
 import 'package:maignanka_app/features/models/chat_model_data.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
-class ChatController extends GetxController {
+class MediaController extends GetxController {
   bool isLoading = false;
-  List<ChatModelData> chatsData = [];
-
-  String receiverId = '';
-
-  final messageController = TextEditingController();
-
+  List<File> mediaData = [];
 
 
 
@@ -22,9 +15,9 @@ class ChatController extends GetxController {
   int totalPage = -1;
 
 
-  Future<void> ChatGet(String conversationId, {bool isInitialLoad = false}) async {
+  Future<void> conversationMedia(String conversationId, {bool isInitialLoad = false}) async {
     if (isInitialLoad) {
-      chatsData.clear();
+      mediaData.clear();
       page = 1;
       totalPage = -1;
     }
@@ -33,19 +26,19 @@ class ChatController extends GetxController {
     update();
 
     final response = await ApiClient.getData(
-      ApiUrls.message(conversationId, page, limit),
+      ApiUrls.conversationMedia(conversationId, page, limit),
     );
 
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      final List data = responseBody['data']?['messages'] ?? [];
+      final List data = responseBody['data'] ?? [];
 
-      final chatData = data.map((json) => ChatModelData.fromJson(json)).toList();
-      receiverId = responseBody['data']?['receiver']?['_id'] ?? '';
+      final media = data.map((json) => File.fromJson(json)).toList();
+
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
-      chatsData.addAll(chatData);
+      mediaData.addAll(media);
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
@@ -55,11 +48,6 @@ class ChatController extends GetxController {
   }
 
 
-  void handleIncomingMessage(Map<String, dynamic> data) {
-    final newMessage = ChatModelData.fromJson(data);
-    chatsData.insert(0, newMessage);
-    update();
-  }
 
 
   Future<void> loadMore(String conversationId) async {
@@ -71,15 +59,8 @@ class ChatController extends GetxController {
       update();
       print('============> Page++ $page \n=============> totalPage $totalPage');
 
-      await ChatGet(conversationId);
+      await conversationMedia(conversationId);
     }
-  }
-
-
-  @override
-  void dispose() {
-    messageController.dispose();
-    super.dispose();
   }
 }
 

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
@@ -16,6 +18,7 @@ class LoveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String imageUrl = Get.arguments['imageUrl'];
     return CustomScaffold(
       paddingSide: 24.w,
       body: Column(
@@ -30,7 +33,7 @@ class LoveScreen extends StatelessWidget {
                 Positioned(
                   right: 40.w,
                   child: _buildRotatedImage(
-                    imageUrl: 'https://randomuser.me/api/portraits/men/6.jpg',
+                    imageUrl: '${ApiUrls.imageBaseUrl}${Get.find<ProfileController>().userImage}',
                     angle: 0.2,
                   ),
                 ),
@@ -39,7 +42,7 @@ class LoveScreen extends StatelessWidget {
                   top: 100.h,
                   left: 40.w,
                   child: _buildRotatedImage(
-                    imageUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
+                    imageUrl: imageUrl,
                     angle: -0.2,
                   ),
                 ),
@@ -65,13 +68,12 @@ class LoveScreen extends StatelessWidget {
             bottom: 32.h,
           ),
           CustomButton(onPressed: () {
-            Get.toNamed(AppRoutes.chatScreen);
+            Get.offAll(AppRoutes.customBottomNavBar);
+            Get.find<CustomBottomNavBarController>().onChange(3);
           }, label: 'Say hello'),
           SizedBox(height: 12.h),
           CustomButton(
             onPressed: () {
-              //Get.offAll(AppRoutes.customBottomNavBar);
-             // Get.find<CustomBottomNavBarController>().onChange(2);
               Get.back();
             },
             label: 'Keep swiping',

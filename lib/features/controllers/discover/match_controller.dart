@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
@@ -74,7 +75,7 @@ class MatchController extends GetxController {
     isLoading = false;
     update();
   }
-  Future<void> matchCreateDetails(String userId) async {
+  Future<void> matchCreateDetails(String userId,{bool isAccept = false,String imageUrl = ''}) async {
 
       isLoading = true;
       update();
@@ -88,6 +89,9 @@ class MatchController extends GetxController {
     if (response.statusCode == 200) {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       Get.find<ProfileController>().profileDetailsGet(userId);
+      if(isAccept && imageUrl != ''){
+        Get.toNamed(AppRoutes.loveScreen,arguments: {'imageUrl' : imageUrl});
+      }
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");

@@ -11,7 +11,7 @@ class MenuShowHelper {
   });
 
   static final List<String> genderOptions = ["Male", "Female"];
-  static final List<String> chatTopPopupOptions = ["View Profile", "Media",'Block Profile','Report'];
+  static final List<String> chatTopPopupOptions = ["Media",'Block Profile','Report'];
 
   /// Shows a popup menu at the tap position from TapDownDetails.
   /// Returns the selected value or null if none selected.

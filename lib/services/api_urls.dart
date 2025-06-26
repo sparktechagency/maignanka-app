@@ -21,6 +21,8 @@ class ApiUrls {
   static   String  notification(int page,int limit) => '/notification?page=$page&limit=$limit';
   static   String  conversation(int page,int limit) => '/conversation?limit=$limit&page=$page';
   static   String  message(String conversationId, int page,int limit) => '/message/$conversationId?page=$page&limit=$limit';
+  static   String  block(String conversationId) => '/conversation/block/$conversationId';
+  static   String  conversationMedia(String conversationId,int page,int limit) => '/conversation/media/$conversationId?page=$page&limit=$limit';
   static  const String  myProfile = '/users/info/me';
   static  const String  terms = '/settings/terms-and-conditions';
   static  const String  about = '/settings/about-us';

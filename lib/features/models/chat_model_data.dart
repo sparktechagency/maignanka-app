@@ -34,14 +34,16 @@ class ChatModelData {
     receiverID = json['receiverID'];
     conversationID = json['conversationID'];
     content = json['content'];
+
     if (json['file'] != null) {
       file = <File>[];
       json['file'].forEach((v) {
-        file!.add(new File.fromJson(v));
+        file!.add(File.fromJson(v));
       });
     }
+
     messageType = json['messageType'];
-    seenBy = json['seenBy'].cast<String>();
+    seenBy = (json['seenBy'] as List?)?.cast<String>() ?? [];
     createdAt = json['createdAt'];
     profilePicture = json['profilePicture'];
     isBlocked = json['isBlocked'];

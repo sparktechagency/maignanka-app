@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
+import 'package:maignanka_app/features/models/profile_details_model_data.dart' show ProfileDetailsModelData;
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
@@ -98,7 +99,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
 
 
 
-              buildMatchActionSection(data.status),
+              buildMatchActionSection(data),
             ],
           ),
         );
@@ -106,11 +107,11 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
     );
   }
 
-  Widget buildMatchActionSection(String? status) {
+  Widget buildMatchActionSection(ProfileDetailsModelData data) {
     final isLoading = _matchController.isLoading;
     final padding = EdgeInsets.symmetric(horizontal: 16.w);
 
-    switch (status) {
+    switch (data.status) {
       case 'nothing':
         return Padding(
           padding: padding,
@@ -141,7 +142,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
               ? const CustomLoader()
               : CustomButton(
             height: 38.h,
-            onPressed: () => _matchController.matchCreateDetails(userId),
+            onPressed: () => _matchController.matchCreateDetails(userId,isAccept: true,imageUrl: '${ApiUrls.imageBaseUrl}${data.pictures?.first.imageURL}'),
             label: 'Accept',
           ),
         );
