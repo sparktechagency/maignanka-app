@@ -14,6 +14,7 @@ import 'package:maignanka_app/features/controllers/profile_details/profile_contr
 import 'package:maignanka_app/features/views/conversation/widgets/chat_card.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/socket_services.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
@@ -301,6 +302,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+    _socketChatController.removeListeners(conversationId);
     super.dispose();
   }
 
