@@ -53,14 +53,9 @@ class SocketServices {
       });
     });
 
-    // socket.onReconnecting((_) {
-    //   init();
-    //   print('========> Socket reconnecting...');
-    // });
 
     socket.onReconnect((_) {
       print('========> Socket reconnected! $token');
-      init();
     });
 
     socket.onError((error) {
@@ -83,8 +78,16 @@ class SocketServices {
     }
   }
 
-  void disconnect() {
-    socket.disconnect();
-    print('========> Socket manually disconnected');
+  void disconnect({bool isManual = false}) {
+    if (socket.connected) {
+      socket.disconnect();
+      print('🔌 Socket disconnected');
+    }
+
+    if (isManual) {
+      socket.clearListeners();
+      socket.destroy();
+      print('🧹 Socket manually destroyed and cleaned');
+    }
   }
 }

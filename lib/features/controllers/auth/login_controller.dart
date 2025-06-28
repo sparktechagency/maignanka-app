@@ -7,6 +7,7 @@ import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bo
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
+import 'package:maignanka_app/services/socket_services.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -66,6 +67,8 @@ class LoginController extends GetxController {
       else{
         Get.offAllNamed(AppRoutes.customBottomNavBar);
         Get.find<CustomBottomNavBarController>().onChange(0);
+        SocketServices socketServices = SocketServices();
+        await socketServices.init();
       }
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Login failed.");

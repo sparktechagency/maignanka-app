@@ -7,15 +7,16 @@ import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 
-void main() {
-  runApp(const MaignankaApp());
+void main() async{
 
 
+  WidgetsFlutterBinding.ensureInitialized();
 
   DeviceUtils.lockDevicePortrait();
 
-  SocketServices socketServices = SocketServices();
-  socketServices.init();
+  await SocketServices().init();
+
+  runApp(const MaignankaApp());
 }
 
 

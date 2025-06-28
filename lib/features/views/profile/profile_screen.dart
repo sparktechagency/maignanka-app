@@ -8,6 +8,7 @@ import 'package:maignanka_app/features/controllers/profile_details/profile_contr
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/socket_services.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_dialog.dart';
 import 'package:maignanka_app/widgets/custom_image_avatar.dart';
@@ -122,9 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     onConfirm: ()async {
                       await PrefsHelper.remove(AppConstants.bearerToken);
+                      final socket = SocketServices();
+                      socket.disconnect(isManual: true);
                       Get.offAllNamed(AppRoutes.onboardingScreen);
-                      //final socket = SocketServices();
-                     // socket.disconnect();
                     },
                   ),
                 );
