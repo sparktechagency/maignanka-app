@@ -10,7 +10,7 @@ import 'package:maignanka_app/widgets/custom_text.dart';
 class ChatBubbleMessage extends StatelessWidget {
   final String time;
   final String? text;
-  final List<File>? images;
+  final List<FileData>? images;
   final bool isSeen;
   final bool isMe;
   final String status;
@@ -116,10 +116,11 @@ class ChatBubbleMessage extends StatelessWidget {
 
     if (isSeen) {
       return Icon(Icons.done_all, size: 10.r, color: Colors.green); // Seen
-    } else if (status == 'online') {
+    }
+    else if (status == 'online') {
       return Icon(Icons.done_all, size: 10.r, color: Colors.grey); // Delivered
     } else {
-      return Icon(Icons.check, size: 10.r, color: Colors.grey); // Sent
+      return Icon(Icons.done_all, size: 10.r, color: Colors.grey); // Sent
     }
   }
 }

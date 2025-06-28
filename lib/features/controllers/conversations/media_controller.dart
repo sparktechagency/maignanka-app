@@ -6,7 +6,7 @@ import 'package:maignanka_app/services/api_urls.dart';
 
 class MediaController extends GetxController {
   bool isLoading = false;
-  List<File> mediaData = [];
+  List<FileData> mediaData = [];
 
 
 
@@ -34,7 +34,7 @@ class MediaController extends GetxController {
     if (response.statusCode == 200) {
       final List data = responseBody['data'] ?? [];
 
-      final media = data.map((json) => File.fromJson(json)).toList();
+      final media = data.map((json) => FileData.fromJson(json)).toList();
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 

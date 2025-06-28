@@ -14,7 +14,6 @@ import 'package:maignanka_app/features/controllers/profile_details/profile_contr
 import 'package:maignanka_app/features/views/conversation/widgets/chat_card.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
-import 'package:maignanka_app/services/socket_services.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
@@ -33,10 +32,9 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
-
-  final ChatController _chatController = Get.find<ChatController>();
-  final BlockController _blockController = Get.find<BlockController>();
-  final SocketChatController _socketChatController = Get.find<SocketChatController>();
+  final  _chatController = Get.find<ChatController>();
+  final  _blockController = Get.find<BlockController>();
+  final  _socketChatController = Get.find<SocketChatController>();
 
   late String conversationId;
 
@@ -44,7 +42,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     conversationId = Get.arguments['conversationId'];
     _socketChatController.listenMessage(conversationId);
-    _chatController.ChatGet(conversationId, isInitialLoad: true);
+   _socketChatController.seen(conversationId);
+   _socketChatController.listenSeen(conversationId);
+    _chatController.chatGet(conversationId, isInitialLoad: true);
     _addScrollListener();
     super.initState();
   }
@@ -65,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
               return GestureDetector(
                 onTapDown: (details) {
-                  _showHeightMenu(details, MenuShowHelper.chatTopPopupOptions);
+                  controller.showTopMenu(context,details, MenuShowHelper.chatTopPopupOptions,conversationId);
                 },
                 child: SizedBox(
                   width: 40.w,
@@ -112,7 +112,8 @@ class _ChatScreenState extends State<ChatScreen> {
               builder: (controller) {
                 if (controller.isLoading) {
                   return CustomLoader();
-                } else if (controller.chatsData.isEmpty) {
+                }
+                else if (controller.chatsData.isEmpty) {
                   return const Center(child: Text("No chat available"));
                 }
                 return GroupedListView(
@@ -252,6 +253,9 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               controller: _messageController,
               hintText: 'Type message...',
+              suffixIcon: IconButton(onPressed: (){
+                _chatController.addPhoto(context,conversationId);
+              }, icon: Icon(Icons.camera_alt_outlined,color: AppColors.primaryColor)),
             ),
           ),
           SizedBox(width: 10.w),
@@ -272,31 +276,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _showHeightMenu(TapDownDetails details, List<String> options) async {
-    final selected = await MenuShowHelper.showCustomMenu(
-      context: context,
-      details: details,
-      options: options,
-    );
-    if (selected != null) {
-      if (selected == 'Media') {
-        Get.toNamed(AppRoutes.mediaScreen,arguments: {'conversationId' : conversationId});
-      } else if (selected == 'Block Profile') {
-        ShowDialogHelper.showDeleteORSuccessDialog(
-          context,
-          onTap: () {
-            _blockController.blockUnblock(conversationId);
-          },
-          title: 'Block',
-          message: 'Are you sure you want to block this user?',
-          buttonLabel: 'Block',
-        );
-      } else if (selected == 'Report') {
-        Get.toNamed(AppRoutes.reportScreen);
-      }
-      setState(() {});
-    }
-  }
 
 
   @override

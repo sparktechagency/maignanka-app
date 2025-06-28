@@ -38,4 +38,12 @@ class ConversationModelData {
     isActive = json['isActive'];
     lastActive = json['lastActive'];
   }
+
+
+  ConversationModelData copyWith({bool? isActive,String? id}){
+    return ConversationModelData(
+      isActive: isActive ?? this.isActive,
+      sId: id ?? this.sId,
+    );
+}
 }

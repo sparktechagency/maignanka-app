@@ -42,7 +42,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );}
 
           return GroupedListView(
-            reverse: true,
             elements: controller.notificationDataList,
             groupBy: (element) {
               final msgDate = DateTime.tryParse(element.createdAt ?? '') ?? DateTime.now();

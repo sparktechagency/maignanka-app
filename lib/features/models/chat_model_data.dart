@@ -5,7 +5,7 @@ class ChatModelData {
   String? receiverID;
   String? conversationID;
   String? content;
-  List<File>? file;
+  List<FileData>? file;
   String? messageType;
   List<String>? seenBy;
   String? createdAt;
@@ -36,9 +36,9 @@ class ChatModelData {
     content = json['content'];
 
     if (json['file'] != null) {
-      file = <File>[];
+      file = <FileData>[];
       json['file'].forEach((v) {
-        file!.add(File.fromJson(v));
+        file!.add(FileData.fromJson(v));
       });
     }
 
@@ -51,13 +51,13 @@ class ChatModelData {
   }
 }
 
-class File {
+class FileData {
   String? url;
   String? type;
 
-  File({this.url, this.type});
+  FileData({this.url, this.type});
 
-  File.fromJson(Map<String, dynamic> json) {
+  FileData.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     type = json['type'];
   }

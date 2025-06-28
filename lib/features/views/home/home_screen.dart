@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             }, icon: badges.Badge(
               position: badges.BadgePosition.topEnd(top: -6, end: -2),
-              showBadge: true,
+              showBadge: false,
               badgeContent: CustomText(
                 text: '12',
                 color: Colors.black,

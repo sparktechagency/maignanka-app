@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/conversations/conversations_controller.dart';
+import 'package:maignanka_app/features/controllers/conversations/socket_chat_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/socket_services.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
@@ -24,9 +26,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final ScrollController _scrollController = ScrollController();
 
   final ConversationsController _conversationsController = Get.find<ConversationsController>();
+  final SocketChatController _socketChatController = Get.find<SocketChatController>();
 
   @override
   void initState() {
+    _socketChatController.listenActive();
     _addScrollListener();
     super.initState();
   }
@@ -119,5 +123,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
         print("load more true");
       }
     });
+  }
+
+
+  @override
+  void dispose() {
+    SocketServices().socket.off('active-users');
+    super.dispose();
   }
 }
