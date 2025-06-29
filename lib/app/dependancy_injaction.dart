@@ -8,6 +8,8 @@ import 'package:maignanka_app/features/controllers/auth/profiles_controller.dart
 import 'package:maignanka_app/features/controllers/auth/register_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/reset_password_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/upload_photos_controller.dart';
+import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
+import 'package:maignanka_app/features/controllers/comment/comment_controller.dart';
 import 'package:maignanka_app/features/controllers/conversations/block_controller.dart';
 import 'package:maignanka_app/features/controllers/conversations/chat_controller.dart';
 import 'package:maignanka_app/features/controllers/conversations/conversations_controller.dart';
@@ -15,9 +17,13 @@ import 'package:maignanka_app/features/controllers/conversations/media_controlle
 import 'package:maignanka_app/features/controllers/conversations/socket_chat_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
+import 'package:maignanka_app/features/controllers/gifts/gifts_controller.dart';
 import 'package:maignanka_app/features/controllers/notification/notification_controller.dart';
+import 'package:maignanka_app/features/controllers/post/post_controller.dart';
+import 'package:maignanka_app/features/controllers/post/post_create_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/controllers/settings/setting_controller.dart';
+import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/change_pass_controller.dart';
 
@@ -45,4 +51,10 @@ class DependencyInjection implements Bindings {
     Get.put(BlockController());
     Get.put(MediaController());
     Get.put(SocketChatController());
+    Get.put(PostController());
+    Get.put(CreatePostController());
+    Get.put(CommentController());
+    Get.put(GiftsController());
+    Get.put(BalanceController());
+    Get.put(WalletController());
   }}

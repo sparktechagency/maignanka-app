@@ -77,23 +77,5 @@ class SettingController extends GetxController {
   }
 
 
-  Future<void> deleteAccount(String userId) async {
-      isLoading = true;
-      update();
-
-      final response = await ApiClient.deleteData(ApiUrls.accountDelete(userId));
-      final responseBody = response.body;
-
-      if (response.statusCode == 200 && responseBody['success'] == true) {
-
-        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
-        await PrefsHelper.remove(AppConstants.bearerToken);
-      } else {
-        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
-      }
-      isLoading = false;
-      update();
-
-  }
 
 }

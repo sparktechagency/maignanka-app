@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:maignanka_app/app/helpers/helper_data.dart';
+import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
+import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
@@ -20,8 +23,15 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
 
-  final TextEditingController _topUpAmountController = TextEditingController();
-  final TextEditingController _withdrawAmountController = TextEditingController();
+  final WalletController _walletController = Get.find<WalletController>();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _walletController.transHistoryGet(isInitialLoad: true);
+    _addScrollListener();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +47,7 @@ class _WalletScreenState extends State<WalletScreen> {
               Expanded(
                 child: _buildWalletCard(
                   title: 'Purchased Points',
-                  coin: '100',
+                  //coin: '100',
                   buttonLabel: 'Top Up',
                   onTap: () {
                     _buildCustomDialog(isTopUp: true);
@@ -48,7 +58,7 @@ class _WalletScreenState extends State<WalletScreen> {
               Expanded(
                 child: _buildWalletCard(
                   title: 'Reward Points',
-                  coin: '100',
+                  //coin: '100',
                   buttonLabel: 'Withdraw',
                   onTap: () {
                     _buildCustomDialog();
@@ -61,34 +71,43 @@ class _WalletScreenState extends State<WalletScreen> {
           SizedBox(height: 44.h),
           CustomText(text: 'History'),
           Expanded(
-            child: ListView.builder(
-              itemCount: HelperData.historyData.length,
-              itemBuilder: (context, index) {
-                final data = HelperData.historyData[index];
-                return ListTile(
-                  contentPadding: EdgeInsets.zero,
-                    title: CustomText(
-                      textAlign: TextAlign.start,
-                      text: data['title'] ?? '',
-                ),
-                  subtitle: CustomText(
-                    fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                      textAlign: TextAlign.start,
-                      text: data['date'] ?? ''),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Assets.icons.coin.svg(height: 14.h,width: 14.w),
-                      CustomText(
-                        left: 4.w,
-                        color: data['title'] != 'Withdraw' ? AppColors.successColor : AppColors.primaryColor,
-                          textAlign: TextAlign.end,
-                          text: data['points'].toString()),
-                    ],
-                  ),
+            child: GetBuilder<WalletController>(
+              builder: (controller) {
+                if(controller.isLoading){
+                  return CustomLoader();
+                }else if(controller.walletData.isEmpty){
+                  return Center(child: CustomText(text: 'No history fount.'));
+                }
+                return ListView.builder(
+                  itemCount: controller.walletData.length,
+                  itemBuilder: (context, index) {
+                    final data = controller.walletData[index];
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                        title: CustomText(
+                          textAlign: TextAlign.start,
+                          text: data.giftInfo?.name ?? '',
+                    ),
+                      subtitle: CustomText(
+                        fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                          textAlign: TextAlign.start,
+                          text: TimeFormatHelper.formatDate(DateTime.parse(data.createdAt ?? ''))),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Assets.icons.coin.svg(height: 14.h,width: 14.w),
+                          CustomText(
+                            left: 4.w,
+                            color: data.send == true ? AppColors.primaryColor : AppColors.successColor,
+                              textAlign: TextAlign.end,
+                              text: data.giftInfo?.points.toString() ?? ''),
+                        ],
+                      ),
+                    );
+                  },
                 );
-              },
+              }
             ),
           ),
         ],
@@ -100,29 +119,8 @@ class _WalletScreenState extends State<WalletScreen> {
     return showDialog(
       context: context,
       builder: (context) {
-        double points = 0;
-        double amounts = 0;
-
-        return StatefulBuilder(
-          builder: (context, setState) {
-            void calculateTopUp(String value) {
-              final enteredAmount = double.tryParse(value) ?? 0;
-              final netAmount = enteredAmount * 0.70; // after 30% store fee
-              final calculatedPoints = netAmount / 0.035;
-              setState(() {
-                points = calculatedPoints.floorToDouble();
-              });
-            }
-
-            void calculateWithdraw(String value) {
-              final enteredPoints = double.tryParse(value) ?? 0;
-              final grossAmount = enteredPoints * 0.035;
-              final netAmount = grossAmount * 0.60; // after 40% withdrawal fee
-              setState(() {
-                amounts = netAmount;
-              });
-            }
-
+        return GetBuilder<WalletController>(
+          builder: (controller) {
             return AlertDialog(
               backgroundColor: Colors.white,
               title: CustomText(
@@ -135,34 +133,30 @@ class _WalletScreenState extends State<WalletScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomTextField(
-                      controller: isTopUp ? _topUpAmountController : _withdrawAmountController,
-                      prefixIcon: isTopUp ? Assets.icons.wallet.svg() : Assets.icons.coin.svg(height: 16.h),
-                      labelText: isTopUp ? 'Amount (Dollar)' : 'Points',
-                      hintText: isTopUp ? 'amount' : 'points',
-                      onChanged: isTopUp ? calculateTopUp : calculateWithdraw,
+                      controller: isTopUp ? controller.topUpAmountController : controller.withdrawAmountController,
+                      prefixIcon:  Assets.icons.coin.svg(height: 16.h),
+                      labelText: 'Points',
+                      hintText:  'points',
+                      onChanged: (value) => isTopUp ? controller.calculateTopUp(value) : controller.calculateWithdraw(value),
                     ),
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        if(isTopUp)
-                        Assets.icons.coin.svg(height: 16.h, width: 16.w),
-                        if(!isTopUp)
                           Assets.icons.wallet.svg(height: 16.h, width: 16.w),
                         SizedBox(width: 6),
-                        CustomText(text: isTopUp ? 'Points' : 'Amount (\$)'),
+                        CustomText(text: 'Amount (\$)'),
                         Spacer(),
-                        CustomText(text: isTopUp ? '${points.toInt()}' : amounts.toStringAsFixed(2)),
+                        CustomText(text:  controller.amounts.toStringAsFixed(2)),
                       ],
                     ),
                   ],
                 ),
               ),
               actions: [
-                CustomButton(
+                controller.isLoadingTopUp ? CustomLoader() : CustomButton(
                   onPressed: () {
-                    Get.back();
-                    _topUpAmountController.clear();
-                    _withdrawAmountController.clear();
+                    if(controller.topUpAmountController.text.isEmpty)return;
+                    controller.topUp();
                   },
                   label: isTopUp ? 'Recharge' : 'Withdraw Request',
                 ),
@@ -176,7 +170,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Widget _buildWalletCard({
     required String title,
-    required String coin,
     required buttonLabel,
     required VoidCallback onTap,
   }) {
@@ -198,11 +191,16 @@ class _WalletScreenState extends State<WalletScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Assets.icons.coin.svg(),
-                  CustomText(
-                    text: coin,
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30.sp,
+                  GetBuilder<BalanceController>(
+                    builder: (controller) {
+                      return CustomText(
+                        left: 2.w,
+                        text: controller.balance,
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30.sp,
+                      );
+                    }
                   ),
                 ],
               ),
@@ -230,5 +228,14 @@ class _WalletScreenState extends State<WalletScreen> {
 
 
 
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _walletController.loadMore();
+        print("load more true");
+      }
+    });
+  }
 
 }

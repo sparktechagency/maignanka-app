@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/post/post_controller.dart';
+import 'package:maignanka_app/features/models/post_model_data.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
@@ -13,28 +16,21 @@ import 'package:maignanka_app/widgets/custom_popup.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
 class PostCardWidget extends StatefulWidget {
-  const PostCardWidget({super.key, this.isMyPost = false});
+  const PostCardWidget({super.key, this.isMyPost = false, required this.postData});
 
   final bool isMyPost;
+  final PostModelData postData;
 
   @override
   State<PostCardWidget> createState() => _PostCardWidgetState();
 }
 
 class _PostCardWidgetState extends State<PostCardWidget> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  bool isLike = false;
 
   @override
   Widget build(BuildContext context) {
+
+    final data = widget.postData;
     return CustomContainer(
       color: Color(0xffFFF9FC),
       radiusAll: 8.r,
@@ -50,16 +46,20 @@ class _PostCardWidgetState extends State<PostCardWidget> {
         children: [
           SizedBox(height: 6.h),
           CustomListTile(
-            onTap: () {},
-            image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
-            title: 'Zara',
-            subTitle: 'zara3124@gmail.com',
+            onTap: () {
+              Get.toNamed(
+                AppRoutes.profileDetailsScreen,
+                arguments: {'userId': data.userInfo?.sId ?? ''},
+              );            },
+            image: data.userInfo?.profilePicture ?? '',
+            title: data.userInfo?.name ?? '',
+            subTitle: data.userInfo?.email ?? '',
             trailing:
                 widget.isMyPost
                     ? CustomPopupMenu(
                       icon: Icons.edit_note,
                       iconColor: Colors.grey.shade600,
-                      items: [],
+                      items: ['Edit Post','Delete Post'],
                       onSelected: (val) {},
                     )
                     : null,
@@ -73,8 +73,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
               bottom: 10.h,
               fontSize: 10.sp,
               textAlign: TextAlign.start,
-              text:
-                  'ArthurHazan Quel plaisir de retrouver mes étudiants de Web 2 ! Ils ont tellement progressés depuis l’année dernière ! See More...',
+              text: data.caption ?? '',
             ),
           ),
           //if (widget.media != null && widget.media!.isNotEmpty) ...[
@@ -86,40 +85,43 @@ class _PostCardWidgetState extends State<PostCardWidget> {
               height: 300.h,
               child: Stack(
                 children: [
-                  PageView.builder(
-                    controller: _pageController,
-                    itemCount: 3,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPage = index;
-                      });
-                    },
-                    itemBuilder:
-                        (context, index) => ClipRRect(
-                          borderRadius: BorderRadius.circular(13.r),
-                          child: CustomNetworkImage(
-                            imageUrl:
-                                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
-                          ),
-                        ),
+                  GetBuilder<PostController>(
+                    builder: (controller) {
+                      return PageView.builder(
+                        controller: controller.pageController,
+                        itemCount: data.images?.length ?? 0,
+                        onPageChanged: (index) => controller.onChangePage(index),
+                        itemBuilder:
+                            (context, index) => ClipRRect(
+                              borderRadius: BorderRadius.circular(13.r),
+                              child: CustomNetworkImage(
+                                imageUrl: '${ApiUrls.imageBaseUrl}${data.images?[index].url ?? ''}',
+                              ),
+                            ),
+                      );
+                    }
                   ),
                   Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: DotsIndicator(
-                      position: _currentPage.toDouble(),
-                      dotsCount: 3,
-                      decorator: DotsDecorator(
-                        color: Colors.white,
-                        size: Size.square(5.0.r),
-                        spacing: EdgeInsets.symmetric(
-                          horizontal: 4.w,
-                          vertical: 6.h,
-                        ),
-                        // Space between dots
-                        activeColor: AppColors.primaryColor,
-                      ),
+                    child: GetBuilder<PostController>(
+                      builder: (controller) {
+                        return DotsIndicator(
+                          position: controller.currentPage.toDouble(),
+                          dotsCount: 3,
+                          decorator: DotsDecorator(
+                            color: Colors.white,
+                            size: Size.square(5.0.r),
+                            spacing: EdgeInsets.symmetric(
+                              horizontal: 4.w,
+                              vertical: 6.h,
+                            ),
+                            // Space between dots
+                            activeColor: AppColors.primaryColor,
+                          ),
+                        );
+                      }
                     ),
                   ),
                 ],
@@ -137,37 +139,38 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                   child: Row(
                     spacing: 4.w,
                     children: [
-                      LikeButton(
-                        size: 20.r,
-                        isLiked: isLike,
-                        onTap: (bool isLiked) async {
-                          setState(() => isLike = !isLiked);
-                          return !isLiked;
-                        },
-                        likeBuilder: (bool isLiked) {
-                          return Icon(
-                            isLiked
-                                ? Icons.thumb_up
-                                : Icons.thumb_up_alt_outlined,
-                            color:
+                      GetBuilder<PostController>(
+                        builder: (controller) {
+                          return LikeButton(
+                            size: 20.r,
+                            isLiked: controller.isLike,
+                            onTap: (bool isLiked) => controller.likeButtonAction(isLiked),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
                                 isLiked
-                                    ? AppColors.primaryColor
-                                    : AppColors.appGreyColor,
-                            size: 18.r,
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_alt_outlined,
+                                color:
+                                    isLiked
+                                        ? AppColors.primaryColor
+                                        : AppColors.appGreyColor,
+                                size: 18.r,
+                              );
+                            },
                           );
-                        },
+                        }
                       ),
                       Flexible(
                         child: CustomText(
                           right: 10.w,
                           fontSize: 10.sp,
                           textAlign: TextAlign.start,
-                          text: '44,389',
+                          text: data.likesCount.toString(),
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.commentScreen);
+                          Get.toNamed(AppRoutes.commentScreen,arguments: {'postId' : data.sId ?? ''});
                         },
                         child: Assets.icons.comment.svg(),
                       ),
@@ -179,7 +182,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                           child: CustomText(
                             fontSize: 10.sp,
                             textAlign: TextAlign.start,
-                            text: '26,376',
+                            text: data.commentsCount.toString(),
                           ),
                         ),
                       ),

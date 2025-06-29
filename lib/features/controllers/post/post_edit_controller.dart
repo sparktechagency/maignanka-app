@@ -1,8 +1,8 @@
+/*
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
-import 'package:maignanka_app/post/controller/post_controller.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
@@ -36,7 +36,7 @@ class EditPostController extends GetxController {
       final responseBody = response.body;
 
       if (response.statusCode == 200 && responseBody['success'] == true) {
-        Get.find<PostController>().getPost();
+      //  Get.find<PostController>().getPost();
         images = [];
 
       } else {
@@ -62,7 +62,7 @@ class EditPostController extends GetxController {
 
       if (response.statusCode == 200 && responseBody['success'] == true) {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
-        Get.find<PostController>().getPost();
+      //  Get.find<PostController>().getPost();
       } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
@@ -79,3 +79,4 @@ class EditPostController extends GetxController {
     super.dispose();
   }
 }
+*/
