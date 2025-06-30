@@ -6,6 +6,7 @@ import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/models/profile_details_model_data.dart' show ProfileDetailsModelData;
+import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
@@ -168,6 +169,8 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                     : CustomButton(
                   height: 38.h,
                   onPressed: () {
+                    Get.toNamed(AppRoutes.customBottomNavBar);
+                    Get.find<CustomBottomNavBarController>().onChange(2);
                   },
                   label: 'Messages',
                 ),

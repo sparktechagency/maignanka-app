@@ -37,6 +37,7 @@ class ApiUrls {
   static  const String  sendGifts = '/balance/';
   static  const String  topUp = '/stripe/create-payment-intent';
   static  const String  withdraw = '/transections/withdraw';
+  static  const String  bankInfo = '/transections/bank/info';
   static   String  balanceVersion(String userId) => '/balance/verify/$userId';
   static   String  comment(String postId,int page,int limit) => '/timeline/post/$postId/comment?page=$page&limit=$limit';
   static   String  createComment(String postId) => '/timeline/post/$postId/comment';

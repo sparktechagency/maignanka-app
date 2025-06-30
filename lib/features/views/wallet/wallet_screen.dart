@@ -7,6 +7,7 @@ import 'package:maignanka_app/features/controllers/balance/balance_controller.da
 import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/features/models/wallet_model_data.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
@@ -26,12 +27,13 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
 
   final WalletController _walletController = Get.find<WalletController>();
+  final BalanceController _balanceController = Get.find<BalanceController>();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    _balanceController.balanceGet();
     _walletController.transHistoryGet(isInitialLoad: true);
-    //_walletController.transHistoryMyGet(isInitialLoad: true);
     _addScrollListener();
     super.initState();
   }
@@ -44,7 +46,16 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar(title: 'Wallet'),
+      appBar: CustomAppBar(title: 'Wallet',actions: [
+        Padding(
+          padding:  EdgeInsets.all(8.0.r),
+          child: CustomButton(onPressed: (){
+            Get.toNamed(AppRoutes.bankInfoScreen);
+
+          },label: 'Bank info',height: 24.h,width: 100.w,fontSize: 12.sp,),
+        ),
+
+      ],),
 
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

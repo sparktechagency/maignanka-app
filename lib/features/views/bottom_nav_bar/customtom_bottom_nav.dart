@@ -27,7 +27,6 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   final ProfileController _profileController = Get.find<ProfileController>();
   final ConversationsController _conversationsController = Get.find<ConversationsController>();
   final PostController _postController = Get.find<PostController>();
-  final BalanceController _balanceController = Get.find<BalanceController>();
 
 
   @override
@@ -35,7 +34,6 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     _profileController.myProfileGet();
     _conversationsController.conversationsGet();
     _postController.postGet(isInitialLoad: true);
-    _balanceController.balanceGet();
     super.initState();
   }
 

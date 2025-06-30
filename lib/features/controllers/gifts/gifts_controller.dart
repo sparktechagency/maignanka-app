@@ -61,7 +61,8 @@ class GiftsController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      Get.back();
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }

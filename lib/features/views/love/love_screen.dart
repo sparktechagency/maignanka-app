@@ -69,7 +69,7 @@ class LoveScreen extends StatelessWidget {
           ),
           CustomButton(onPressed: () {
             Get.toNamed(AppRoutes.customBottomNavBar);
-            Get.find<CustomBottomNavBarController>().onChange(3);
+            Get.find<CustomBottomNavBarController>().onChange(2);
           }, label: 'Say hello'),
           SizedBox(height: 12.h),
           CustomButton(

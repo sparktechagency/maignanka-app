@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               if(controller.isLoading){
                 return CustomLoader();
               }else if(controller.postData.isEmpty){
-                return CustomText(text: 'No posts found.');
+                return Center(child: CustomText(text: 'No posts found.'));
               }
               return ListView.builder(
                 controller: _scrollController,
