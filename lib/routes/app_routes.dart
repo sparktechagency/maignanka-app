@@ -13,6 +13,7 @@ import 'package:maignanka_app/features/views/auth/upload_photos/upload_photo_scr
 import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav.dart';
 import 'package:maignanka_app/features/views/comment/comment_screen.dart';
 import 'package:maignanka_app/features/views/conversation/chat_screen.dart';
+import 'package:maignanka_app/features/views/gifts/gifts_member_screen.dart';
 import 'package:maignanka_app/features/views/gifts/gifts_screen.dart';
 import 'package:maignanka_app/features/views/love/love_screen.dart';
 import 'package:maignanka_app/features/views/media/media_screen.dart';
@@ -71,6 +72,7 @@ abstract class AppRoutes {
   static const String reportDetailsScreen = '/reportDetailsScreen';
   static const String mediaScreen = '/mediaScreen';
   static const String profileDetailsScreen = '/profileDetailsScreen';
+  static const String giftsMemberScreen = '/giftsMemberScreen';
 
 
 
@@ -108,5 +110,6 @@ abstract class AppRoutes {
     mediaScreen : (context) => MediaScreen(),
     profileDetailsScreen : (context) => ProfileDetailsScreen(),
     bioScreen : (context) => BioScreen(),
+    giftsMemberScreen : (context) => GiftsMemberScreen(),
   };
 }

@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
-import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
-import 'package:maignanka_app/features/models/post_model_data.dart';
+import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/models/wallet_model_data.dart';
-import 'package:maignanka_app/features/views/wallet/payment_web_screeen.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WalletController extends GetxController {
 
   bool isLoading = false;
+  bool isLoadingMy = false;
   bool isLoadingTopUp = false;
+  bool isLoadingWithdraw = false;
   int limit = 20;
   int page = 1;
   int totalPage = -1;
 
   double amounts = 0;
+  String selectedValueType = 'gifts';
+
+
+  void onChangeType(String newType) {
+    selectedValueType = newType;
+    if(newType == 'my'){
+      transHistoryMyGet(isInitialLoad: true);
+    }else{
+      transHistoryGet(isInitialLoad: true);
+    }
+  }
 
 
   final TextEditingController topUpAmountController = TextEditingController();
   final TextEditingController withdrawAmountController = TextEditingController();
 
 
-  List<WalletModelData> walletData = [];
+  List<WalletModelData> giftHistory = [];
+  List<MyHistoryModelData> topUpHistory = [];
 
 
 
@@ -51,7 +64,7 @@ class WalletController extends GetxController {
   Future<void> transHistoryGet({bool isInitialLoad = false}) async {
 
     if (isInitialLoad) {
-      walletData.clear();
+      giftHistory.clear();
       page = 1;
       totalPage = -1;
     }
@@ -72,13 +85,46 @@ class WalletController extends GetxController {
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
-      walletData.addAll(walletData);
+      giftHistory.addAll(walletData);
+
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
+    }
+
+    isLoading = false;
+    update();
+  }
+  Future<void> transHistoryMyGet({bool isInitialLoad = false}) async {
+
+    if (isInitialLoad) {
+      topUpHistory.clear();
+      page = 1;
+      totalPage = -1;
+    }
+
+    isLoadingMy = true;
+    update();
+
+    final response = await ApiClient.getData(
+      ApiUrls.myTransHistory(page,limit),
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      final List data = responseBody['data'] ?? [];
+
+      final walletData = data.map((json) => MyHistoryModelData.fromJson(json)).toList();
+
+      totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
+
+      topUpHistory.addAll(walletData);
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
-    isLoading = false;
+    isLoadingMy = false;
     update();
   }
 
@@ -102,18 +148,50 @@ class WalletController extends GetxController {
 
       if (response.statusCode == 200) {
         final url = responseBody['data']?['paymentIntent'] ?? '';
-        Get.to(() => PaymentWebScreen(url: url));
+        launchUrl(Uri.parse(url));
         topUpAmountController.clear();
-        withdrawAmountController.clear();
         amounts = 0;
-        ToastMessageHelper.showToastMessage("Top up successful!");
-      } else {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Top up failed.");
+      } else {
+        ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Top up failed.");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong: $e");
     } finally {
       isLoadingTopUp = false;
+      update();
+    }
+  }
+
+
+  Future<void> withdraw() async {
+    isLoadingWithdraw = true;
+    update();
+
+    final bodyParams = {
+      "points": int.tryParse(withdrawAmountController.text.trim()) ?? 0,
+    };
+
+    try {
+      final response = await ApiClient.postData(
+        ApiUrls.withdraw,
+        bodyParams,
+      );
+
+      final responseBody = response.body;
+
+      if (response.statusCode == 200) {
+        withdrawAmountController.clear();
+        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Top up failed.");
+        Get.find<BalanceController>().balanceGet();
+        Get.back();
+      } else {
+        ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Top up failed.");
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Something went wrong: $e");
+    } finally {
+      isLoadingWithdraw = false;
       update();
     }
   }

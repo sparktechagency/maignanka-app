@@ -70,7 +70,14 @@ class CustomListTile extends StatelessWidget {
 
         ],
       ) : null,
-      trailing: trailing,
+      trailing: trailing != null
+          ? ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 100.w, // <- Adjust to suit your button size
+        ),
+        child: trailing!,
+      )
+          : null,
     );
   }
 }

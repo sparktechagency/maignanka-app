@@ -5,6 +5,7 @@ import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
+import 'package:maignanka_app/features/models/wallet_model_data.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
@@ -13,6 +14,7 @@ import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
+import 'package:maignanka_app/widgets/two_button_widget.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -29,9 +31,15 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   void initState() {
     _walletController.transHistoryGet(isInitialLoad: true);
+    //_walletController.transHistoryMyGet(isInitialLoad: true);
     _addScrollListener();
     super.initState();
   }
+
+  final _historyTypes = [
+    {'label': 'Gifts', 'value': 'gifts'},
+    {'label': 'My History', 'value': 'my'},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,78 +50,123 @@ class _WalletScreenState extends State<WalletScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: _buildWalletCard(
-                  title: 'Purchased Points',
-                  //coin: '100',
-                  buttonLabel: 'Top Up',
-                  onTap: () {
-                    _buildCustomDialog(isTopUp: true);
-                  },
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: _buildWalletCard(
-                  title: 'Reward Points',
-                  //coin: '100',
-                  buttonLabel: 'Withdraw',
-                  onTap: () {
-                    _buildCustomDialog();
-
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildWalletCard(),
           SizedBox(height: 44.h),
-          CustomText(text: 'History'),
+          CustomText(text: 'History',bottom: 10.h),
+          GetBuilder<WalletController>(
+            builder: (controller) {
+              return TwoButtonWidget(buttons: _historyTypes, selectedValue: controller.selectedValueType, onTap: (val) => controller.onChangeType(val),fontSize: 12.sp,);
+            }
+          ),
           Expanded(
             child: GetBuilder<WalletController>(
               builder: (controller) {
-                if(controller.isLoading){
-                  return CustomLoader();
-                }else if(controller.walletData.isEmpty){
-                  return Center(child: CustomText(text: 'No history fount.'));
+                if(controller.selectedValueType == 'gifts') {
+                  if(controller.isLoading) return CustomLoader();
+                  if(controller.giftHistory.isEmpty) {
+                    return Center(child: CustomText(text: 'No gift history found.'));
+                  }
+                  return ListView.builder(
+                    controller: _scrollController,
+                    itemCount: controller.giftHistory.length,
+                    itemBuilder: (context, index) {
+                      final data = controller.giftHistory[index];
+                      return _buildGiftHistoryTile(data);
+                    },
+                  );
+                } else {
+                  if(controller.isLoadingMy) return CustomLoader();
+                  if(controller.topUpHistory.isEmpty) {
+                    return Center(child: CustomText(text: 'No top-up history found.'));
+                  }
+                  return ListView.builder(
+                    controller: _scrollController,
+                    itemCount: controller.topUpHistory.length,
+                    itemBuilder: (context, index) {
+                      final data = controller.topUpHistory[index];
+                      return _buildMyHistoryTile(data);
+                    },
+                  );
                 }
-                return ListView.builder(
-                  itemCount: controller.walletData.length,
-                  itemBuilder: (context, index) {
-                    final data = controller.walletData[index];
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                        title: CustomText(
-                          textAlign: TextAlign.start,
-                          text: data.giftInfo?.name ?? '',
-                    ),
-                      subtitle: CustomText(
-                        fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          textAlign: TextAlign.start,
-                          text: TimeFormatHelper.formatDate(DateTime.parse(data.createdAt ?? ''))),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Assets.icons.coin.svg(height: 14.h,width: 14.w),
-                          CustomText(
-                            left: 4.w,
-                            color: data.send == true ? AppColors.primaryColor : AppColors.successColor,
-                              textAlign: TextAlign.end,
-                              text: data.giftInfo?.points.toString() ?? ''),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }
+              },
             ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGiftHistoryTile(WalletModelData data) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: CustomText(
+        textAlign: TextAlign.start,
+        text: data.giftInfo?.name ?? 'N/A',
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            top: 2.h,
+            bottom: 2.h,
+            text: 'SendBy : ${data.sendBy?.name ?? ''}',
+            fontSize: 12.sp,
+          ),
+          CustomText(
+            fontWeight: FontWeight.w400,
+            fontSize: 10.sp,
+            textAlign: TextAlign.start,
+            text: TimeFormatHelper.formatDate(DateTime.parse(data.createdAt ?? '')),
+          ),
+        ],
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Assets.icons.coin.svg(height: 14.h, width: 14.w),
+          CustomText(
+            left: 4.w,
+            color: data.send == true
+                ? AppColors.primaryColor
+                : AppColors.successColor,
+            textAlign: TextAlign.end,
+            text: data.giftInfo?.points?.toString() ?? '',
           ),
         ],
       ),
     );
   }
+  Widget _buildMyHistoryTile(MyHistoryModelData data) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: CustomText(
+        color: data.type == 'withdraw' ? AppColors.primaryColor : (data.isAccepted == true && data.type == 'withdraw') ? Colors.amber : AppColors.successColor,
+        textAlign: TextAlign.start,
+        text: data.type == 'withdraw' ? 'Withdraw' : (data.isAccepted == true && data.type == 'withdraw') ? 'Withdraw Progressing' : 'Top-up',
+      ),
+      subtitle: CustomText(
+        fontWeight: FontWeight.w400,
+        fontSize: 12.sp,
+        textAlign: TextAlign.start,
+        text: TimeFormatHelper.formatDate(DateTime.parse(data.createdAt ?? '')),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Assets.icons.coin.svg(height: 14.h, width: 14.w),
+          CustomText(
+            left: 4.w,
+            color: data.type == 'withdraw' ? AppColors.primaryColor : (data.isAccepted == true && data.type == 'withdraw') ? Colors.amber : AppColors.successColor,
+            textAlign: TextAlign.end,
+            text: '${data.amount?.toString() ?? ''}',
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   _buildCustomDialog({bool isTopUp = false}) {
     return showDialog(
@@ -153,13 +206,25 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
               ),
               actions: [
-                controller.isLoadingTopUp ? CustomLoader() : CustomButton(
-                  onPressed: () {
-                    if(controller.topUpAmountController.text.isEmpty)return;
-                    controller.topUp();
-                  },
-                  label: isTopUp ? 'Recharge' : 'Withdraw Request',
-                ),
+                if(isTopUp)...[
+                  controller.isLoadingTopUp ? CustomLoader() : CustomButton(
+                    onPressed: () {
+                      if(controller.topUpAmountController.text.isEmpty)return;
+                      controller.topUp();
+                    },
+                    label: 'Recharge',
+                  ),
+                ],
+                if(!isTopUp)...[
+                  controller.isLoadingWithdraw ? CustomLoader() : CustomButton(
+                    onPressed: () {
+                      if(controller.withdrawAmountController.text.isEmpty)return;
+                      controller.withdraw();
+                    },
+                    label: 'Withdraw Request',
+                  ),
+                ],
+
               ],
             );
           },
@@ -168,16 +233,12 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildWalletCard({
-    required String title,
-    required buttonLabel,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildWalletCard() {
     return Stack(
       children: [
         Positioned(child: SizedBox(height: 114.h)),
         CustomContainer(
-          paddingVertical: 22.h,
+          paddingVertical: 24.h,
           paddingHorizontal: 18.w,
           bordersColor: AppColors.primaryColor,
           radiusAll: 12.r,
@@ -185,7 +246,7 @@ class _WalletScreenState extends State<WalletScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FittedBox(
-                child: CustomText(textAlign: TextAlign.start, text: title),
+                child: CustomText(textAlign: TextAlign.start, text: 'Purchased Points'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -193,12 +254,14 @@ class _WalletScreenState extends State<WalletScreen> {
                   Assets.icons.coin.svg(),
                   GetBuilder<BalanceController>(
                     builder: (controller) {
-                      return CustomText(
-                        left: 2.w,
-                        text: controller.balance,
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 30.sp,
+                      return FittedBox(
+                        child: CustomText(
+                          left: 2.w,
+                          text: controller.balance,
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 26.sp,
+                        ),
                       );
                     }
                   ),
@@ -211,15 +274,32 @@ class _WalletScreenState extends State<WalletScreen> {
           left: 0,
           right: 0,
           bottom: 0,
-          child: Center(
-            child: CustomButton(
-              radius: 10.r,
-              fontSize: 14.sp,
-              width: 100.w,
-              height: 28.h,
-              onPressed: onTap,
-              label: buttonLabel,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CustomButton(
+                radius: 10.r,
+                fontSize: 14.sp,
+                width: 100.w,
+                height: 28.h,
+                onPressed: (){
+                  _buildCustomDialog(isTopUp: true);
+
+                },
+                label: 'Top Up',
+              ),
+              CustomButton(
+                radius: 10.r,
+                fontSize: 14.sp,
+                width: 100.w,
+                height: 28.h,
+                onPressed: (){
+                  _buildCustomDialog();
+
+                },
+                label: 'Withdraw',
+              ),
+            ],
           ),
         ),
       ],

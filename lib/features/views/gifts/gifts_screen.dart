@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/gifts/gifts_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
@@ -73,6 +74,9 @@ class _GiftsScreenState extends State<GiftsScreen> {
                     itemBuilder: (context, index) {
                       final data = controller.giftsData[index];
                       return CustomContainer(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.giftsMemberScreen,arguments: {'giftId' : data.sId} );
+                        },
                         radiusAll: 8.r,
                         color: const Color(0xffFFF9FC),
                         boxShadow: [

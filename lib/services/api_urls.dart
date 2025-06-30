@@ -34,10 +34,14 @@ class ApiUrls {
   static  const String  postCreate = '/timeline/post';
   static  const String  gifts = '/gifts';
   static  const String  balance = '/balance';
+  static  const String  sendGifts = '/balance/';
   static  const String  topUp = '/stripe/create-payment-intent';
+  static  const String  withdraw = '/transections/withdraw';
+  static   String  balanceVersion(String userId) => '/balance/verify/$userId';
   static   String  comment(String postId,int page,int limit) => '/timeline/post/$postId/comment?page=$page&limit=$limit';
   static   String  createComment(String postId) => '/timeline/post/$postId/comment';
   static   String  transHistory(int page,int limit) => '/transections/gifts?page=$page&limit=$limit';
+  static   String  myTransHistory(int page,int limit) => '/transections/balance?page=$page&limit=$limit';
 
 
 

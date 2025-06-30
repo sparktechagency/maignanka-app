@@ -81,3 +81,53 @@ class GiftInfo {
     iV = json['__v'];
   }
 }
+
+
+
+
+
+
+class MyHistoryModelData {
+  String? sId;
+  UserID? userID;
+  int? points;
+  double? amount;
+  String? transectionId;
+  String? type;
+  bool? isAccepted;
+  String? createdAt;
+
+  MyHistoryModelData(
+      {this.sId,
+        this.userID,
+        this.points,
+        this.amount,
+        this.transectionId,
+        this.type,
+        this.isAccepted,
+        this.createdAt});
+
+  MyHistoryModelData.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userID = json['userID'] != null ? UserID.fromJson(json['userID']) : null;
+    points = json['points'];
+    amount = (json['amount'] as num?)?.toDouble();
+    transectionId = json['transectionId'];
+    type = json['type'];
+    isAccepted = json['isAccepted'];
+    createdAt = json['createdAt'];
+  }
+}
+
+class UserID {
+  String? name;
+  String? email;
+
+  UserID({this.name, this.email});
+
+  UserID.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    email = json['email'];
+  }
+}
+

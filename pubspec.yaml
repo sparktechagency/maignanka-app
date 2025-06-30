@@ -44,6 +44,7 @@ dependencies:
   photo_view:
   heart_overlay: ^1.4.1
   avatar_glow: ^3.0.1
+  flutter_inappwebview: ^6.1.5
 
 dev_dependencies:
   flutter_test:
