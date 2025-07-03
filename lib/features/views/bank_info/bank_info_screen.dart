@@ -21,6 +21,16 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _balanceController.backInfoGet();
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {

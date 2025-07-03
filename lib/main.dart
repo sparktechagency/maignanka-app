@@ -6,19 +6,17 @@ import 'package:maignanka_app/app/helpers/device_utils.dart';
 import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/socket_services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() async{
-
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  DeviceUtils.lockDevicePortrait();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SocketServices().init();
 
+  DeviceUtils.lockDevicePortrait();
   runApp(const MaignankaApp());
 }
-
 
 class MaignankaApp extends StatelessWidget {
   const MaignankaApp({super.key});
@@ -26,8 +24,8 @@ class MaignankaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (_,_) =>
-          GetMaterialApp(
+      builder:
+          (_, _) => GetMaterialApp(
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoutes.initialRoute,
             theme: AppThemeData.lightThemeData,
@@ -35,9 +33,7 @@ class MaignankaApp extends StatelessWidget {
             themeMode: ThemeMode.light,
             initialBinding: DependencyInjection(),
             routes: AppRoutes.routes,
-
-          )
+          ),
     );
   }
 }
-

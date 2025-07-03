@@ -39,7 +39,7 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   final _historyTypes = [
-    {'label': 'Gifts', 'value': 'gifts'},
+    {'label': 'Gifts History', 'value': 'gifts'},
     {'label': 'My History', 'value': 'my'},
   ];
 

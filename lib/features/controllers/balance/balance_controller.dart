@@ -10,6 +10,7 @@ class BalanceController extends GetxController {
   bool isLoading = false;
   bool isLoadingVersion = false;
   bool isLoadingBank = false;
+  bool isLoadingBankGet = false;
 
   String balance = '';
 
@@ -112,6 +113,34 @@ class BalanceController extends GetxController {
     isLoadingBank = false;
     update();
   }
+
+
+  Future<void> backInfoGet() async {
+    isLoadingBankGet = true;
+    update();
+
+    final response = await ApiClient.getData(ApiUrls.bankInfoGet);
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      final data = responseBody['data'];
+
+      if (data != null) {
+        bankNameController.text = data['bankName'] ?? '';
+        ibanNoController.text = data['ibanNo'] ?? '';
+        accountNoController.text = data['accountNo'] ?? '';
+        routingNoController.text = data['routingNo'] ?? '';
+        accountHolderNameController.text = data['accountHolderName'] ?? '';
+      }
+
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Something went wrong");
+    }
+
+    isLoadingBankGet = false;
+    update();
+  }
+
 
 
 

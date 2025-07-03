@@ -64,7 +64,7 @@ class CreatePostController extends GetxController {
         _cleanField();
         //Get.back(); // optionally close post screen
       } else {
-        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Failed to create post.");
+        ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Failed to create post.");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Error: $e");

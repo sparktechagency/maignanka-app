@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_create_controller.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
@@ -40,8 +41,8 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
             children: [
 
               CustomListTile(
-                image: '',
-                title: 'Annette Black',
+                image: Get.find<ProfileController>().userImage,
+                title: Get.find<ProfileController>().userName,
                 trailing: CustomButton(
                   height: 28.h,
                   radius: 8.r,

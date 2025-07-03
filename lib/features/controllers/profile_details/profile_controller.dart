@@ -17,6 +17,7 @@ class ProfileController extends GetxController {
   bool isLoadingMyProfile = false;
   String userId = '';
   String userImage = '';
+  String userName = '';
   File? profileImage;
 
   TextEditingController firstnameController = TextEditingController();
@@ -34,6 +35,7 @@ class ProfileController extends GetxController {
   void userBasicInfo() async {
     userId = await PrefsHelper.getString(AppConstants.userId);
     userImage = await PrefsHelper.getString(AppConstants.image);
+    userName = await PrefsHelper.getString(AppConstants.name);
     update();
 
     debugPrint('UseId get ==========> $userId');
@@ -91,6 +93,7 @@ class ProfileController extends GetxController {
       );
       await PrefsHelper.setString(AppConstants.userId, responseBody['data']?['_id'],);
       await PrefsHelper.setString(AppConstants.image, responseBody['data']?['profilePicture'],);
+      await PrefsHelper.setString(AppConstants.name, responseBody['data']?['name'],);
       userBasicInfo();
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
