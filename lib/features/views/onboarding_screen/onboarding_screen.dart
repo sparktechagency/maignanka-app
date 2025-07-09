@@ -22,7 +22,7 @@ class OnboardingScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 75.h),
+              SizedBox(height: 60.h),
               Assets.icons.logoSvg.svg(),
               Assets.images.onboardingImage.image(),
             ],
@@ -65,7 +65,7 @@ class OnboardingScreen extends StatelessWidget {
             SizedBox(height: 14.h),
             GestureDetector(
               onTap: (){
-                Get.offAllNamed(AppRoutes.customBottomNavBar);
+                Get.toNamed(AppRoutes.joinGuestScreen);
               },
               child: CustomText(
                 text: 'Join as Guest',

@@ -8,11 +8,20 @@ import 'package:shimmer/shimmer.dart';
 
 
 
-class PrivacyPolicyScreen extends StatelessWidget {
+class PrivacyPolicyScreen extends StatefulWidget {
   const PrivacyPolicyScreen({super.key});
 
+  @override
+  State<PrivacyPolicyScreen> createState() => _PrivacyPolicyScreenState();
+}
 
+class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
+  @override
+  void initState() {
+    Get.find<SettingController>().getPrivacy();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final sizeH = MediaQuery.sizeOf(context).height;
@@ -52,5 +61,4 @@ class PrivacyPolicyScreen extends StatelessWidget {
       }),
     );
   }
-
 }

@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
 import 'package:maignanka_app/features/views/post_create/widgets/post_card_widget.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
@@ -10,6 +11,7 @@ import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
+import 'package:maignanka_app/widgets/custom_text_field.dart';
 import 'package:maignanka_app/widgets/two_button_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,8 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
 
-  final PostController _postController = Get.find<PostController>();
+  final PostController  _postController = Get.find<PostController>();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -89,11 +92,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
         SizedBox(height: 8.h),
 
+
+        CustomTextField(
+                onChanged: (val) {},
+                validator: (_) {
+                  return null;
+                },
+                prefixIcon: const Icon(Icons.search,color: AppColors.primaryColor,),
+                controller: _searchController,
+                hintText: 'Search people to chat...',
+                contentPaddingVertical: 0,
+              ),
+
+
+        SizedBox(height: 8.h),
+
         Expanded(
             child: RefreshIndicator(
-              onRefresh: () async{
-                _postController.postGet(isInitialLoad: true);
-              },
+              onRefresh: () async => _postController.onRefresh(),
               child: GetBuilder<PostController>(
                         builder: (controller) {
               if(controller.isLoading){
@@ -106,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: controller.postData.length,
                   itemBuilder: (context,index){
                 return PostCardWidget(
-                  isMyPost: controller.selectedValueType == 'my' ? true : false, postData: controller.postData[index],
+                 // isMyPost: controller.selectedValueType == 'my' ? true : false,
+                  postData: controller.postData[index],
                 );
               });
                         }

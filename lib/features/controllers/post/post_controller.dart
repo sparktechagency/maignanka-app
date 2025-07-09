@@ -14,20 +14,12 @@ class PostController extends GetxController {
   int totalPage = -1;
 
   String selectedValueType = 'all';
-  bool isLike = false;
-  final PageController pageController = PageController();
-  int currentPage = 0;
 
 
   List<PostModelData> postData = [];
 
 
 
-  Future<bool> likeButtonAction(bool isLiked) async {
-    isLike = !isLiked;
-    update();
-    return !isLiked;
-  }
 
 
   void onChangeType(String newType) {
@@ -39,11 +31,14 @@ class PostController extends GetxController {
     }
   }
 
-
-  void onChangePage (int index) {
-      currentPage = index;
-      update();
+  void onRefresh() async{
+    if(selectedValueType == 'my'){
+      postGet(isInitialLoad: true,userId: Get.find<ProfileController>().userId);
+    }else{
+      postGet(isInitialLoad: true);
+    }
   }
+
 
 
 
@@ -60,6 +55,7 @@ class PostController extends GetxController {
     update();
 
     final response = await ApiClient.getData(
+      headers: {'Content-Type': 'application/json'},
         ApiUrls.allPost(page,limit,userId),
     );
 
@@ -94,12 +90,5 @@ class PostController extends GetxController {
 
       await postGet();
     }
-  }
-
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
   }
 }

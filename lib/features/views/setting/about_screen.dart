@@ -6,9 +6,20 @@ import 'package:maignanka_app/features/controllers/settings/setting_controller.d
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:shimmer/shimmer.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
 
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+
+  @override
+  void initState() {
+    Get.find<SettingController>().getTerms();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final sizeH = MediaQuery.sizeOf(context).height;

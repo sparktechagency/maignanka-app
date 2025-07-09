@@ -43,7 +43,7 @@ class BalanceController extends GetxController {
       balance = responseBody['data']?['balance'].toString() ?? '';
 
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
     isLoading = false;
@@ -74,7 +74,7 @@ class BalanceController extends GetxController {
       balanceVersionModelData.addAll(versionData);
       isSuccess = true;
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+     // ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
     isLoadingVersion = false;
@@ -107,7 +107,7 @@ class BalanceController extends GetxController {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       Get.back();
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
+     // ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
     }
 
     isLoadingBank = false;
@@ -134,7 +134,7 @@ class BalanceController extends GetxController {
       }
 
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Something went wrong");
+     // ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Something went wrong");
     }
 
     isLoadingBankGet = false;

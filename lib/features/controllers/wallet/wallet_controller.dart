@@ -88,7 +88,7 @@ class WalletController extends GetxController {
       giftHistory.addAll(walletData);
 
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
+      //ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
     }
 
     isLoading = false;

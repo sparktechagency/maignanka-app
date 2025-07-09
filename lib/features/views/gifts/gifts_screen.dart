@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/controllers/gifts/gifts_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
@@ -17,6 +20,8 @@ import 'package:maignanka_app/widgets/custom_text_field.dart';
 class GiftsScreen extends StatefulWidget {
   const GiftsScreen({super.key});
 
+
+
   @override
   State<GiftsScreen> createState() => _GiftsScreenState();
 }
@@ -26,10 +31,15 @@ class _GiftsScreenState extends State<GiftsScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   final GiftsController _giftsController = Get.find<GiftsController>();
+  final BalanceController _balanceController = Get.find<BalanceController>();
+
+
+  late String userId;
 
 
   @override
   void initState() {
+    userId = Get.arguments['userId'];
     _giftsController.giftsGet();
     super.initState();
   }
@@ -74,8 +84,41 @@ class _GiftsScreenState extends State<GiftsScreen> {
                     itemBuilder: (context, index) {
                       final data = controller.giftsData[index];
                       return CustomContainer(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.giftsMemberScreen,arguments: {'giftId' : data.sId} );
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: CustomText(
+                                text: 'Gift Send',
+                                fontSize: 24.sp,
+                              ),
+                              content: CustomText(
+                                text: 'Are you sure you want to send this gift?',
+                              ),
+                              actions: [
+                                CustomButton(
+                                  label: 'Send',
+                                  onPressed: () async {
+                                    final success = await _balanceController.balanceVersionGet(userId);
+                                    if (success) {
+                                      final versionData = _balanceController.balanceVersionModelData;
+                                      final senderVersion = versionData.firstWhereOrNull((e) => e.isSender == true)?.version ?? 0;
+                                      final receiverVersion = versionData.firstWhereOrNull((e) => e.isSender == false)?.version ?? 0;
+
+                                      _giftsController.sendGifts(
+                                        userId,
+                                        data.sId!,
+                                        senderVersion,
+                                        receiverVersion,
+                                      );
+                                    } else {
+                                      ToastMessageHelper.showToastMessage("Users Wallet not found!");
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         },
                         radiusAll: 8.r,
                         color: const Color(0xffFFF9FC),

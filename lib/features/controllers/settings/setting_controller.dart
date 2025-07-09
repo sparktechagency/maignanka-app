@@ -13,15 +13,9 @@ class SettingController extends GetxController {
   String termsDescription = '';
   String privacyDescription = '';
 
-  @override
-  void onInit() {
-    super.onInit();
-    _getAbout();
-    _getTerms();
-    _getPrivacy();
-  }
 
-  Future<void> _getAbout() async {
+
+  Future<void> getAbout() async {
     isLoading = true;
     update();
 
@@ -39,7 +33,7 @@ class SettingController extends GetxController {
   }
 
 
-  Future<void> _getTerms() async {
+  Future<void> getTerms() async {
     isLoading = true;
     update();
 
@@ -58,7 +52,7 @@ class SettingController extends GetxController {
   }
 
 
-  Future<void> _getPrivacy() async {
+  Future<void> getPrivacy() async {
     isLoading = true;
     update();
 

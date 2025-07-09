@@ -30,8 +30,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final _heartController = HeartOverlayController();
   final DiscoverController _discoverController = Get.find<DiscoverController>();
 
-
-
   @override
   void initState() {
     _discoverController.swipeProfileGet();
@@ -96,11 +94,14 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     return CardSwiper(
                       controller: _swiperController,
                       cardsCount: controller.swipeDataList.length,
-                      numberOfCardsDisplayed: controller.swipeDataList.length >= 2 ? 2 : 1,
+                      numberOfCardsDisplayed:
+                          controller.swipeDataList.length >= 2 ? 2 : 1,
 
                       onSwipe: (oldIndex, newIndex, direction) {
-                        if (newIndex! >= 0 && newIndex < controller.swipeDataList.length) {
-                          controller.currentUserId = controller.swipeDataList[newIndex].userId ?? '';
+                        if (newIndex! >= 0 &&
+                            newIndex < controller.swipeDataList.length) {
+                          controller.currentUserId =
+                              controller.swipeDataList[newIndex].userId ?? '';
                           controller.update();
                         }
                         return true;
@@ -111,14 +112,22 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       },
 
                       cardBuilder: (context, index, _, __) {
-                        if (index < 0 || index >= controller.swipeDataList.length) {
-                          return Center(child: CustomText(text: 'No profiles found.'));
+                        if (index < 0 ||
+                            index >= controller.swipeDataList.length) {
+                          return Center(
+                            child: CustomText(text: 'No profiles found.'),
+                          );
                         }
                         final swipeData = controller.swipeDataList[index];
-                        return SwipeCardWidget(swipeData: swipeData, onTap: () {
-                          Get.toNamed(AppRoutes.profileDetailsScreen,arguments: {'userId' : swipeData.userId ?? ''});
-
-                        },);
+                        return SwipeCardWidget(
+                          swipeData: swipeData,
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.profileDetailsScreen,
+                              arguments: {'userId': swipeData.userId ?? ''},
+                            );
+                          },
+                        );
                       },
                     );
                   },
@@ -143,26 +152,40 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         glowShape: BoxShape.circle,
                         animate: controller.isLoading,
                         curve: Curves.fastOutSlowIn,
-                        child:   _actionButton(
-                            icon: Assets.icons.love.svg(
-                              height: 34.r,
-                              width: 34.r,
-                              color: Colors.white,
-                            ),
-                            color: AppColors.secondaryColor,
-                            onTap: () {
-                              if(_discoverController.swipeDataList.isEmpty) return;
-                              controller.matchCreate(_discoverController.currentUserId,_swiperController,_heartController,context);
-                            },
+                        child: _actionButton(
+                          icon: Assets.icons.love.svg(
+                            height: 34.r,
+                            width: 34.r,
+                            color: Colors.white,
+                          ),
+                          color: AppColors.secondaryColor,
+                          onTap: () {
+                            if (_discoverController.swipeDataList.isEmpty)
+                              return;
+                            controller.matchCreate(
+                              _discoverController.currentUserId,
+                              _swiperController,
+                              _heartController,
+                              context,
+                            );
+                          },
                         ),
                       );
-                    }
+                    },
                   ),
 
                   _actionButton(
                     icon: Assets.icons.gift.svg(height: 24.r, width: 24.r),
                     color: Colors.white,
-                    onTap: () => Get.toNamed(AppRoutes.giftsScreen),
+                    onTap: () {
+                      if (_discoverController.swipeDataList.isEmpty) return;
+                      Get.toNamed(
+                        AppRoutes.giftsScreen,
+                        arguments: {
+                          'userId': _discoverController.currentUserId,
+                        },
+                      );
+                    },
                   ),
                 ],
               ),

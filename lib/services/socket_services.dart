@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
+import 'package:maignanka_app/services/api_urls.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketServices {
@@ -21,7 +22,7 @@ class SocketServices {
     print("-------------------------------------------------------------\n Socket call \n token = $token");
 
     socket = IO.io(
-        'https://vibely-ifti.sarv.live',
+        ApiUrls.socketUrl,
         // '${ApiConstants.imageBaseUrl}?token=$token',
         IO.OptionBuilder()
             .setTransports(['websocket'])

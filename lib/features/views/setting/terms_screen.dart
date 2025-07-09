@@ -7,11 +7,21 @@ import 'package:maignanka_app/widgets/custom_app_bar.dart';
 import 'package:shimmer/shimmer.dart';
 
 
-class TermsScreen extends StatelessWidget {
+class TermsScreen extends StatefulWidget {
   const TermsScreen({super.key});
 
+  @override
+  State<TermsScreen> createState() => _TermsScreenState();
+}
 
 
+class _TermsScreenState extends State<TermsScreen> {
+
+  @override
+  void initState() {
+    Get.find<SettingController>().getTerms();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final sizeH = MediaQuery.sizeOf(context).height;
@@ -51,5 +61,4 @@ class TermsScreen extends StatelessWidget {
       }),
     );
   }
-
 }

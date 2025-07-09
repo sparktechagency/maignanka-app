@@ -1,6 +1,6 @@
 /*
 import 'dart:io';
-import 'package:courtconnect/pregentaition/screens/post/controller/post_edit_controller.dart';
+import 'package:courtconnect/pregentaition/screens/post/controller/post_like_controller.dart';
 import 'package:courtconnect/pregentaition/screens/post/models/post_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

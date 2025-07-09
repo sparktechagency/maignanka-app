@@ -101,7 +101,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   }
 
   final List<Map<String, dynamic>> _navItems = [
-    {"icon": Assets.icons.home.path, "label": "Home"},
+    {"icon": Assets.icons.home.path, "label": "Social"},
     {"icon": Assets.icons.love.path, "label": "Discover"},
     {"icon": Assets.icons.chat.path, "label": "Chat"},
     {"icon": Assets.icons.profile.path, "label": "Profile"},

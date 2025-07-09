@@ -1,8 +1,11 @@
 class ApiUrls {
-  static const String baseUrl = "http://vibely-ifti.sarv.live";
+  static const String baseUrl = "http://10.10.10.81:3000";
 
 
-  static const String imageBaseUrl = "http://vibely-ifti.sarv.live/";
+  static const String imageBaseUrl = "http://10.10.10.81:3000/";
+
+
+  static const String socketUrl = "http://10.10.10.81:3000/";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
@@ -39,6 +42,7 @@ class ApiUrls {
   static  const String  withdraw = '/transections/withdraw';
   static  const String  bankInfo = '/payment/info';
   static  const String  bankInfoGet = '/payment/info/me';
+  static   String  like(String postId) => '/timeline/like?postId=$postId';
   static   String  balanceVersion(String userId) => '/balance/verify/$userId';
   static   String  comment(String postId,int page,int limit) => '/timeline/post/$postId/comment?page=$page&limit=$limit';
   static   String  createComment(String postId) => '/timeline/post/$postId/comment';

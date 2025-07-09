@@ -58,13 +58,13 @@ class CreatePostController extends GetxController {
       );
 
       final responseBody = response.body;
-      if ((response.statusCode == 200 || response.statusCode == 201) && responseBody['success'] == true) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Post created successfully.");
         Get.find<PostController>().postGet(isInitialLoad: true);
         _cleanField();
         //Get.back(); // optionally close post screen
       } else {
-        ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Failed to create post.");
+        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Failed to create post.");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Error: $e");
