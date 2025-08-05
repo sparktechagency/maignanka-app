@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'kis-app-876e6.firebasestorage.app',
     iosBundleId: 'com.example.maignankaApp',
   );
+
 }

@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onConfirm: ()async {
                       await PrefsHelper.remove(AppConstants.bearerToken);
                       final socket = SocketServices();
-                      socket.disconnect(isManual: true);
+                     socket.disconnect(isManual: true);
                       Get.offAllNamed(AppRoutes.onboardingScreen);
                     },
                   ),

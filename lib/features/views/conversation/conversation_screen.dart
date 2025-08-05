@@ -71,8 +71,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   if(controller.isLoading){
                     return CustomLoader();
                   }else if(controller.conversationsDataList.isEmpty){
-                    return const Center(child: Text("No chat available"));
-                  }
+                    return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: const Center(child: Text("No chat available")),
+                      ),
+                    );                  }
                   return ListView.builder(
                     physics: AlwaysScrollableScrollPhysics(),
                     controller: _scrollController,
@@ -128,7 +133,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   void dispose() {
-    SocketServices().socket.off('active-users');
+    SocketServices().socket?.off('active-users');
     super.dispose();
   }
 }
