@@ -9,9 +9,10 @@ class ConnectivityController extends GetxController {
   void onInit() {
     super.onInit();
     _initializeConnectivity();
-    /*_connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+    _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> results) {
+      final result = results.isNotEmpty ? results.first : ConnectivityResult.none;
       _updateConnectionStatus(result);
-    });*/
+    });
   }
 
   Future<void> _initializeConnectivity() async {

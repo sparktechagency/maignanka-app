@@ -78,6 +78,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ProfileListTile(
+              icon: Assets.icons.filterIcon.svg(),
+
+              title: "Gallery",
+              onTap: () {
+                Get.toNamed(AppRoutes.galleryScreen);
+              },
+            ),
+            ProfileListTile(
               paddingVertical: 3.h,
               trailing: Switch(value: _showProfile, onChanged: (value){
                 _showProfile = value;
@@ -90,6 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {
               },
             ),
+
             ProfileListTile(
               icon: Assets.icons.support.svg(),
 

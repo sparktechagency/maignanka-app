@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,12 +12,12 @@ import 'connectivity.dart';
 class NoInternetWrapper extends StatelessWidget {
   final Widget child;
 
-  const NoInternetWrapper({super.key, required this.child});
+  const NoInternetWrapper({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Access the ConnectivityController instance
-    final ConnectivityController connectivityController = Get.find<ConnectivityController>();
+    final ConnectivityController connectivityController = Get.find();
 
     return Stack(
       children: [
@@ -35,7 +36,12 @@ class NoInternetWrapper extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Lottie animation for "No Internet" message
-                      //Assets.lottie.noInternet.lottie(),
+                      Lottie.asset(
+                        'assets/lotties/no_internet.json',
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        fit: BoxFit.contain,
+                      ),
                       SizedBox(height: 20.h),
                       Text(
                         'No Internet Connection',

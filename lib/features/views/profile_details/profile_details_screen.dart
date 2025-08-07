@@ -236,7 +236,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                     Flexible(
                       child: CustomText(
                         textAlign: TextAlign.start,
-                        text: '${_controller.profileDetailsModelData.address?.split(',').first ?? ''}',
+                        text: '${_controller.profileDetailsModelData.address?.split(',').last ?? ''}',
                         color: Colors.white,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,

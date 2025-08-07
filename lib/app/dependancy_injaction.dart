@@ -17,6 +17,7 @@ import 'package:maignanka_app/features/controllers/conversations/media_controlle
 import 'package:maignanka_app/features/controllers/conversations/socket_chat_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
+import 'package:maignanka_app/features/controllers/gallery/gallery_controller.dart';
 import 'package:maignanka_app/features/controllers/gifts/gifts_controller.dart';
 import 'package:maignanka_app/features/controllers/notification/notification_controller.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
@@ -59,4 +60,5 @@ class DependencyInjection implements Bindings {
     Get.put(BalanceController());
     Get.put(WalletController());
     Get.put(PostLikeController());
+    Get.put(GalleryController());
   }}

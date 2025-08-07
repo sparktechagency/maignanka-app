@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/features/controllers/conversations/media_controller.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:photo_view/photo_view.dart';
@@ -70,19 +71,28 @@ class _MediaScreenState extends State<MediaScreen> {
 class FullScreenImage extends StatelessWidget {
   final String imageUrl;
 
-  const FullScreenImage({required this.imageUrl});
+  const FullScreenImage({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
+      paddingSide: 0,
       appBar: CustomAppBar(
-        title: "Preview",
+        title: "Photo",
       ),
-      body: Center(child: PhotoView(
-        backgroundDecoration: BoxDecoration(
-          color: Colors.white
+      body: Center(
+        child: PhotoView(
+          backgroundDecoration: const BoxDecoration(
+          ),
+          imageProvider: NetworkImage(imageUrl),
+          loadingBuilder: (context, progress) => const Center(
+            child: CustomLoader(),
+          ),
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.covered * 2,
+          heroAttributes: PhotoViewHeroAttributes(tag: imageUrl),
         ),
-          imageProvider: NetworkImage(imageUrl))),
+      ),
     );
   }
 }

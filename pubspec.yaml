@@ -25,7 +25,6 @@ dependencies:
   socket_io_client: ^3.1.2
   logger: ^2.5.0
   lottie: ^3.3.1
-  connectivity_plus:
   flutter_svg:
   url_launcher: ^6.3.1
   image_picker: ^1.1.2
@@ -47,12 +46,16 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   firebase_core: ^3.15.0
   firebase_messaging: ^15.2.10
+  flutter_staggered_grid_view: ^0.7.0
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
   flutter_gen_runner:
+  flutter_launcher_icons: ^0.14.4
+
 
 
 
@@ -73,9 +76,15 @@ flutter_gen:
 flutter_icons:
   android: true
   ios: true
+  remove_alpha_ios: true
   image_path: "assets/images/app_logo.png"
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/app_logo.png"
+
+
+#  fvm flutter pub get
+#  fvm flutter pub run flutter_launcher_icons
+
 
 
 flutter:
@@ -85,6 +94,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lotties/
   fonts:
     - family: Inter
       fonts:

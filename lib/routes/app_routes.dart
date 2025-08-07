@@ -14,6 +14,7 @@ import 'package:maignanka_app/features/views/bank_info/bank_info_screen.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/customtom_bottom_nav.dart';
 import 'package:maignanka_app/features/views/comment/comment_screen.dart';
 import 'package:maignanka_app/features/views/conversation/chat_screen.dart';
+import 'package:maignanka_app/features/views/gallery/gallery_screen.dart';
 import 'package:maignanka_app/features/views/gifts/gifts_member_screen.dart';
 import 'package:maignanka_app/features/views/gifts/gifts_screen.dart';
 import 'package:maignanka_app/features/views/join_guest/join_guest_screen.dart';
@@ -77,6 +78,7 @@ abstract class AppRoutes {
   static const String giftsMemberScreen = '/giftsMemberScreen';
   static const String bankInfoScreen = '/bankInfoScreen';
   static const String joinGuestScreen = '/joinGuestScreen';
+  static const String galleryScreen = '/galleryScreen';
 
 
 
@@ -117,5 +119,6 @@ abstract class AppRoutes {
     giftsMemberScreen : (context) => GiftsMemberScreen(),
     bankInfoScreen : (context) => BankInfoScreen(),
     joinGuestScreen : (context) => JoinGuestScreen(),
+    galleryScreen : (context) => GalleryScreen(),
   };
 }

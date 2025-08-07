@@ -7,6 +7,8 @@ import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/internet/connectivity.dart';
+import 'package:maignanka_app/services/internet/no_internet_wrapper.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -18,6 +20,8 @@ void main() async {
   if(token.isNotEmpty){
     await SocketServices().init();
   }
+
+  Get.put(ConnectivityController());
 
   DeviceUtils.lockDevicePortrait();
   runApp(const MaignankaApp());
@@ -38,6 +42,7 @@ class MaignankaApp extends StatelessWidget {
             themeMode: ThemeMode.light,
             initialBinding: DependencyInjection(),
             routes: AppRoutes.routes,
+            builder: (context, child) => Scaffold(body: NoInternetWrapper(child: child!)),
           ),
     );
   }

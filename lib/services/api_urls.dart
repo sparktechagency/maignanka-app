@@ -37,6 +37,7 @@ class ApiUrls {
   static  const String  postCreate = '/timeline/post';
   static  const String  gifts = '/gifts';
   static  const String  balance = '/balance';
+  static  const String  gallery = '/gallery';
   static  const String  sendGifts = '/balance/';
   static  const String  topUp = '/stripe/create-payment-intent';
   static  const String  withdraw = '/transections/withdraw';
@@ -48,6 +49,7 @@ class ApiUrls {
   static   String  createComment(String postId) => '/timeline/post/$postId/comment';
   static   String  transHistory(int page,int limit) => '/transections/gifts?page=$page&limit=$limit';
   static   String  myTransHistory(int page,int limit) => '/transections/balance?page=$page&limit=$limit';
+  static   String  photoDeleted(String id) => '/gallery/$id';
 
 
 
