@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCVXQB2htOeiOSTLg14VYF81lawq9wSdPg',
-    appId: '1:472178326362:android:14cb98b14d2028f3071163',
-    messagingSenderId: '472178326362',
-    projectId: 'kis-app-876e6',
-    storageBucket: 'kis-app-876e6.firebasestorage.app',
+    apiKey: 'AIzaSyC32WecuOjep7kpviv12h1HrJPjKW_FmcY',
+    appId: '1:956043368979:android:3bce453d22abe82ddc7de6',
+    messagingSenderId: '956043368979',
+    projectId: 'kis-577ad',
+    storageBucket: 'kis-577ad.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDHqJ_gOewQmOjjR8ZaMW_tORVAk_2n55Q',
-    appId: '1:472178326362:ios:c0740718628eaca4071163',
-    messagingSenderId: '472178326362',
-    projectId: 'kis-app-876e6',
-    storageBucket: 'kis-app-876e6.firebasestorage.app',
+    apiKey: 'AIzaSyBBkMxa41kM0PDTJX3JgX9G2JgtVLN_rc8',
+    appId: '1:956043368979:ios:ac13b1c74905d685dc7de6',
+    messagingSenderId: '956043368979',
+    projectId: 'kis-577ad',
+    storageBucket: 'kis-577ad.firebasestorage.app',
     iosBundleId: 'com.example.maignankaApp',
   );
 

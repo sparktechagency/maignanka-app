@@ -9,18 +9,21 @@ class PostModelData {
   UserInfo? userInfo;
   int? commentsCount;
   int? likesCount;
+  bool? isLiked;
 
-  PostModelData(
-      {this.sId,
-        this.userID,
-        this.caption,
-        this.images,
-        this.createdAt,
-        this.updatedAt,
-        this.iV,
-        this.userInfo,
-        this.commentsCount,
-        this.likesCount});
+  PostModelData({
+    this.sId,
+    this.userID,
+    this.caption,
+    this.images,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.userInfo,
+    this.commentsCount,
+    this.likesCount,
+    this.isLiked,
+  });
 
   PostModelData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -35,11 +38,13 @@ class PostModelData {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    userInfo = json['userInfo'] != null
-        ? new UserInfo.fromJson(json['userInfo'])
-        : null;
+    userInfo =
+        json['userInfo'] != null
+            ? new UserInfo.fromJson(json['userInfo'])
+            : null;
     commentsCount = json['commentsCount'];
     likesCount = json['likesCount'];
+    isLiked = json['isLiked'];
   }
 }
 
@@ -67,5 +72,4 @@ class UserInfo {
     email = json['email'];
     profilePicture = json['profilePicture'];
   }
-
 }

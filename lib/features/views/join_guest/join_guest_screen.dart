@@ -35,7 +35,7 @@ class _JoinGuestScreenState extends State<JoinGuestScreen> {
 
   @override
   void initState() {
-    _postController.postGet();
+    _postController.postSocialGet(isInitialLoad: true);
     _addScrollListener();
     super.initState();
   }
@@ -52,21 +52,21 @@ class _JoinGuestScreenState extends State<JoinGuestScreen> {
 
       body: RefreshIndicator(
         onRefresh: () async{
-          _postController.postGet(isInitialLoad: true);
+          _postController.postSocialGet(isInitialLoad: true);
         },
         child: GetBuilder<PostController>(
             builder: (controller) {
-              if(controller.isLoading){
+              if(controller.isLoadingSocial){
                 return CustomLoader();
-              }else if(controller.postData.isEmpty){
+              }else if(controller.socialPostData.isEmpty){
                 return Center(child: CustomText(text: 'No posts found.'));
               }
               return ListView.builder(
                   controller: _scrollController,
-                  itemCount: controller.postData.length,
+                  itemCount: controller.socialPostData.length,
                   itemBuilder: (context,index){
                     return PostCardWidget(
-                        postData: controller.postData[index],isSocialAction: () => showLoginBottomSheet(context,
+                        postData: controller.socialPostData[index],isSocialAction: () => showLoginBottomSheet(context,
                     )
                     );
                   });

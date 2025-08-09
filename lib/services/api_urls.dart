@@ -1,11 +1,14 @@
 class ApiUrls {
-  static const String baseUrl = "http://217.15.170.117";
+  //static const String baseUrl = "http://217.15.170.117";
+  static const String baseUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com";
 
 
-  static const String imageBaseUrl = "http://217.15.170.117/";
+  //static const String imageBaseUrl = "http://217.15.170.117/";
+  static const String imageBaseUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com/";
 
 
-  static const String socketUrl = "http://217.15.170.117";
+  //static const String socketUrl = "http://217.15.170.117";
+  static const String socketUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
@@ -23,6 +26,7 @@ class ApiUrls {
   static   String  likeRewind(String userId) => '/match/likes/rewind?userId=$userId';
   static   String  notification(int page,int limit) => '/notification?page=$page&limit=$limit';
   static   String  allPost(int page,int limit,String? userId) => '/timeline?page=$page&limit=$limit&userId=$userId';
+  static   String  socialPost(int page,int limit) => '/timeline/social?page=$page&limit=$limit';
   static   String  conversation(int page,int limit) => '/conversation?limit=$limit&page=$page';
   static   String  message(String conversationId, int page,int limit) => '/message/$conversationId?page=$page&limit=$limit';
   static   String  block(String conversationId) => '/conversation/block/$conversationId';

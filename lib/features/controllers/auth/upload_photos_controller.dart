@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
+import 'package:maignanka_app/features/views/corp_image/corp_image_screen.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
@@ -19,9 +21,17 @@ class UploadPhotosController extends GetxController {
       context: context,
       onImagePicked: (XFile file) {
         if (images.length < 6) {
-          images.add(File(file.path));
-          update();
+          Get.to(() => CropImageScreen(
+            height: 400.h,
+            initialImage: File(file.path),
+            onCropped: (croppedImage) {
+              images.add(croppedImage);
+              update();
+            },
+          ));
         }
+
+
       },
     );
   }

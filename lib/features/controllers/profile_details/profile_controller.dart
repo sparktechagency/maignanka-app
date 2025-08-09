@@ -7,6 +7,7 @@ import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/features/models/my_profile_model_data.dart';
 import 'package:maignanka_app/features/models/profile_details_model_data.dart';
+import 'package:maignanka_app/features/views/corp_image/corp_image_screen.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 
@@ -47,9 +48,14 @@ class ProfileController extends GetxController {
     PhotoPickerHelper.showPicker(
       context: context,
       onImagePicked: (file){
-        profileImage = File(file.path);
-        update();
-        editProfileImage();
+        Get.to(() => CropImageScreen(
+          initialImage: File(file.path),
+          onCropped: (croppedImage) {
+            profileImage = croppedImage;
+            update();
+            editProfileImage();
+          },
+        ));
       },
     );
 

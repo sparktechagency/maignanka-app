@@ -72,7 +72,6 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
               ///<=========== description text form ==============>
               SizedBox(height: 16.h),
               CustomTextField(
-                labelText: 'Add Caption',
                 validator: (v) => null,
                 filColor: Colors.white,
                 borderColor: Colors.transparent,
@@ -128,7 +127,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
 
               const Divider(thickness: 0.4),
 
-              ///<===========  Photo  form ==============>
+              ///<===========>  Photo  form <==============>
 
               CustomText(
                 left: 10.w,

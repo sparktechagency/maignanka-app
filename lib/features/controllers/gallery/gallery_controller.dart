@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/models/gallery_model_data.dart';
+import 'package:maignanka_app/features/views/corp_image/corp_image_screen.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import '../../../app/helpers/photo_picker_helper.dart';
@@ -121,7 +122,14 @@ class GalleryController extends GetxController {
     PhotoPickerHelper.showPicker(
       context: context,
       onImagePicked: (file) {
-        onePhotoUpload(File(file.path));
+        Get.to(() => CropImageScreen(
+          initialImage: File(file.path),
+          onCropped: (croppedImage) {
+            onePhotoUpload(croppedImage);
+            update();
+          },
+        ),
+        );
       },
     );
   }

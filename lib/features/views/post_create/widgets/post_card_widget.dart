@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
-import 'package:maignanka_app/features/controllers/post/post_like_controller.dart';
 import 'package:maignanka_app/features/models/post_model_data.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
@@ -73,7 +73,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
             },
             image: data.userInfo?.profilePicture ?? '',
             title: data.userInfo?.name ?? '',
-            subTitle: data.userInfo?.email ?? '',
+            subTitle: TimeFormatHelper.getTimeAgo(DateTime.parse(data.createdAt ?? '')),
             trailing: widget.isMyPost
                 ? CustomPopupMenu(
               icon: Icons.edit_note,
@@ -157,7 +157,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                 Expanded(
                   child: Row(
                     children: [
-                      GetBuilder<PostLikeController>(
+                      GetBuilder<PostController>(
                         builder: (controller) {
                           final isLiked = controller.isLiked(widget.postData.sId!);
 
@@ -169,8 +169,8 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                             },
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
-                                color: isLiked ? AppColors.primaryColor : AppColors.appGreyColor,
+                                isLiked || widget.postData.isLiked == true ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
+                                color: isLiked || widget.postData.isLiked == true ? AppColors.primaryColor : AppColors.appGreyColor,
                                 size: 18.r,
                               );
                             },

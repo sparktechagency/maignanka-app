@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "472178326362",
-    "project_id": "kis-app-876e6",
-    "storage_bucket": "kis-app-876e6.firebasestorage.app"
+    "project_number": "956043368979",
+    "project_id": "kis-577ad",
+    "storage_bucket": "kis-577ad.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:472178326362:android:14cb98b14d2028f3071163",
+        "mobilesdk_app_id": "1:956043368979:android:3bce453d22abe82ddc7de6",
         "android_client_info": {
           "package_name": "com.example.maignanka_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCVXQB2htOeiOSTLg14VYF81lawq9wSdPg"
+          "current_key": "AIzaSyC32WecuOjep7kpviv12h1HrJPjKW_FmcY"
         }
       ],
       "services": {
