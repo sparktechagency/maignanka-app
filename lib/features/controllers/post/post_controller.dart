@@ -195,15 +195,16 @@ class PostController extends GetxController {
 
   /// Fetch search results
   Future<void> postSearchGet(String search, {bool isInitialLoad = false}) async {
-    if (isInitialLoad) {
-      searchPostData.clear();
-      searchPage = 1;
-      searchTotalPage = -1;
-      lastSearch = search; // Save the keyword
-    }
-
-    // Prevent multiple calls at once
-    if (isLoadingSearch) return;
+    searchPostData.clear();
+    // if (isInitialLoad) {
+    //   searchPostData.clear();
+    //   searchPage = 1;
+    //   searchTotalPage = -1;
+    //   lastSearch = search; // Save the keyword
+    // }
+    //
+    // // Prevent multiple calls at once
+    // if (isLoadingSearch) return;
 
     isLoadingSearch = true;
     update();
