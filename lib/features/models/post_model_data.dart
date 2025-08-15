@@ -73,3 +73,22 @@ class UserInfo {
     profilePicture = json['profilePicture'];
   }
 }
+
+
+
+class SearchModelData {
+  String? sId;
+  String? name;
+  String? email;
+  String? profilePicture;
+
+  SearchModelData({this.sId, this.name, this.email, this.profilePicture});
+
+  SearchModelData.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    email = json['email'];
+    profilePicture = json['profilePicture'];
+  }
+}
+

@@ -8,6 +8,7 @@ import 'package:maignanka_app/features/views/post_create/widgets/post_card_widge
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_list_tile.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
@@ -94,6 +95,47 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
         CustomTextField(
+          readOnly: true,
+                onTap: (){
+            showModalBottomSheet(
+              useSafeArea: true,
+             // useRootNavigator: true,
+              //isScrollControlled: true,
+                context: context, builder: (context) => Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                  child: GetBuilder<PostController>(
+                      builder: (controller) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 24.h),
+                          CustomTextField( onChanged: (val) {},
+                              validator: (_) {
+                                return null;
+                              },
+                              suffixIcon:  IconButton(onPressed: (){
+                                controller.postSearchGet(_searchController.text.trim());
+                              }, icon: Icon(controller.isLoadingSearch ? Icons.wifi_protected_setup_rounded : Icons.search,color: AppColors.primaryColor,)) ,
+                              hintText: 'Search people to chat...',
+                              contentPaddingVertical: 0,
+                              controller: _searchController),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: controller.searchPostData.length,
+                              itemBuilder: (context, index) => CustomListTile(
+                                onTap: (){
+                                  Get.toNamed(AppRoutes.profileDetailsScreen,arguments: {'userId' : controller.searchPostData[index].sId ?? ''});
+                                },
+                                image: controller.searchPostData[index].profilePicture ?? '',
+                                title: controller.searchPostData[index].name ?? '',
+                              ),),
+                          ),
+                        ],
+                      );
+                    }
+                  ),
+                )
+            );
+                },
                 onChanged: (val) {},
                 validator: (_) {
                   return null;

@@ -185,4 +185,73 @@ class PostController extends GetxController {
   }
 
 
+
+
+  bool isLoadingSearch = false;
+  int searchPage = 1;
+  int searchTotalPage = 1;
+  String lastSearch = ""; // Store the last search keyword
+  List<SearchModelData> searchPostData = [];
+
+  /// Fetch search results
+  Future<void> postSearchGet(String search, {bool isInitialLoad = false}) async {
+    if (isInitialLoad) {
+      searchPostData.clear();
+      searchPage = 1;
+      searchTotalPage = -1;
+      lastSearch = search; // Save the keyword
+    }
+
+    // Prevent multiple calls at once
+    if (isLoadingSearch) return;
+
+    isLoadingSearch = true;
+    update();
+
+    try {
+      final response = await ApiClient.getData(
+        ApiUrls.postSearch(search, searchPage, searchTotalPage),
+      );
+
+      final responseBody = response.body;
+
+      if (response.statusCode == 200) {
+        final List data = responseBody['data'] ?? [];
+        final post = data.map((json) => SearchModelData.fromJson(json)).toList();
+
+        searchTotalPage =
+            responseBody['pagination']?['totalPages'] ?? searchTotalPage;
+
+        searchPostData.addAll(post);
+      } else {
+        ToastMessageHelper.showToastMessage(
+          responseBody['message'] ?? "Something went wrong",
+        );
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Error: $e");
+    }
+
+    isLoadingSearch = false;
+    update();
+  }
+
+  /// Load more search results
+  Future<void> loadMoreSearch() async {
+    if (isLoadingSearch) return; // Prevent multiple requests
+    print('============> Page $searchPage');
+
+    if (searchPage < searchTotalPage) {
+      searchPage += 1;
+      update();
+      print(
+        '============> Page++ $searchPage \n=============> totalPage $searchTotalPage',
+      );
+
+      await postSearchGet(lastSearch);
+    }
+  }
+
+
+
 }

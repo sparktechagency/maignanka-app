@@ -1,14 +1,14 @@
 class ApiUrls {
   //static const String baseUrl = "http://217.15.170.117";
-  static const String baseUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com";
+  static const String baseUrl = "https://kisdate-xilem.sarv.live";
 
 
   //static const String imageBaseUrl = "http://217.15.170.117/";
-  static const String imageBaseUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com/";
+  static const String imageBaseUrl = "https://kisdate-xilem.sarv.live/";
 
 
   //static const String socketUrl = "http://217.15.170.117";
-  static const String socketUrl = "https://instrumentation-implementation-approval-nonprofit.trycloudflare.com";
+  static const String socketUrl = "https://kisdate-xilem.sarv.live";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
@@ -54,6 +54,7 @@ class ApiUrls {
   static   String  transHistory(int page,int limit) => '/transections/gifts?page=$page&limit=$limit';
   static   String  myTransHistory(int page,int limit) => '/transections/balance?page=$page&limit=$limit';
   static   String  photoDeleted(String id) => '/gallery/$id';
+  static   String  postSearch(String term,int page,int limit) => '/users/find?page=$page&limit=$limit&term=$term';
 
 
 
