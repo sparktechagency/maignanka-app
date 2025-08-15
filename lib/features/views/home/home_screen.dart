@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
             showModalBottomSheet(
               useSafeArea: true,
              // useRootNavigator: true,
-              //isScrollControlled: true,
+              isScrollControlled: true,
                 context: context, builder: (context) => Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 16.w),
                   child: GetBuilder<PostController>(
