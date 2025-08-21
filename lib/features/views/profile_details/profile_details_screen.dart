@@ -195,10 +195,12 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
             controller: _pageController,
             itemCount: pictures?.length ?? 0,
             onPageChanged: (index) => setState(() => _currentPage = index),
-            itemBuilder: (context, index) => CustomNetworkImage(
+            itemBuilder: (context, index) {
+              debugPrint(' ===========>> ${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}');
+              return CustomNetworkImage(
               borderRadius: 13.r,
               imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}' ?? '',
-            ),
+            );}
           ),
           if ((pictures?.length ?? 0) > 1)
             Positioned(

@@ -20,6 +20,7 @@ class SwipeCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(              ' ==================>> image ${ApiUrls.imageBaseUrl}${swipeData.pictures?[0].imageURL}',);
     return CustomContainer(
       onTap: onTap,
       color: AppColors.secondaryColor,
@@ -34,7 +35,7 @@ class SwipeCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.r),
             child: CustomNetworkImage(
               imageUrl:
-              '${ApiUrls.imageBaseUrl}${swipeData.pictures?.first.imageURL}',
+              '${ApiUrls.imageBaseUrl}${swipeData.pictures?[1].imageURL}',
             ),
           ),
           Positioned(
