@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: controller.postData.length,
                   itemBuilder: (context,index){
                 return PostCardWidget(
-                 // isMyPost: controller.selectedValueType == 'my' ? true : false,
+                 isMyPost: controller.selectedValueType == 'my' ? true : false,
                   postData: controller.postData[index],
                 );
               });

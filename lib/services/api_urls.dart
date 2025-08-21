@@ -54,6 +54,7 @@ class ApiUrls {
   static   String  transHistory(int page,int limit) => '/transections/gifts?page=$page&limit=$limit';
   static   String  myTransHistory(int page,int limit) => '/transections/balance?page=$page&limit=$limit';
   static   String  photoDeleted(String id) => '/gallery/$id';
+  static   String  postDeleted(String id) => '/timeline/post/$id';
   static   String  postSearch(String term,int page,int limit) => '/users/find?page=$page&limit=$limit&term=$term';
 
 

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
+import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
 import 'package:maignanka_app/features/models/post_model_data.dart';
@@ -11,6 +12,7 @@ import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_urls.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
+import 'package:maignanka_app/widgets/custom_delete_or_success_dialog.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
 import 'package:maignanka_app/widgets/custom_network_image.dart';
 import 'package:maignanka_app/widgets/custom_popup.dart';
@@ -79,7 +81,17 @@ class _PostCardWidgetState extends State<PostCardWidget> {
               icon: Icons.edit_note,
               iconColor: Colors.grey.shade600,
               items: ['Edit Post', 'Delete Post'],
-              onSelected: (val) {},
+              onSelected: (val) {
+                if(val == 'Edit Post'){
+
+                }else if(val == 'Delete Post'){
+                  showDeleteORSuccessDialog(context, onTap: (){
+                    Get.find<PostController>().postDeleted(data.sId ?? '');
+                    ToastMessageHelper.showToastMessage("please wait...");
+                    Get.back();
+                  });
+                }
+              },
             )
                 : null,
           ),
@@ -92,7 +104,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
               maxline: 2,
               left: 12.w,
               bottom: 10.h,
-              fontSize: 10.sp,
+              //fontSize: 16.sp,
               textAlign: TextAlign.start,
               text: data.caption ?? '',
             ),

@@ -81,17 +81,7 @@ class FullScreenImage extends StatelessWidget {
         title: "Photo",
       ),
       body: Center(
-        child: PhotoView(
-          backgroundDecoration: const BoxDecoration(
-          ),
-          imageProvider: NetworkImage(imageUrl),
-          loadingBuilder: (context, progress) => const Center(
-            child: CustomLoader(),
-          ),
-          minScale: PhotoViewComputedScale.contained,
-          maxScale: PhotoViewComputedScale.covered * 2,
-          heroAttributes: PhotoViewHeroAttributes(tag: imageUrl),
-        ),
+        child: CustomNetworkImage(imageUrl: imageUrl,fit: BoxFit.fitHeight,height: 400.h),
       ),
     );
   }

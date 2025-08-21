@@ -86,8 +86,12 @@ class PostController extends GetxController {
       page += 1;
       update();
       print('============> Page++ $page \n=============> totalPage $totalPage');
+      if(selectedValueType == 'my'){
+        postGet(userId: Get.find<ProfileController>().userId);
+      }else{
+        postGet();
+      }
 
-      await postGet();
     }
   }
 
@@ -251,6 +255,40 @@ class PostController extends GetxController {
 
       await postSearchGet(lastSearch);
     }
+  }
+
+
+
+
+
+  /// deleted post =======================>
+
+
+  bool isLoadingDelete = false;
+
+
+
+  Future<void> postDeleted(String postId) async {
+
+
+    isLoadingDelete = true;
+    update();
+
+    final response = await ApiClient.deleteData(
+      ApiUrls.postDeleted(postId),
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      postGet(userId: Get.find<ProfileController>().userId,isInitialLoad: true);
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+    isLoadingDelete = false;
+    update();
   }
 
 
