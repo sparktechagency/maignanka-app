@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
+import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/corp_image/corp_image_screen.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
@@ -82,6 +83,52 @@ class CreatePostController extends GetxController {
     }
   }
 
+
+
+
+
+  /// edit post =======================>
+
+
+  bool isLoadingEdit = false;
+
+  final TextEditingController editDesController = TextEditingController();
+
+
+
+  Future<void> postEdit(String postId) async {
+
+
+    ToastMessageHelper.showToastMessage('Please wait...');
+
+
+    isLoadingEdit = true;
+    update();
+
+
+    final requestBody = {
+      'caption' : editDesController.text.trim(),
+    };
+
+    final response = await ApiClient.put(
+        ApiUrls.postEdit(postId),requestBody
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      Get.find<PostController>().postGet(userId: Get.find<ProfileController>().userId,isInitialLoad: true);
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      editDesController.clear();
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+    isLoadingEdit = false;
+    update();
+  }
+
+
   /// Clear form fields
   void _cleanField() {
     descriptionController.clear();
@@ -91,6 +138,7 @@ class CreatePostController extends GetxController {
 
   @override
   void dispose() {
+    editDesController.dispose();
     descriptionController.dispose();
     super.dispose();
   }

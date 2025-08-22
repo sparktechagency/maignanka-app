@@ -26,11 +26,12 @@ class PostCardWidget extends StatefulWidget {
     super.key,
     this.isMyPost = false,
     required this.postData,
-    this.isSocialAction,
+    this.isSocialAction, this.onSelected,
   });
 
   final bool isMyPost;
   final PostModelData postData;
+  final Function(String)? onSelected;
 
   /// Step 2: Use function with Enum
   final VoidCallback? isSocialAction;
@@ -81,17 +82,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
               icon: Icons.edit_note,
               iconColor: Colors.grey.shade600,
               items: ['Edit Post', 'Delete Post'],
-              onSelected: (val) {
-                if(val == 'Edit Post'){
-
-                }else if(val == 'Delete Post'){
-                  showDeleteORSuccessDialog(context, onTap: (){
-                    Get.find<PostController>().postDeleted(data.sId ?? '');
-                    ToastMessageHelper.showToastMessage("please wait...");
-                    Get.back();
-                  });
-                }
-              },
+              onSelected: widget.onSelected,
             )
                 : null,
           ),

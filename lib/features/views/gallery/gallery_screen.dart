@@ -46,7 +46,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                 mainAxisSpacing: 8,
                                 crossAxisSpacing: 8,
                                 children: List.generate(controller.galleryData.length, (index) {
-                    final media = controller.galleryData[index];
+                                  debugPrint(' ==================== > > ${controller.galleryData[index].imageURL}');
+                                  final media = controller.galleryData[index];
                     final imageUrl = '${ApiUrls.imageBaseUrl}${media.imageURL}';
                     final isSelected = controller.selectedIndexes.contains(index);
 

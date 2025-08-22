@@ -2,12 +2,14 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
 import 'package:maignanka_app/features/views/post_create/widgets/post_card_widget.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_delete_or_success_dialog.dart';
 import 'package:maignanka_app/widgets/custom_list_tile.dart';
 import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
@@ -163,9 +165,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _scrollController,
                 itemCount: controller.postData.length,
                   itemBuilder: (context,index){
-                return PostCardWidget(
+                    debugPrint("Selected post caption: ${controller.postData[index].caption}");
+                    return PostCardWidget(
                  isMyPost: controller.selectedValueType == 'my' ? true : false,
                   postData: controller.postData[index],
+                  onSelected: (val) {
+                    if(val == 'Edit Post'){
+                      Get.toNamed(AppRoutes.editPostScreen,arguments: {'postData' : controller.postData[index]});
+                    }else if(val == 'Delete Post'){
+                      showDeleteORSuccessDialog(context, onTap: (){
+                        Get.find<PostController>().postDeleted(controller.postData[index].sId ?? '');
+                        ToastMessageHelper.showToastMessage("please wait...");
+                        Get.back();
+                      });
+                    }
+                  },
                 );
               });
                         }

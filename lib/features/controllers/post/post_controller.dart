@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
@@ -281,7 +281,7 @@ class PostController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      postGet(userId: Get.find<ProfileController>().userId,isInitialLoad: true);
+      postGet(userId: Get.find<ProfileController>().userId);
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
@@ -290,6 +290,12 @@ class PostController extends GetxController {
     isLoadingDelete = false;
     update();
   }
+
+
+
+
+
+
 
 
 

@@ -28,7 +28,7 @@ class PostModelData {
   PostModelData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     userID = json['userID'];
-    caption = json['caption'];
+    caption = json['caption'] ?? '';
     if (json['images'] != null) {
       images = <Images>[];
       json['images'].forEach((v) {
