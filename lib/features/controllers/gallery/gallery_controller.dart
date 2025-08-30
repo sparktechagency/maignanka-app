@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/models/gallery_model_data.dart';
@@ -14,6 +15,9 @@ class GalleryController extends GetxController {
 
   int selectedIndex = 0;
   bool isSelectionMode = false;
+
+  File? corpImage;
+
 
   List<GalleryModelData> galleryData = [];
 
@@ -43,7 +47,7 @@ class GalleryController extends GetxController {
 
   /// ========================== > Upload photo
   bool isLoadingPost = false;
-  Future<void> onePhotoUpload(File? image) async {
+  Future<void> onePhotoUpload() async {
     ToastMessageHelper.showToastMessage(
       'Your post is on its way, please wait a moment...',
     );
@@ -51,7 +55,7 @@ class GalleryController extends GetxController {
     update();
 
     try {
-      List<MultipartBody> multipartFiles = [MultipartBody('file', image!)];
+      List<MultipartBody> multipartFiles = [MultipartBody('file', corpImage!)];
 
       final response = await ApiClient.postMultipartData(
         ApiUrls.gallery,
@@ -65,7 +69,7 @@ class GalleryController extends GetxController {
           responseBody['message'] ?? "Post created successfully.",
         );
         galleryGet();
-        image = null;
+        corpImage = null;
       } else {
         ToastMessageHelper.showToastMessage(
           responseBody['error'] ?? "Failed to create post.",
@@ -110,13 +114,12 @@ class GalleryController extends GetxController {
     if (selectedIndexes.contains(index)) {
       selectedIndexes.clear();
     } else {
-      selectedIndexes
-        ..clear()
-        ..add(index);
+      selectedIndexes..clear()..add(index);
     }
     selectedIndex = index;
     update();
   }
+  
 
   void imagesAdded(BuildContext context) {
     PhotoPickerHelper.showPicker(
@@ -125,8 +128,9 @@ class GalleryController extends GetxController {
         Get.to(() => CropImageScreen(
           initialImage: File(file.path),
           onCropped: (croppedImage) {
-            onePhotoUpload(croppedImage);
+            corpImage = croppedImage;
             update();
+            onePhotoUpload();
           },
         ),
         );

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
@@ -28,6 +29,7 @@ class CreatePostController extends GetxController {
       context: context,
       onImagePicked: (file) {
         Get.to(() => CropImageScreen(
+          height: 400.h,
               initialImage: File(file.path),
               onCropped: (croppedImage) {
                 images.add(croppedImage);

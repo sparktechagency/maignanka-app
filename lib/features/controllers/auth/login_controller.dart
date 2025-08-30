@@ -7,6 +7,7 @@ import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bo
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
+import 'package:maignanka_app/services/get_fcm_token.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 
 class LoginController extends GetxController {
@@ -19,9 +20,13 @@ class LoginController extends GetxController {
     isLoading = true;
     update();
 
+    String? fcmToken = await FirebaseNotificationService.getFCMToken();
+
+
     var bodyParams = {
       "email": emailController.text.trim(),
       "password": passwordController.text,
+      'fcm' : fcmToken,
     };
 
     final response = await ApiClient.postData(

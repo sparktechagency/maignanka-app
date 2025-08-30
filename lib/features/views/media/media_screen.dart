@@ -75,13 +75,20 @@ class FullScreenImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('===================== > > image $imageUrl');
     return CustomScaffold(
       paddingSide: 0,
       appBar: CustomAppBar(
         title: "Photo",
       ),
       body: Center(
-        child: CustomNetworkImage(imageUrl: imageUrl,fit: BoxFit.fitHeight,height: 400.h),
+        child: CustomNetworkImage(
+          imageUrl: imageUrl,
+          fit: BoxFit.contain,
+          width: double.infinity,
+          height: 400.h,
+        ),
       ),
     );
   }

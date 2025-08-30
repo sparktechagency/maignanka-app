@@ -62,6 +62,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
       ),
       body: Center(
         child: CustomImageCrop(
+          imageFit: CustomImageFit.fillVisibleHeight,
           image: FileImage(widget.initialImage),
           cropController: _cropController,
           shape: CustomCropShape.Ratio,

@@ -7,6 +7,7 @@ import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
+import 'package:maignanka_app/services/get_fcm_token.dart';
 
 class RegisterController extends GetxController {
   final firstnameController = TextEditingController();
@@ -45,6 +46,7 @@ class RegisterController extends GetxController {
     isLoading = true;
     update();
 
+    String? fcmToken = await FirebaseNotificationService.getFCMToken();
 
 
 
@@ -57,6 +59,7 @@ class RegisterController extends GetxController {
       "dOB": birthdayController.text.trim(),
       "height": heightController.text.trim(),
       "weight": weightController.text.trim(),
+      'fcm' : fcmToken,
     };
 
     final response = await ApiClient.postData(

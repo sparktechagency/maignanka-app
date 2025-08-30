@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
+import 'package:maignanka_app/services/get_fcm_token.dart';
 import 'package:maignanka_app/services/internet/connectivity.dart';
 import 'package:maignanka_app/services/internet/no_internet_wrapper.dart';
 import 'package:maignanka_app/services/socket_services.dart';
@@ -15,7 +17,12 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance;
+  await FirebaseNotificationService.printFCMToken();
+  await FirebaseNotificationService.initialize();
   String token = await PrefsHelper.getString(AppConstants.bearerToken);
   if(token.isNotEmpty){
     await SocketServices().init();
