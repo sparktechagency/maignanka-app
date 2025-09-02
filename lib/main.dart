@@ -24,9 +24,10 @@ void main() async {
   await FirebaseNotificationService.printFCMToken();
   await FirebaseNotificationService.initialize();
   String token = await PrefsHelper.getString(AppConstants.bearerToken);
-  if(token.isNotEmpty){
+  if (token.isNotEmpty) {
     await SocketServices().init();
   }
+
 
   Get.put(ConnectivityController());
 

@@ -9,7 +9,8 @@ class SocketServices {
   static final SocketServices _socketApi = SocketServices._internal();
   static String? token;
 
-  IO.Socket? socket; // nullable socket
+  IO.Socket? socket;
+  bool _isManualDisconnect = false; // <-- added flag
 
   factory SocketServices() {
     return _socketApi;
@@ -19,11 +20,24 @@ class SocketServices {
 
   /// Initialize socket connection
   Future<void> init() async {
+    if (socket != null) {
+      if (socket!.connected) {
+        print("⚠️ Socket already connected, skipping init");
+        return;
+      } /*else {
+        print("⚠️ Socket instance exists but not connected, reconnecting...");
+        socket!.connect();
+        return;
+      }*/
+    }
+
+    _isManualDisconnect = false;
     token = await PrefsHelper.getString(AppConstants.bearerToken) ?? "";
 
     print("-------------------------------------------------------------\n🔌 Socket init called \n🪪 token = $token");
 
-    socket = IO.io('${ApiUrls.socketUrl}',
+    socket = IO.io(
+      ApiUrls.socketUrl,
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setExtraHeaders({"authorization": "Bearer $token"})
@@ -32,12 +46,13 @@ class SocketServices {
     );
 
     _setupSocketListeners(token.toString());
-
-    socket!.connect();
+    //socket!.connect();
   }
 
   /// Setup listeners for socket events
   void _setupSocketListeners(String token) {
+    socket?.clearListeners(); // <-- important: clear old listeners
+
     socket?.onConnect((_) {
       print('✅ Socket connected: ${socket?.connected}');
     });
@@ -47,12 +62,17 @@ class SocketServices {
     });
 
     socket?.onDisconnect((_) {
-      print('⚠️ Socket disconnected! Attempting to reconnect...');
-      Future.delayed(const Duration(seconds: 2), () {
-        if (socket != null && !socket!.connected) {
-          socket!.connect();
-        }
-      });
+      print('⚠️ Socket disconnected');
+      if (!_isManualDisconnect) {
+        print('🔄 Attempting to reconnect...');
+        Future.delayed(const Duration(seconds: 2), () {
+          if (socket != null && !socket!.connected) {
+            socket!.connect();
+          }
+        });
+      } else {
+        print('🛑 Manual disconnect: no auto-reconnect');
+      }
     });
 
     socket?.onReconnect((_) {
@@ -64,7 +84,7 @@ class SocketServices {
     });
   }
 
-  /// Emit event with acknowledgement
+  /// Emit with acknowledgment
   Future<dynamic> emitWithAck(String event, dynamic body) async {
     final completer = Completer<dynamic>();
 
@@ -82,7 +102,7 @@ class SocketServices {
     return completer.future;
   }
 
-  /// Emit event without acknowledgment
+  /// Emit without acknowledgment
   void emit(String event, dynamic body) {
     if (socket != null && socket!.connected) {
       socket!.emit(event, body);
@@ -92,18 +112,10 @@ class SocketServices {
     }
   }
 
-  /// Disconnect socket (optionally clean up)
-  void disconnect({bool isManual = false}) {
-    if (socket != null && socket!.connected) {
-      socket!.disconnect();
-      print('🔌 Socket disconnected');
-    }
-
-    if (isManual && socket != null) {
-      socket!.clearListeners();
-      socket!.destroy();
-      socket = null;
-      print('🧹 Socket manually destroyed and cleaned');
-    }
+  /// Disconnect socket
+  void disconnect() {
+    _isManualDisconnect = true; // <-- mark as manual
+    socket?.disconnect();
+    print('🔌 Socket manually disconnected');
   }
 }

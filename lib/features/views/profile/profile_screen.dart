@@ -130,12 +130,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onCancel: () {
                       Get.back();
                     },
-                    onConfirm: ()async {
-                      await PrefsHelper.remove(AppConstants.bearerToken);
-                      final socket = SocketServices();
-                     socket.disconnect(isManual: true);
-                      Get.offAllNamed(AppRoutes.onboardingScreen);
-                    },
+                      onConfirm: () async {
+                        final socket = SocketServices();
+                        socket.disconnect();
+
+                        await PrefsHelper.remove(AppConstants.bearerToken);
+
+                        Get.offAllNamed(AppRoutes.onboardingScreen);
+                      }
+
                   ),
                 );
               },

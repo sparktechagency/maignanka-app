@@ -72,8 +72,11 @@ class LoginController extends GetxController {
       else{
         Get.offAllNamed(AppRoutes.customBottomNavBar);
         Get.find<CustomBottomNavBarController>().onChange(0);
-        SocketServices socketServices = SocketServices();
-        await socketServices.init();
+        String token = await PrefsHelper.getString(AppConstants.bearerToken);
+        if(token.isNotEmpty){
+           SocketServices().disconnect();
+          await SocketServices().init();
+        }
       }
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Login failed.");

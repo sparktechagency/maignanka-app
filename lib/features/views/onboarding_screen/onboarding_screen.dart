@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_button.dart';
 import 'package:maignanka_app/widgets/custom_container.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,8 @@
 
+import 'package:maignanka_app/services/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final log = logger(PrefsHelper);
 
 class PrefsHelper {
   static Future<String> getString(String key) async {
@@ -33,6 +36,8 @@ class PrefsHelper {
   }
   static Future remove(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    //PrefsHelper.remove(AppConstants.bearerToken);
+    log.w("⚠️ Token removed >>");
     return preferences.remove(key);
   }
 }
