@@ -197,10 +197,12 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
             onPageChanged: (index) => setState(() => _currentPage = index),
             itemBuilder: (context, index) {
               debugPrint(' ===========>> ${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}');
-              return CustomNetworkImage(
-              borderRadius: 13.r,
-              imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}' ?? '',
-            );}
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(13.r),
+                child: CustomNetworkImage(
+                imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}' ?? '',
+                            ),
+              );}
           ),
           if ((pictures?.length ?? 0) > 1)
             Positioned(

@@ -83,11 +83,14 @@ class FullScreenImage extends StatelessWidget {
         title: "Photo",
       ),
       body: Center(
-        child: CustomNetworkImage(
-          imageUrl: imageUrl,
-          fit: BoxFit.contain,
-          width: double.infinity,
+        child: SizedBox(
           height: 400.h,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(1.r),
+            child: CustomNetworkImage(
+              imageUrl: imageUrl,
+            ),
+          ),
         ),
       ),
     );

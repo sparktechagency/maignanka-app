@@ -126,6 +126,7 @@ class GalleryController extends GetxController {
       context: context,
       onImagePicked: (file) {
         Get.to(() => CropImageScreen(
+          height: 400.h,
           initialImage: File(file.path),
           onCropped: (croppedImage) {
             corpImage = croppedImage;

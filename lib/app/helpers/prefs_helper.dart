@@ -7,7 +7,6 @@ final log = logger(PrefsHelper);
 class PrefsHelper {
   static Future<String> getString(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
     return preferences.getString(key) ?? "";
   }
 

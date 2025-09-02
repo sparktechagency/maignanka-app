@@ -158,23 +158,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (controller) {
               if(controller.isLoading){
                 return CustomLoader();
-              }else if(controller.postData.isEmpty){
+              }else if(controller.selectedValueType == 'my' ? controller.myPostData.isEmpty : controller.allPostData.isEmpty){
                 return Center(child: CustomText(text: 'No posts found.'));
               }
               return ListView.builder(
                 controller: _scrollController,
-                itemCount: controller.postData.length,
+                itemCount: controller.selectedValueType == 'my' ? controller.myPostData.length : controller.allPostData.length,
                   itemBuilder: (context,index){
-                    debugPrint("Selected post caption: ${controller.postData[index].caption}");
+                    //debugPrint("Selected post caption: ${controller.postData[index].caption}");
                     return PostCardWidget(
                  isMyPost: controller.selectedValueType == 'my' ? true : false,
-                  postData: controller.postData[index],
+                  postData: controller.selectedValueType == 'my' ? controller.myPostData[index] : controller.allPostData[index],
                   onSelected: (val) {
                     if(val == 'Edit Post'){
-                      Get.toNamed(AppRoutes.editPostScreen,arguments: {'postData' : controller.postData[index]});
+                      Get.toNamed(AppRoutes.editPostScreen,arguments: {'postData' : controller.selectedValueType == 'my' ? controller.myPostData[index] : controller.allPostData[index]});
                     }else if(val == 'Delete Post'){
                       showDeleteORSuccessDialog(context, onTap: (){
-                        Get.find<PostController>().postDeleted(controller.postData[index].sId ?? '');
+                        Get.find<PostController>().postDeleted(controller.myPostData[index].sId ?? '');
                         ToastMessageHelper.showToastMessage("please wait...");
                         Get.back();
                       });

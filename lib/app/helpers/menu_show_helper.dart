@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MenuShowHelper {
   static final List<String> heightOptions = List.generate(100, (index) {
-    return "${(index ~/ 12) + 4}'${(index % 12)}\" cm";
+    return "${(index ~/ 12) + 4}'${(index % 12)}\" ft";
   });
 
   static final List<String> weightOptions = List.generate(66, (index) {

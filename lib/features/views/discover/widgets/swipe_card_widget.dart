@@ -31,11 +31,14 @@ class SwipeCardWidget extends StatelessWidget {
       borderWidth: 0.5,
       child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16.r),
-            child: CustomNetworkImage(
-              imageUrl:
-              '${ApiUrls.imageBaseUrl}${swipeData.pictures?[1].imageURL}',
+          SizedBox(
+            height: 400.h,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.r),
+              child: CustomNetworkImage(
+                imageUrl:
+                '${ApiUrls.imageBaseUrl}${swipeData.pictures?[1].imageURL}',
+              ),
             ),
           ),
           Positioned(

@@ -19,27 +19,31 @@ class UploadPhotosController extends GetxController {
   Future<void> addPhoto(BuildContext context) async {
     PhotoPickerHelper.showPicker(
       context: context,
-      onImagePicked: (XFile file) {
-        if (images.length < 6) {
-          Get.to(() => CropImageScreen(
-            height: 400.h,
-            initialImage: File(file.path),
-            onCropped: (croppedImage) {
-              images.add(croppedImage);
-              update();
-            },
-          ));
+      onImagePicked: (XFile file) async {
+        if (images.length >= 6) {
+          ToastMessageHelper.showToastMessage("Maximum 6 photos allowed.");
+          return;
         }
 
-
+        await Get.to(() => CropImageScreen(
+          height: 400.h,
+          initialImage: File(file.path),
+          onCropped: (croppedImage) {
+            images.add(croppedImage);
+            update();
+          },
+        ));
       },
     );
   }
 
   void removePhoto(int index) {
-    images.removeAt(index);
-update();
+    if (index >= 0 && index < images.length) {
+      images.removeAt(index);
+      update();
+    }
   }
+
 
 
 
@@ -77,6 +81,8 @@ update();
 
 
   void _cleanField() {
-    images = [];
+    images.clear();
+    update();   // UI update হবে
   }
+
 }

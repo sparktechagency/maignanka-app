@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
+import 'package:maignanka_app/features/views/setting/account_delete_pass_screen.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_dialog.dart';
 import 'package:maignanka_app/widgets/custom_scaffold.dart';
 
 
@@ -53,30 +55,19 @@ class _SettingScreenState extends State<SettingScreen> {
             },
           ),
 
-          /*const Spacer(),
+          const Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30.h),
             child: ProfileListTile(
                 icon: Assets.icons.delete.svg(),
                 title: 'Delete Account',
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => CustomDialog(
-                      title: "Do you want to delete your account ?",
-                      confirmButtonText: 'Delete',
-                      confirmButtonColor: Colors.red,
-                      onCancel: () {
-                      },
-                      onConfirm: () {
-                      },
-                    ),
-                  );
+                  Get.to(() => AccountDeletePassScreen());
                 },
                 noIcon: true,
                 color: Color(0xffF5F5F5),
             ),
-          ),*/
+          ),
         ],
       ),
     );

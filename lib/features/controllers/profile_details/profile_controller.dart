@@ -16,6 +16,8 @@ class ProfileController extends GetxController {
   bool isLoadingProfileImage = false;
   bool isLoadingProfileName = false;
   bool isLoadingMyProfile = false;
+  bool isLoadingShowMyProfile = false;
+  bool isShowMyProfile = true;
   String userId = '';
   String userImage = '';
   String userName = '';
@@ -41,6 +43,14 @@ class ProfileController extends GetxController {
 
     debugPrint('UseId get ==========> $userId');
   }
+
+
+  @override
+  void onInit() async{
+    super.onInit();
+    isShowMyProfile = await PrefsHelper.getBool(AppConstants.isShowMyProfile) ?? false;
+  }
+
 
 
 
@@ -106,6 +116,32 @@ class ProfileController extends GetxController {
     }
 
     isLoadingMyProfile = false;
+    update();
+  }
+
+
+  Future<void> showMyProfile(bool value) async {
+    isLoadingShowMyProfile = true;
+    isShowMyProfile = value; // local update
+    update();
+
+    final response = await ApiClient.patch(
+      ApiUrls.showProfile,
+      {}, // server-কে toggle value পাঠাও
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      // server থেকে আসা value save করো
+      isShowMyProfile = responseBody['data']['isShowMyProfile'] ?? value;
+      await PrefsHelper.setBool(AppConstants.isShowMyProfile, isShowMyProfile);
+    } else {
+      isShowMyProfile = !value; // revert on failure
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+    isLoadingShowMyProfile = false;
     update();
   }
 

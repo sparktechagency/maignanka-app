@@ -32,6 +32,7 @@ class ApiUrls {
   static   String  block(String conversationId) => '/conversation/block/$conversationId';
   static   String  conversationMedia(String conversationId,int page,int limit) => '/conversation/media/$conversationId?page=$page&limit=$limit';
   static  const String  myProfile = '/users/info/me';
+  static  const String  showProfile = '/profiles/visibality';
   static  const String  terms = '/settings/terms-and-conditions';
   static  const String  about = '/settings/about-us';
   static  const String  privacy = '/settings/privacy-policy';
@@ -56,6 +57,7 @@ class ApiUrls {
   static   String  photoDeleted(String id) => '/gallery/$id';
   static   String  postDeleted(String id) => '/timeline/post/$id';
   static   String  postEdit(String id) => '/timeline/post/$id';
+  static   String  accountDelete(String pass) => '/users?password=$pass';
   static   String  postSearch(String term,int page,int limit) => '/users/find?page=$page&limit=$limit&term=$term';
 
 

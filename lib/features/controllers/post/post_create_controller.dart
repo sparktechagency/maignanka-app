@@ -29,7 +29,7 @@ class CreatePostController extends GetxController {
       context: context,
       onImagePicked: (file) {
         Get.to(() => CropImageScreen(
-          height: 400.h,
+          height: 300.h,
               initialImage: File(file.path),
               onCropped: (croppedImage) {
                 images.add(croppedImage);

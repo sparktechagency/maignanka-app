@@ -24,11 +24,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
-  
 
 
-  bool _showProfile = true;
+
 
 
   @override
@@ -85,18 +83,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Get.toNamed(AppRoutes.galleryScreen);
               },
             ),
-            ProfileListTile(
-              paddingVertical: 3.h,
-              trailing: Switch(value: _showProfile, onChanged: (value){
-                _showProfile = value;
-                setState(() {
-
-                });
-              },activeColor: AppColors.secondaryColor,),
-              noIcon: true,
-              title: "Show my profile",
-              onTap: () {
-              },
+            GetBuilder<ProfileController>(
+                builder: (controller) {
+                  return ProfileListTile(
+                    paddingVertical: 3.h,
+                    trailing: Switch(
+                      value: controller.isShowMyProfile,
+                      onChanged: (value) {
+                        controller.showMyProfile(value);
+                      },
+                      activeColor: AppColors.secondaryColor,
+                    ),
+                    noIcon: true,
+                    title: "Show my profile",
+                    onTap: () {},
+                  );
+                }
             ),
 
             ProfileListTile(
@@ -109,7 +111,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ProfileListTile(
               icon: Assets.icons.setting.svg(),
-
               title: "Settings",
               onTap: () {
                 Get.toNamed(AppRoutes.settingScreen);

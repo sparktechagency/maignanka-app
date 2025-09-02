@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     readOnly: true,
                     prefixIcon: Assets.icons.height.svg(),
                     controller: _controller.heightController,
-                    hintText: "Height (cm)",
+                    hintText: "Height (ft)",
                     keyboardType: TextInputType.text,
                     suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined),
                   ),

@@ -14,6 +14,7 @@ class AppConstants{
   static const String isLogged = "isLogged";
   static const String managerType = "managerType";
   static const String fcmToken = "fcmToken";
+  static const String isShowMyProfile = "isShowMyProfile";
 
 
   static RegExp emailValidate = RegExp(

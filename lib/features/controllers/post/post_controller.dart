@@ -16,7 +16,8 @@ class PostController extends GetxController {
   String selectedValueType = 'all';
 
 
-  List<PostModelData> postData = [];
+  List<PostModelData> allPostData = [];
+  List<PostModelData> myPostData = [];
 
 
 
@@ -46,7 +47,11 @@ class PostController extends GetxController {
   Future<void> postGet({String? userId = '',bool isInitialLoad = false}) async {
 
     if (isInitialLoad) {
-      postData.clear();
+      if(userId != ''){
+        myPostData.clear();
+      }else{
+        allPostData.clear();
+      }
       page = 1;
       totalPage = -1;
     }
@@ -67,7 +72,12 @@ class PostController extends GetxController {
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
-      postData.addAll(post);
+
+      if(userId != ''){
+        myPostData.addAll(post);
+      }else{
+        allPostData.addAll(post);
+      }
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
