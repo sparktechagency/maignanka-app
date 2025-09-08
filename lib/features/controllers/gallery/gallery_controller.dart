@@ -16,7 +16,7 @@ class GalleryController extends GetxController {
   int selectedIndex = 0;
   bool isSelectionMode = false;
 
-  File? corpImage;
+  List<File> images = [];
 
 
   List<GalleryModelData> galleryData = [];
@@ -55,7 +55,7 @@ class GalleryController extends GetxController {
     update();
 
     try {
-      List<MultipartBody> multipartFiles = [MultipartBody('file', corpImage!)];
+      List<MultipartBody> multipartFiles = [MultipartBody('file', images[0])];
 
       final response = await ApiClient.postMultipartData(
         ApiUrls.gallery,
@@ -69,7 +69,7 @@ class GalleryController extends GetxController {
           responseBody['message'] ?? "Post created successfully.",
         );
         galleryGet();
-        corpImage = null;
+        images.clear();
       } else {
         ToastMessageHelper.showToastMessage(
           responseBody['error'] ?? "Failed to create post.",
@@ -102,7 +102,7 @@ class GalleryController extends GetxController {
       selectedIndexes.clear();
       galleryGet();
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['error'] ?? "");
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       selectedIndexes.clear();
     }
     isLoadingDelete = false;
@@ -126,12 +126,12 @@ class GalleryController extends GetxController {
       context: context,
       onImagePicked: (file) {
         Get.to(() => CropImageScreen(
-          height: 400.h,
+           height: 400.h,
           initialImage: File(file.path),
           onCropped: (croppedImage) {
-            corpImage = croppedImage;
-            update();
+            images.add(croppedImage);
             onePhotoUpload();
+            update();
           },
         ),
         );

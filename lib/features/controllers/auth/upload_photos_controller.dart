@@ -16,16 +16,15 @@ class UploadPhotosController extends GetxController {
 
 
 
-  Future<void> addPhoto(BuildContext context) async {
+  void addPhoto(BuildContext context) {
     PhotoPickerHelper.showPicker(
       context: context,
-      onImagePicked: (XFile file) async {
+      onImagePicked: (file) {
         if (images.length >= 6) {
           ToastMessageHelper.showToastMessage("Maximum 6 photos allowed.");
           return;
         }
-
-        await Get.to(() => CropImageScreen(
+        Get.to(() => CropImageScreen(
           height: 400.h,
           initialImage: File(file.path),
           onCropped: (croppedImage) {

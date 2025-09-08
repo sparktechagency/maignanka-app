@@ -39,8 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 12.h),
             // Profile Picture and Name Section
             Center(
-              child:   GetBuilder<ProfileController>(
-                  builder: (controller) {
+              child:   GetBuilder<ProfileController>(builder: (controller) {
                   return Column(
                     children: [
                       CustomImageAvatar(
