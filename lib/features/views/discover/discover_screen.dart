@@ -5,7 +5,10 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:heart_overlay/heart_overlay.dart';
+import 'package:maignanka_app/app/helpers/prefs_helper.dart';
+import 'package:maignanka_app/app/helpers/simmer_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/app/utils/app_constants.dart';
 import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
@@ -22,7 +25,7 @@ class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
 
   @override
-  State<DiscoverScreen> createState() => _DiscoverScreenState();
+  _DiscoverScreenState createState() => _DiscoverScreenState();
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
@@ -30,16 +33,23 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final _drawerController = AdvancedDrawerController();
   final _heartController = HeartOverlayController();
   final DiscoverController _discoverController = Get.find<DiscoverController>();
+  bool? status;
 
   @override
   void initState() {
-    _discoverController.swipeProfileGet();
     super.initState();
+    _initProfileStatus();
+    _discoverController.swipeProfileGet();
+  }
+
+  Future<void> _initProfileStatus() async {
+    status = await PrefsHelper.getBool(AppConstants.isShowMyProfile);
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProfileController>(builder: (controller) {
+    return GetBuilder<ProfileController>(
+      builder: (profileController) {
         return AdvancedDrawer(
           disabledGestures: true,
           controller: _drawerController,
@@ -65,157 +75,165 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               ),
               title: 'Discover',
             ),
-            body: _discoverController.statusCode == 403 ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomText(
-                    left: 24.w,
-                    right: 24.w,
-                    fontSize: 20.sp,
-                    text: 'You cannot swipe profiles. Enable your profile to continue.',color: Colors.red,),
-                  Switch(
-                    value: controller.isShowMyProfile,
-                    onChanged: (value) {
-                      controller.showMyProfile(value);
-                    },
-                    activeColor: AppColors.secondaryColor,
-                  ),
-                ],
-              ),
-            ) : HeartOverlay(
-              controller: _heartController,
-              duration: const Duration(seconds: 2),
-              icon: _actionButton(
+            body: GetBuilder<DiscoverController>(
+              builder: (discoverController) {
+                return discoverController.forbidden == 403
+                    ? _buildForbiddenContent(profileController)
+                    : _buildMainContent(discoverController);
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildForbiddenContent(ProfileController controller) {
+    return controller.isLoadingShowMyProfile || _discoverController.isLoading ?  Center(child:  SimmerHelper.swipeCardSimmer())
+    : Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomText(
+            left: 24.w,
+            right: 24.w,
+            fontSize: 20.sp,
+            text: 'You cannot swipe profiles. Enable your profile to continue.',
+            color: Colors.red,
+          ),
+           Switch(
+            value: controller.isShowMyProfile,
+            onChanged: (value) {
+             controller.showMyProfile(value);
+            },
+            activeColor: AppColors.secondaryColor,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMainContent(DiscoverController discoverController) {
+    return HeartOverlay(
+      controller: _heartController,
+      duration: const Duration(seconds: 2),
+      icon: _actionButton(
+        icon: Assets.icons.love.svg(
+          height: 34.r,
+          width: 34.r,
+          color: Colors.white,
+        ),
+        color: AppColors.secondaryColor,
+        onTap: () {},
+      ),
+      enableGestures: false,
+      child: Column(
+        children: [
+          _buildSwipeCard(discoverController),
+          _buildActionButtons(),
+          SizedBox(height: 16.h),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwipeCard(DiscoverController discoverController) {
+    return Expanded(
+      child: GetBuilder<DiscoverController>(
+        builder: (controller) {
+          if (controller.isLoading) {
+            return Center(child: SimmerHelper.swipeCardSimmer());
+          }
+          if (controller.swipeDataList.isEmpty) {
+            return Center(child: CustomText(text: 'No profiles found.'));
+          }
+          return CardSwiper(
+            controller: _swiperController,
+            cardsCount: controller.swipeDataList.length,
+            numberOfCardsDisplayed: controller.swipeDataList.length >= 2 ? 2 : 1,
+            onSwipe: (oldIndex, newIndex, direction) {
+              if (newIndex! >= 0 && newIndex < controller.swipeDataList.length) {
+                controller.currentUserId = controller.swipeDataList[newIndex].userId ?? '';
+                controller.update();
+              }
+              return true;
+            },
+            onEnd: () async {
+              await controller.loadMore();
+            },
+            cardBuilder: (context, index, _, __) {
+              if (index < 0 || index >= controller.swipeDataList.length) {
+                return Center(child: CustomText(text: 'No profiles found.'));
+              }
+              final swipeData = controller.swipeDataList[index];
+              return SwipeCardWidget(
+                swipeData: swipeData,
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.profileDetailsScreen,
+                    arguments: {'userId': swipeData.userId ?? ''},
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _actionButton(
+          icon: Assets.icons.cleanIcon.svg(height: 24.r, width: 24.r),
+          color: Colors.white,
+          onTap: () => _swiperController.swipe(CardSwiperDirection.left),
+        ),
+        GetBuilder<MatchController>(
+          builder: (matchController) {
+            return AvatarGlow(
+              duration: const Duration(milliseconds: 500),
+              startDelay: const Duration(microseconds: 1000),
+              glowColor: AppColors.secondaryColor,
+              glowShape: BoxShape.circle,
+              animate: matchController.isLoading,
+              curve: Curves.fastOutSlowIn,
+              child: _actionButton(
                 icon: Assets.icons.love.svg(
                   height: 34.r,
                   width: 34.r,
                   color: Colors.white,
                 ),
                 color: AppColors.secondaryColor,
-                onTap: () {},
+                onTap: () {
+                  if (_discoverController.swipeDataList.isEmpty) return;
+                  matchController.matchCreate(
+                    _discoverController.currentUserId,
+                    _swiperController,
+                    _heartController,
+                    context,
+                  );
+                },
               ),
-              enableGestures: false,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: GetBuilder<DiscoverController>(
-                      builder: (controller) {
-                        if (controller.isLoading) {
-                          return const CustomLoader();
-                        }
-
-                        if (controller.swipeDataList.isEmpty) {
-                          return Center(
-                            child: CustomText(text: 'No profiles found.'),
-                          );
-                        }
-
-                        return CardSwiper(
-                          controller: _swiperController,
-                          cardsCount: controller.swipeDataList.length,
-                          numberOfCardsDisplayed:
-                              controller.swipeDataList.length >= 2 ? 2 : 1,
-
-                          onSwipe: (oldIndex, newIndex, direction) {
-                            if (newIndex! >= 0 &&
-                                newIndex < controller.swipeDataList.length) {
-                              controller.currentUserId =
-                                  controller.swipeDataList[newIndex].userId ?? '';
-                              controller.update();
-                            }
-                            return true;
-                          },
-
-                          onEnd: () async {
-                            await controller.loadMore();
-                          },
-
-                          cardBuilder: (context, index, _, __) {
-                            if (index < 0 ||
-                                index >= controller.swipeDataList.length) {
-                              return Center(
-                                child: CustomText(text: 'No profiles found.'),
-                              );
-                            }
-                            final swipeData = controller.swipeDataList[index];
-                            return SwipeCardWidget(
-                              swipeData: swipeData,
-                              onTap: () {
-                                Get.toNamed(
-                                  AppRoutes.profileDetailsScreen,
-                                  arguments: {'userId': swipeData.userId ?? ''},
-                                );
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _actionButton(
-                        icon: Assets.icons.cleanIcon.svg(height: 24.r, width: 24.r),
-                        color: Colors.white,
-                        onTap:
-                            () => _swiperController.swipe(CardSwiperDirection.left),
-                      ),
-
-                      GetBuilder<MatchController>(
-                        builder: (controller) {
-                          return AvatarGlow(
-                            duration: const Duration(milliseconds: 500),
-                            startDelay: const Duration(microseconds: 1000),
-                            glowColor: AppColors.secondaryColor,
-                            glowShape: BoxShape.circle,
-                            animate: controller.isLoading,
-                            curve: Curves.fastOutSlowIn,
-                            child: _actionButton(
-                              icon: Assets.icons.love.svg(
-                                height: 34.r,
-                                width: 34.r,
-                                color: Colors.white,
-                              ),
-                              color: AppColors.secondaryColor,
-                              onTap: () {
-                                if (_discoverController.swipeDataList.isEmpty)
-                                  return;
-                                controller.matchCreate(
-                                  _discoverController.currentUserId,
-                                  _swiperController,
-                                  _heartController,
-                                  context,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      ),
-
-                      _actionButton(
-                        icon: Assets.icons.gift.svg(height: 24.r, width: 24.r),
-                        color: Colors.white,
-                        onTap: () {
-                          if (_discoverController.swipeDataList.isEmpty) return;
-                          Get.toNamed(
-                            AppRoutes.giftsScreen,
-                            arguments: {
-                              'userId': _discoverController.currentUserId,
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                ],
-              ),
-            ) ,
-          ),
-        );
-      }
+            );
+          },
+        ),
+        _actionButton(
+          icon: Assets.icons.gift.svg(height: 24.r, width: 24.r),
+          color: Colors.white,
+          onTap: () {
+            if (_discoverController.swipeDataList.isEmpty) return;
+            Get.toNamed(
+              AppRoutes.giftsScreen,
+              arguments: {
+                'userId': _discoverController.currentUserId,
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 

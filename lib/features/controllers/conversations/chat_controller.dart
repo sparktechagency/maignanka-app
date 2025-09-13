@@ -14,6 +14,7 @@ import 'package:maignanka_app/services/api_urls.dart';
 
 class ChatController extends GetxController {
   bool isLoading = false;
+  bool isLoadMore = false;
   bool isLoadingFile = false;
   List<ChatModelData> chatsData = [];
   File? image;
@@ -51,6 +52,7 @@ class ChatController extends GetxController {
       totalPage = -1;
     }
 
+    isLoadMore = false;
     isLoading = true;
     update();
 
@@ -73,6 +75,7 @@ class ChatController extends GetxController {
     }
 
     isLoading = false;
+    isLoadMore = false;
     update();
   }
 
@@ -124,12 +127,13 @@ class ChatController extends GetxController {
 
     print('============> Page $page');
 
-    if (page < totalPage) {
+    if (page < totalPage && !isLoadMore) {
       page += 1;
+      isLoadMore = true; //
       update();
       print('============> Page++ $page \n=============> totalPage $totalPage');
 
-      await chatGet(conversationId);
+      await chatGet(conversationId,isInitialLoad: false);
     }
   }
 

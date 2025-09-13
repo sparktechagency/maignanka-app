@@ -13,7 +13,7 @@ class SocketChatController extends GetxController {
 
   /// ===============> Listen for new messages via socket.
   void listenMessage(String conversationId) async {
-    socketService.socket?.on("conversation-$conversationId", (data) {
+    SocketServices.socket?.on("conversation-$conversationId", (data) {
 
       print("=========> Response Message : $data -------------------------");
 
@@ -29,7 +29,7 @@ class SocketChatController extends GetxController {
 
 
   void listenSeen(String conversationId) async {
-    socketService.socket?.on("seen-$conversationId", (data) {
+    SocketServices.socket?.on("seen-$conversationId", (data) {
 
       print("=========> Response Message : $data -------------------------");
 
@@ -43,7 +43,7 @@ class SocketChatController extends GetxController {
 
 
   void listenActive() async {
-    socketService.socket?.on("active-users", (data) {
+    SocketServices.socket?.on("active-users", (data) {
       print("=========> Response Message : $data -------------------------");
 
       if (data != null) {
@@ -90,8 +90,8 @@ class SocketChatController extends GetxController {
 
 
   void removeListeners(String conversationId) {
-    socketService.socket?.off("conversation-$conversationId");
-    socketService.socket?.off("seen-$conversationId");
+    SocketServices.socket?.off("conversation-$conversationId");
+    SocketServices.socket?.off("seen-$conversationId");
   }
 
 

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
+import 'package:maignanka_app/features/controllers/auth/login_controller.dart';
+import 'package:maignanka_app/features/controllers/auth/profiles_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/views/profile/widgets/profile_list_tile.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
@@ -24,13 +26,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-
+  final LoginController _controller = Get.put(LoginController());
+  final AuthProfilesController _profileController = Get.put(AuthProfilesController());
 
 
 
   @override
   Widget build(BuildContext context) {
+    // _profileController.getMyProfileStatus();
     return CustomScaffold(
       appBar: CustomAppBar(title: 'Profile',),
       body: SingleChildScrollView(
@@ -131,12 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Get.back();
                     },
                       onConfirm: () async {
-                        final socket = SocketServices();
-                        socket.disconnect();
+                        _controller.logout();
 
-                        await PrefsHelper.remove(AppConstants.bearerToken);
-
-                        Get.offAllNamed(AppRoutes.onboardingScreen);
                       }
 
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/simmer_helper.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/conversations/conversations_controller.dart';
@@ -69,7 +70,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
               child: GetBuilder<ConversationsController>(
                 builder: (controller) {
                   if(controller.isLoading){
-                    return CustomLoader();
+                    return SimmerHelper.customListTileSimmer();
                   }else if(controller.conversationsDataList.isEmpty){
                     return SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -133,7 +134,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   void dispose() {
-    SocketServices().socket?.off('active-users');
+    // SocketServices().socket?.off('active-users');
     super.dispose();
   }
 }

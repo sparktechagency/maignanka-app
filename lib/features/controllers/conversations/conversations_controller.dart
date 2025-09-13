@@ -4,8 +4,10 @@ import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/models/conversation_model_data.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
+import 'package:maignanka_app/services/socket_services.dart';
 
 class ConversationsController extends GetxController {
+  SocketServices socketService = SocketServices();
   bool isLoading = false;
   List<ConversationModelData> _conversationsData = [];
 

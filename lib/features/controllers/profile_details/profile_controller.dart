@@ -5,6 +5,7 @@ import 'package:maignanka_app/app/helpers/photo_picker_helper.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
+import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/models/my_profile_model_data.dart';
 import 'package:maignanka_app/features/models/profile_details_model_data.dart';
 import 'package:maignanka_app/features/views/corp_image/corp_image_screen.dart';
@@ -73,6 +74,13 @@ class ProfileController extends GetxController {
 
 
 
+  int currentPage = 0; // ✅ Track current page here
+
+  void updateCurrentPage(int index) {
+    currentPage = index;
+    update(); // ✅ triggers GetBuilder rebuild
+  }
+
   Future<void> profileDetailsGet(String userId) async {
     isLoading = true;
     update();
@@ -136,6 +144,9 @@ class ProfileController extends GetxController {
       // server থেকে আসা value save করো
       isShowMyProfile = responseBody['data']['isShowMyProfile'] ?? value;
       await PrefsHelper.setBool(AppConstants.isShowMyProfile, isShowMyProfile);
+      if(isShowMyProfile == true){
+        Get.find<DiscoverController>().swipeProfileGet();
+      }
     } else {
       isShowMyProfile = !value; // revert on failure
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
@@ -145,7 +156,26 @@ class ProfileController extends GetxController {
     update();
   }
 
+  Future<void> getMyProfileStatus() async {
 
+    final response = await ApiClient.getData(
+        ApiUrls.myProfile
+    );
+
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      var data = responseBody['data'] ?? {};
+      // print(data["profileID"]["isShowedMyProfile"]);
+      isShowMyProfile = data["profileID"]["isShowedMyProfile"]=="true" ? true :false ;
+      await PrefsHelper.setBool(AppConstants.isShowMyProfile, data["profileID"]["isShowedMyProfile"]=="true" ? true :false );
+      print("is showed my profile ${await PrefsHelper.getBool(AppConstants.isShowMyProfile)}");
+    } else {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+    }
+
+    update();
+  }
 
 
   Future<void> editProfileImage() async {

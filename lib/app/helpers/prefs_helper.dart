@@ -39,4 +39,10 @@ class PrefsHelper {
     log.w("⚠️ Token removed >>");
     return preferences.remove(key);
   }
+
+  static Future<void> clear() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    print("🧹 SharedPreferences cleared successfully!");
+  }
 }

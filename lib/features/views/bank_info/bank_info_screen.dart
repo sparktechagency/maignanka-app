@@ -44,23 +44,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
               SizedBox(height: 80.h),
               CustomTextField(
                 controller: _balanceController.bankNameController,
-                hintText: "Bank Name",
-              ),
-              CustomTextField(
-                controller: _balanceController.ibanNoController,
-                hintText: "IBAN Number",
-              ),
-              CustomTextField(
-                controller: _balanceController.accountNoController,
-                hintText: "Account Number",
-              ),
-              CustomTextField(
-                controller: _balanceController.routingNoController,
-                hintText: "Routing Number",
-              ),
-              CustomTextField(
-                controller: _balanceController.accountHolderNameController,
-                hintText: "Account Holder Name",
+                hintText: "Paypal email",
               ),
         
               SizedBox(height: 100.h),

@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:maignanka_app/app/helpers/menu_show_helper.dart';
 import 'package:maignanka_app/app/helpers/show_dialog_helper.dart';
+import 'package:maignanka_app/app/helpers/simmer_helper.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/conversations/block_controller.dart';
@@ -111,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: GetBuilder<ChatController>(
               builder: (controller) {
                 if (controller.isLoading) {
-                  return CustomLoader();
+                  return SimmerHelper.chatScreenSimmer();
                 }
                 else if (controller.chatsData.isEmpty) {
                   return const Center(child: Text("No chat available"));
@@ -149,7 +151,15 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ),
                       ),
-                  itemBuilder: (context, message) {
+                  indexedItemBuilder: (context, message,index) {
+                    if(index == controller.chatsData.length - 1 && controller.isLoadMore){
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        child: Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      );
+                    }
                     return ChatBubbleMessage(
                       images: message.file ?? [],
                       isSeen: message.seenBy!.length > 1,

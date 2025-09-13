@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/simmer_helper.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/post/post_controller.dart';
@@ -152,39 +153,55 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(height: 8.h),
 
         Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async => _postController.onRefresh(),
-              child: GetBuilder<PostController>(
-                        builder: (controller) {
-              if(controller.isLoading){
-                return CustomLoader();
-              }else if(controller.selectedValueType == 'my' ? controller.myPostData.isEmpty : controller.allPostData.isEmpty){
-                return Center(child: CustomText(text: 'No posts found.'));
-              }
-              return ListView.builder(
-                controller: _scrollController,
-                itemCount: controller.selectedValueType == 'my' ? controller.myPostData.length : controller.allPostData.length,
-                  itemBuilder: (context,index){
-                    //debugPrint("Selected post caption: ${controller.postData[index].caption}");
-                    return PostCardWidget(
-                 isMyPost: controller.selectedValueType == 'my' ? true : false,
-                  postData: controller.selectedValueType == 'my' ? controller.myPostData[index] : controller.allPostData[index],
-                  onSelected: (val) {
-                    if(val == 'Edit Post'){
-                      Get.toNamed(AppRoutes.editPostScreen,arguments: {'postData' : controller.selectedValueType == 'my' ? controller.myPostData[index] : controller.allPostData[index]});
-                    }else if(val == 'Delete Post'){
-                      showDeleteORSuccessDialog(context, onTap: (){
-                        Get.find<PostController>().postDeleted(controller.myPostData[index].sId ?? '');
-                        ToastMessageHelper.showToastMessage("please wait...");
-                        Get.back();
-                      });
+          child: RefreshIndicator(
+            onRefresh: () async => _postController.onRefresh(),
+            child: GetBuilder<PostController>(
+              builder: (controller) {
+                if (controller.isLoading) {
+                  return SimmerHelper.postSimmer();
+                } else if (controller.selectedValueType == 'my'
+                    ? controller.myPostData.isEmpty
+                    : controller.allPostData.isEmpty) {
+                  return Center(child: CustomText(text: 'No posts found.'));
+                }
+
+                final posts = controller.selectedValueType == 'my'
+                    ? controller.myPostData
+                    : controller.allPostData;
+
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: posts.length + (controller.isLoadMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == posts.length) {
+                      return  Padding(
+                        padding: EdgeInsets.all(16.r),
+                        child: Center(child: CustomLoader()),
+                      );
                     }
+
+                    final post = posts[index];
+                    return PostCardWidget(
+                      isMyPost: controller.selectedValueType == 'my',
+                      postData: post,
+                      onSelected: (val) {
+                        if (val == 'Edit Post') {
+                          Get.toNamed(AppRoutes.editPostScreen, arguments: {'postData': post});
+                        } else if (val == 'Delete Post') {
+                          showDeleteORSuccessDialog(context, onTap: () {
+                            Get.find<PostController>().postDeleted(post.sId ?? '');
+                            ToastMessageHelper.showToastMessage("please wait...");
+                            Get.back();
+                          });
+                        }
+                      },
+                    );
                   },
                 );
-              });
-                        }
-                      ),
-            )),
+              },
+            ),
+          ),
+        )
       ],
       ),
     );

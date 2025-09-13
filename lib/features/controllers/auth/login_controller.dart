@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
@@ -11,8 +12,13 @@ import 'package:maignanka_app/services/get_fcm_token.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 
 class LoginController extends GetxController {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  // SocketServices socketService = SocketServices();
+  final TextEditingController emailController = TextEditingController(text: kDebugMode ? 'support@kisdates.com' : '',);
+
+  final TextEditingController passwordController = TextEditingController(text: kDebugMode ? 'Ka32Ni22' : '');
+  //
+  // final emailController = TextEditingController();
+  // final passwordController = TextEditingController();
 
   bool isLoading = false;
 
@@ -50,6 +56,7 @@ class LoginController extends GetxController {
       if (token != null) {
         debugPrint('====================> response token save: $token');
         await PrefsHelper.setString(AppConstants.bearerToken, token);
+
       }
       if(!isEmailVerified){
         Get.toNamed(AppRoutes.otpScreen, arguments: {'screenType': 'sign-up'});
@@ -74,8 +81,8 @@ class LoginController extends GetxController {
         Get.find<CustomBottomNavBarController>().onChange(0);
         String token = await PrefsHelper.getString(AppConstants.bearerToken);
         if(token.isNotEmpty){
-           SocketServices().disconnect();
-          await SocketServices().init();
+
+          await SocketServices.init();
         }
       }
     } else {
@@ -86,10 +93,39 @@ class LoginController extends GetxController {
     update();
   }
 
+
+  Future<void> logout() async {
+    isLoading = true;
+    update();
+
+   String bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+
+    final response = await ApiClient.postData(
+      ApiUrls.logout,
+      {},
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $bearerToken',},
+    );
+
+    final responseBody = response.body;
+    if (response.statusCode == 200) {
+      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Logout out failed.");
+      final socket = SocketServices();
+      // socket.reset();
+      socket.disconnect();
+      await PrefsHelper.clear();
+      Get.offAllNamed(AppRoutes.onboardingScreen);
+    }
+    isLoading = false;
+    update();
+  }
+
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
+
+
+
 }

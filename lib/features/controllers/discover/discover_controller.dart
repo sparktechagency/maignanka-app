@@ -11,7 +11,7 @@ class DiscoverController extends GetxController {
   bool isLoading = false;
   bool isLoadingMore = false;
   String currentUserId = '';
-  int statusCode = -1;
+  int forbidden = -1;
 
   int limit = 20;
   int page = 1;
@@ -75,14 +75,14 @@ class DiscoverController extends GetxController {
       final swipeData = data.map((json) => SwipeDataModel.fromJson(json)).toList();
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
-      statusCode = 200;
+      forbidden = 200;
       update();
       swipeDataList.addAll(swipeData);
     }else if(response.statusCode == 403){
-      statusCode = 403;
+      forbidden = 403;
       update();
     }else {
-      statusCode = response.statusCode ?? -1;
+      forbidden = response.statusCode ?? -1;
       update();
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }

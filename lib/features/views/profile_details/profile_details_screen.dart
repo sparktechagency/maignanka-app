@@ -2,10 +2,12 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:maignanka_app/app/helpers/simmer_helper.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/features/controllers/discover/discover_controller.dart';
 import 'package:maignanka_app/features/controllers/discover/match_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
-import 'package:maignanka_app/features/models/profile_details_model_data.dart' show ProfileDetailsModelData;
+import 'package:maignanka_app/features/models/profile_details_model_data.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
@@ -36,8 +38,9 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
   void initState() {
     super.initState();
     userId = Get.arguments['userId'] ?? '';
-    _controller.profileDetailsGet(userId);
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _controller.profileDetailsGet(userId);
+    });  }
 
 
   @override
@@ -56,7 +59,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
           paddingSide: 2.w,
           appBar: const CustomAppBar(title: 'Profile Details'),
           body: controller.isLoading
-              ? const CustomLoader()
+              ? SimmerHelper.profileDetailsSimmer()
               : ListView(
             children: [
               _buildImageSlider(data.pictures),
@@ -101,6 +104,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
 
 
               buildMatchActionSection(data),
+              SizedBox(height: 16.h),
             ],
           ),
         );
@@ -158,7 +162,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                   backgroundColor: AppColors.primaryColor.withOpacity(0.08),
                   foregroundColor: AppColors.primaryColor,
                   height: 38.h,
-                  onPressed: () => Get.toNamed(AppRoutes.giftsScreen),
+                  onPressed: () => Get.toNamed(AppRoutes.giftsScreen,arguments: {'userId': Get.find<DiscoverController>().currentUserId}),
                   label: 'Gift',
                 ),
               ),
@@ -194,13 +198,16 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
           PageView.builder(
             controller: _pageController,
             itemCount: pictures?.length ?? 0,
-            onPageChanged: (index) => setState(() => _currentPage = index),
+            onPageChanged: (index) {
+              _currentPage = index;
+              _controller.update();
+            },
             itemBuilder: (context, index) {
               debugPrint(' ===========>> ${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}');
               return ClipRRect(
                 borderRadius: BorderRadius.circular(13.r),
                 child: CustomNetworkImage(
-                imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}' ?? '',
+                imageUrl: '${ApiUrls.imageBaseUrl}${pictures?[index].imageURL}',
                             ),
               );}
           ),

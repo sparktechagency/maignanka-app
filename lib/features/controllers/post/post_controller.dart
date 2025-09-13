@@ -42,66 +42,66 @@ class PostController extends GetxController {
 
 
 
+  bool isLoadMore = false;    // for pagination
 
 
-  Future<void> postGet({String? userId = '',bool isInitialLoad = false}) async {
-
+  Future<void> postGet({String? userId = '', bool isInitialLoad = false}) async {
     if (isInitialLoad) {
-      if(userId != ''){
+      if (userId != '') {
         myPostData.clear();
-      }else{
+      } else {
         allPostData.clear();
       }
       page = 1;
       totalPage = -1;
+
+      isLoading = true;   // ✅ show main loader
+      isLoadMore = false; // ensure no conflict
+      update();
     }
 
-    isLoading = true;
-    update();
-
     final response = await ApiClient.getData(
-        ApiUrls.allPost(page,limit,userId),
+      ApiUrls.allPost(page, limit, userId),
     );
 
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
       final List data = responseBody['data'] ?? [];
-
       final post = data.map((json) => PostModelData.fromJson(json)).toList();
 
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
-
-      if(userId != ''){
+      if (userId != '') {
         myPostData.addAll(post);
-      }else{
+      } else {
         allPostData.addAll(post);
       }
-
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
     isLoading = false;
+    isLoadMore = false; // ✅ reset after done
     update();
   }
 
 
   Future<void> loadMore() async {
-
     print('============> Page $page');
 
-    if (page < totalPage) {
+    if (page < totalPage && !isLoadMore) {
       page += 1;
+      isLoadMore = true; // ✅ mark pagination loading
       update();
-      print('============> Page++ $page \n=============> totalPage $totalPage');
-      if(selectedValueType == 'my'){
-        postGet(userId: Get.find<ProfileController>().userId);
-      }else{
-        postGet();
-      }
 
+      print('============> Page++ $page \n=============> totalPage $totalPage');
+
+      if (selectedValueType == 'my') {
+        await postGet(userId: Get.find<ProfileController>().userId, isInitialLoad: false);
+      } else {
+        await postGet(isInitialLoad: false);
+      }
     }
   }
 
