@@ -16,10 +16,6 @@ class BalanceController extends GetxController {
 
 
   final TextEditingController bankNameController = TextEditingController();
-  final TextEditingController ibanNoController = TextEditingController();
-  final TextEditingController accountNoController = TextEditingController();
-  final TextEditingController routingNoController = TextEditingController();
-  final TextEditingController accountHolderNameController = TextEditingController();
 
   final List<BalanceVersionModelData> balanceVersionModelData = [];
 
@@ -89,11 +85,7 @@ class BalanceController extends GetxController {
     update();
 
     final bodyParams = {
-      "bankName":bankNameController.text.trim(),
-      "ibanNo":ibanNoController.text.trim(),
-      "accountNo":accountNoController.text.trim(),
-      "routingNo":routingNoController.text.trim() ,
-      "accountHolderName":accountHolderNameController.text.trim()
+      "paypalEmail":bankNameController.text.trim(),
     };
 
 
@@ -126,11 +118,7 @@ class BalanceController extends GetxController {
       final data = responseBody['data'];
 
       if (data != null) {
-        bankNameController.text = data['bankName'] ?? '';
-        ibanNoController.text = data['ibanNo'] ?? '';
-        accountNoController.text = data['accountNo'] ?? '';
-        routingNoController.text = data['routingNo'] ?? '';
-        accountHolderNameController.text = data['accountHolderName'] ?? '';
+        bankNameController.text = data['paypalEmail'] ?? '';
       }
 
     } else {
@@ -147,10 +135,6 @@ class BalanceController extends GetxController {
   @override
   void dispose() {
     bankNameController.dispose();
-    ibanNoController.dispose();
-    accountNoController.dispose();
-    routingNoController.dispose();
-    accountHolderNameController.dispose();
     super.dispose();
   }
 }

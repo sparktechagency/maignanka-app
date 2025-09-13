@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
 import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/models/wallet_model_data.dart';
@@ -149,8 +150,6 @@ class WalletController extends GetxController {
       if (response.statusCode == 200) {
         final url = responseBody['data']?['paymentIntent'] ?? '';
         launchUrl(Uri.parse(url));
-        topUpAmountController.clear();
-        amounts = 0;
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Top up failed.");
       } else {
         ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Top up failed.");
@@ -158,6 +157,9 @@ class WalletController extends GetxController {
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong: $e");
     } finally {
+      topUpAmountController.clear();
+      amounts = 0;
+      Get.back();
       isLoadingTopUp = false;
       update();
     }
@@ -181,16 +183,17 @@ class WalletController extends GetxController {
       final responseBody = response.body;
 
       if (response.statusCode == 200) {
-        withdrawAmountController.clear();
-        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Top up failed.");
+        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
         Get.find<BalanceController>().balanceGet();
-        Get.back();
       } else {
-        ToastMessageHelper.showToastMessage(responseBody['error'] ?? "Top up failed.");
+        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong: $e");
     } finally {
+      Get.back();
+      withdrawAmountController.clear();
+      amounts = 0;
       isLoadingWithdraw = false;
       update();
     }
@@ -208,5 +211,6 @@ class WalletController extends GetxController {
       await transHistoryGet();
     }
   }
+
 
 }

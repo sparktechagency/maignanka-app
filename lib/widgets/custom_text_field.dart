@@ -204,7 +204,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               fillColor: widget.filColor ?? Colors.transparent,
               filled: true,
               prefixIcon: widget.prefixIcon != null ? Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                padding:  EdgeInsets.only(left: 14.w,right: 4.w),
                 child: widget.prefixIcon,
               ) : null,
               suffixIcon: widget.isPassword
