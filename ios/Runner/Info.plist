@@ -52,6 +52,11 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
+	<key>com.apple.developer.in-app-payments</key>
+    <array>
+        <string>merchant.com.example.maignanka_app</string>
+    </array>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>This app needs access to your location to provide nearby services.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

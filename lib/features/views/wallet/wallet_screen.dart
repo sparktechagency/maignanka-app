@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/time_format.dart';
@@ -6,7 +10,6 @@ import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/features/models/wallet_model_data.dart';
-import 'package:maignanka_app/features/views/wallet/payment_screen.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
@@ -17,6 +20,7 @@ import 'package:maignanka_app/widgets/custom_scaffold.dart';
 import 'package:maignanka_app/widgets/custom_text.dart';
 import 'package:maignanka_app/widgets/custom_text_field.dart';
 import 'package:maignanka_app/widgets/two_button_widget.dart';
+import 'package:pay/pay.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -198,6 +202,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomTextField(
+                      keyboardType: TextInputType.number,
                       controller: isTopUp ? controller.topUpAmountController : controller.withdrawAmountController,
                       prefixIcon:  Assets.icons.coin.svg(height: 16.h),
                       labelText: 'Points',
@@ -222,7 +227,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   controller.isLoadingTopUp ? CustomLoader() : CustomButton(
                     onPressed: () {
                       if(controller.topUpAmountController.text.isEmpty)return;
-
+                      Get.to(() => PaymentScreen());
                     },
                     label: 'Recharge',
                   ),
@@ -331,3 +336,184 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
 }
+
+
+
+class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  late Future<PaymentConfiguration> _googlePayConfig;
+  late Future<PaymentConfiguration> _applePayConfig;
+
+  final List<PaymentItem> _paymentItems = [
+    const PaymentItem(
+      label: 'Total',
+      amount: '10.00',
+      status: PaymentItemStatus.final_price,
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _googlePayConfig = loadGooglePayConfig();
+    _applePayConfig = loadApplePayConfig();
+  }
+
+  Future<PaymentConfiguration> loadGooglePayConfig() async {
+    final jsonString = await rootBundle.loadString('assets/google_pay_config.json');
+    return PaymentConfiguration.fromJsonString(jsonString);
+  }
+
+  Future<PaymentConfiguration> loadApplePayConfig() async {
+    final jsonString = await rootBundle.loadString('assets/apple_pay_config.json');
+    return PaymentConfiguration.fromJsonString(jsonString);
+  }
+
+  void onGooglePayResult(Map<String, dynamic> result) {
+    debugPrint('Google Pay Result: $result');
+    final token = result['paymentMethodData']['tokenizationData']['token'];
+    debugPrint('Payment Token: $token');
+    _showPaymentSuccess();
+  }
+
+  void onApplePayResult(Map<String, dynamic> result) {
+    debugPrint('Apple Pay Result: $result');
+    _showPaymentSuccess();
+  }
+
+  void onPaymentError(Object? error) {
+    debugPrint('Payment Error: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Payment failed: $error'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void _showPaymentSuccess() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Success!'),
+        content: const Text('Payment completed successfully.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPaymentButton({required Future<PaymentConfiguration> configFuture, required void Function(Map<String, dynamic>) onResult}) {
+    return FutureBuilder<PaymentConfiguration>(
+      future: configFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error loading payment config: ${snapshot.error}');
+        } else {
+          final config = snapshot.data!;
+          return Platform.isAndroid
+              ? GooglePayButton(
+            paymentConfiguration: config,
+            paymentItems: _paymentItems,
+            type: GooglePayButtonType.pay,
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            onPaymentResult: onResult,
+            loadingIndicator: const CircularProgressIndicator(),
+            onError: onPaymentError,
+          )
+              : Platform.isIOS
+              ? ApplePayButton(
+            paymentConfiguration: config,
+            paymentItems: _paymentItems,
+            style: ApplePayButtonStyle.black,
+            type: ApplePayButtonType.buy,
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            onPaymentResult: onResult,
+            loadingIndicator: const CircularProgressIndicator(),
+            onError: onPaymentError,
+          )
+              : const Text('Platform not supported');
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScaffold(
+      appBar: CustomAppBar(title: 'Payment'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Product Info
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Assets.icons.coin.svg(height: 60.h,width: 60.w),
+                  SizedBox(height: 16.h),
+                  CustomText(
+                    text: 'Sample Product',
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(height: 8.h),
+                  CustomText(
+                    text: '\$10.00',
+                    fontSize: 32.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 40.h),
+            CustomText(
+              text: 'Pay with:',
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: 20.h),
+
+            // Payment Buttons
+            if (Platform.isAndroid)
+              buildPaymentButton(configFuture: _googlePayConfig, onResult: onGooglePayResult),
+            if (Platform.isIOS)
+              buildPaymentButton(configFuture: _applePayConfig, onResult: onApplePayResult),
+
+            const SizedBox(height: 20),
+
+            // Platform indicator
+            Text(
+              Platform.isAndroid
+                  ? 'Running on Android - Google Pay (TEST MODE)'
+                  : Platform.isIOS
+                  ? 'Running on iOS - Apple Pay (TEST MODE)'
+                  : 'Platform not supported',
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
