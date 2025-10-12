@@ -35,6 +35,7 @@ import 'package:maignanka_app/features/views/setting/terms_screen.dart';
 import 'package:maignanka_app/features/views/splash_screen/splash_screen.dart';
 import 'package:maignanka_app/features/views/wallet/wallet_screen.dart';
 import '../features/views/notification/notification_screen.dart';
+import '../features/views/wallet/top_up_screen.dart';
 
 abstract class AppRoutes {
 
@@ -81,6 +82,7 @@ abstract class AppRoutes {
   static const String joinGuestScreen = '/joinGuestScreen';
   static const String galleryScreen = '/galleryScreen';
   static const String editPostScreen = '/editPostScreen';
+  static const String topUpScreen = '/topUpScreen';
 
 
 
@@ -123,5 +125,6 @@ abstract class AppRoutes {
     joinGuestScreen : (context) => JoinGuestScreen(),
     galleryScreen : (context) => GalleryScreen(),
     editPostScreen : (context) => EditPostScreen(),
+    topUpScreen : (context) => TopUpScreen(),
   };
 }

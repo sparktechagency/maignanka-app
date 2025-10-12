@@ -54,7 +54,7 @@
 
 	<key>com.apple.developer.in-app-payments</key>
     <array>
-        <string>merchant.com.example.maignanka_app</string>
+        <string>merchant.com.kisdates.maignanka_app</string>
     </array>
 
 	<key>NSLocationWhenInUseUsageDescription</key>

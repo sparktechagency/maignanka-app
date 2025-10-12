@@ -6,7 +6,7 @@ import 'package:maignanka_app/app/utils/app_colors.dart';
 import 'package:maignanka_app/features/controllers/balance/balance_controller.dart';
 import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/features/models/wallet_model_data.dart';
-import 'package:maignanka_app/features/views/wallet/payment_screen.dart';
+import 'package:maignanka_app/features/views/wallet/top_up_screen.dart';
 import 'package:maignanka_app/global/custom_assets/assets.gen.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
@@ -257,23 +257,6 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
               ),
               actions: [
-                if (isTopUp) ...[
-                  controller.isLoadingTopUp
-                      ? CustomLoader()
-                      : CustomButton(
-                        onPressed: () {
-                          if (controller.topUpAmountController.text.isEmpty)
-                            return;
-                          Get.to(
-                            () => GpayApplepayScreen(
-                              coin: controller.topUpAmountController.text,
-                              doller: controller.amounts.toStringAsFixed(2),
-                            ),
-                          );
-                        },
-                        label: 'Recharge',
-                      ),
-                ],
                 if (!isTopUp) ...[
                   controller.isLoadingWithdraw
                       ? CustomLoader()
@@ -347,7 +330,8 @@ class _WalletScreenState extends State<WalletScreen> {
                 width: 100.w,
                 height: 28.h,
                 onPressed: () {
-                  _buildCustomDialog(isTopUp: true);
+                  //_buildCustomDialog(isTopUp: true);
+                  Get.toNamed(AppRoutes.topUpScreen);
                 },
                 label: 'Top Up',
               ),

@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.maignanka_app"
+    namespace = "com.kisdates.maignanka_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -25,7 +25,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.maignanka_app"
+        applicationId = "com.kisdates.maignanka_app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

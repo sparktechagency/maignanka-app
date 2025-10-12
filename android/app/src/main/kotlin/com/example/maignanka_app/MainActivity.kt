@@ -1,4 +1,4 @@
-package com.example.maignanka_app
+package com.kisdates.maignanka_app
 
 import io.flutter.embedding.android.FlutterActivity
 
