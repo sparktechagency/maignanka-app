@@ -12,10 +12,10 @@ class TopUpScreen extends StatefulWidget {
 
 class _TopUpScreenState extends State<TopUpScreen> {
   final List<Map<String, dynamic>> _products = [
-    {'amount': 100, 'price': '€0.99'},
-    {'amount': 550, 'price': '€4.99', 'tag': 'Popular'},
+    {'amount': 100, 'price': '€4.99'},
+    {'amount': 198, 'price': '€9.90',},
     {'amount': 1200, 'price': '€9.99'},
-    {'amount': 2500, 'price': '€19.99', 'tag': 'Best Value'},
+    {'amount': 2500, 'price': '€19.99'},
     {'amount': 6500, 'price': '€49.99'},
     {'amount': 14000, 'price': '€99.99'},
   ];
