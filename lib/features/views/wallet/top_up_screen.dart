@@ -12,12 +12,12 @@ class TopUpScreen extends StatefulWidget {
 
 class _TopUpScreenState extends State<TopUpScreen> {
   final List<Map<String, dynamic>> _products = [
-    {'amount': 100, 'price': '€4.99'},
-    {'amount': 198, 'price': '€9.90',},
-    {'amount': 1200, 'price': '€9.99'},
-    {'amount': 2500, 'price': '€19.99'},
-    {'amount': 6500, 'price': '€49.99'},
-    {'amount': 14000, 'price': '€99.99'},
+    {'amount': 100, 'price': '\$4.99'},
+    {'amount': 198, 'price': '\$9.90',},
+    {'amount': 400, 'price': '\$19.99'},
+    {'amount': 1800, 'price': '\$89.99'},
+    {'amount': 3800, 'price': '\$189.99'},
+    {'amount': 7000, 'price': '\$349.99'},
   ];
 
   // To keep track of the selected product
@@ -78,8 +78,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                 // Handle the purchase logic here
                 if (_selectedIndex != null) {
                   final selectedProduct = _products[_selectedIndex!];
-                  print(
-                      'Purchasing ${selectedProduct['amount']} coins for ${selectedProduct['price']}');
+                  print('Purchasing ${selectedProduct['amount']} coins for ${selectedProduct['price']}');
                   // TODO: Integrate with your payment gateway (e.g., RevenueCat, in_app_purchase)
                 }
               },
