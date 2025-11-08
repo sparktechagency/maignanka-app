@@ -160,12 +160,12 @@ class ProductCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isSelected ? AppColors.primaryColor : Colors.grey.shade300,
+            color: isSelected ? AppColors.primaryColor : Colors.grey.shade100,
             width: 2.w,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withOpacity(0.01),
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 3),
