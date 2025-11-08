@@ -13,10 +13,15 @@ import 'package:maignanka_app/services/internet/connectivity.dart';
 import 'package:maignanka_app/services/internet/no_internet_wrapper.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Purchases.setDebugLogsEnabled(true);
+  await Purchases.setup("goog_roiTqZOZAIDzcaJYHBLsxAgQJsn");
+
 
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

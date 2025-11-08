@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:purchases_flutter/models/package_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../app/utils/app_colors.dart';
 import '../../../widgets/widgets.dart';
 
@@ -11,17 +13,49 @@ class TopUpScreen extends StatefulWidget {
 }
 
 class _TopUpScreenState extends State<TopUpScreen> {
-  final List<Map<String, dynamic>> _products = [
-    {'amount': 100, 'price': '\$4.99'},
-    {'amount': 198, 'price': '\$9.90',},
-    {'amount': 400, 'price': '\$19.99'},
-    {'amount': 1800, 'price': '\$89.99'},
-    {'amount': 3800, 'price': '\$189.99'},
-    {'amount': 7000, 'price': '\$349.99'},
-  ];
-
-  // To keep track of the selected product
+  List<Map<String, dynamic>> _products = [];
+  List<Package> _availablePackages = [];
   int? _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOfferings();
+  }
+
+  void fetchOfferings() async {
+    try {
+      final offerings = await Purchases.getOfferings();
+      if (offerings.current != null) {
+        _availablePackages = offerings.current!.availablePackages;
+
+        // Map RevenueCat packages to _products for UI
+        _products = _availablePackages.map((package) {
+          // Example: identifier = coin_100_package
+          final amount = int.parse(package.identifier.split('_')[1]);
+          final price = package.storeProduct.priceString;
+          return {'amount': amount, 'price': price, 'package': package};
+        }).toList();
+
+        setState(() {});
+      }
+    } catch (e) {
+      print("Error fetching offerings: $e");
+    }
+  }
+
+  void purchasePackage(Package package) async {
+    try {
+      final result = await Purchases.purchasePackage(package);
+      if (result.customerInfo.entitlements.all['coins']?.isActive ?? false) {
+        // Coins delivered
+        print("Purchase successful: ${package.identifier}");
+        // TODO: Update user coin balance locally/server
+      }
+    } catch (e) {
+      print("Purchase failed: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +82,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 16.w,
                   mainAxisSpacing: 16.h,
-                  childAspectRatio: 0.9, // Adjust ratio for better look
+                  childAspectRatio: 0.9,
                 ),
                 itemCount: _products.length,
                 itemBuilder: (context, index) {
@@ -68,19 +102,14 @@ class _TopUpScreenState extends State<TopUpScreen> {
                 },
               ),
             ),
-            SizedBox(height: 16.h),
-            // Purchase Button
             CustomButton(
               label: 'Proceed to Purchase',
               onPressed: _selectedIndex == null
-                  ? null // Disable button if nothing is selected
+                  ? null
                   : () {
-                // Handle the purchase logic here
-                if (_selectedIndex != null) {
-                  final selectedProduct = _products[_selectedIndex!];
-                  print('Purchasing ${selectedProduct['amount']} coins for ${selectedProduct['price']}');
-                  // TODO: Integrate with your payment gateway (e.g., RevenueCat, in_app_purchase)
-                }
+                final package =
+                _products[_selectedIndex!]['package'] as Package;
+                purchasePackage(package);
               },
             ),
           ],
@@ -157,5 +186,3 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-
-

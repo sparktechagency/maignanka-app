@@ -130,25 +130,24 @@ class ProfileController extends GetxController {
 
   Future<void> showMyProfile(bool value) async {
     isLoadingShowMyProfile = true;
-    isShowMyProfile = value; // local update
+    isShowMyProfile = value;
     update();
 
     final response = await ApiClient.patch(
       ApiUrls.showProfile,
-      {}, // server-কে toggle value পাঠাও
+      {},
     );
 
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      // server থেকে আসা value save করো
       isShowMyProfile = responseBody['data']['isShowMyProfile'] ?? value;
       await PrefsHelper.setBool(AppConstants.isShowMyProfile, isShowMyProfile);
       if(isShowMyProfile == true){
         Get.find<DiscoverController>().swipeProfileGet();
       }
     } else {
-      isShowMyProfile = !value; // revert on failure
+      isShowMyProfile = !value;
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
@@ -167,7 +166,7 @@ class ProfileController extends GetxController {
     if (response.statusCode == 200) {
       var data = responseBody['data'] ?? {};
       // print(data["profileID"]["isShowedMyProfile"]);
-      isShowMyProfile = data["profileID"]["isShowedMyProfile"]=="true" ? true :false ;
+      isShowMyProfile = data["profileID"]["isShowedMyProfile"]=="true" ? true : false;
       await PrefsHelper.setBool(AppConstants.isShowMyProfile, data["profileID"]["isShowedMyProfile"]=="true" ? true :false );
       print("is showed my profile ${await PrefsHelper.getBool(AppConstants.isShowMyProfile)}");
     } else {
