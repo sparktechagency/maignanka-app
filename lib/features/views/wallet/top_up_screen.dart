@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:purchases_flutter/models/package_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../app/utils/app_colors.dart';
 import '../../../widgets/widgets.dart';
@@ -16,44 +15,67 @@ class _TopUpScreenState extends State<TopUpScreen> {
   List<Map<String, dynamic>> _products = [];
   List<Package> _availablePackages = [];
   int? _selectedIndex;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+   // initRevenueCat();
     fetchOfferings();
   }
 
+  // Initialize RevenueCat SDK
+  void initRevenueCat() async {
+    await Purchases.setDebugLogsEnabled(true);
+    await Purchases.setup("YOUR_REVENUECAT_API_KEY");
+  }
+
+  // Fetch Offerings from RevenueCat
   void fetchOfferings() async {
+    setState(() => _isLoading = true);
     try {
       final offerings = await Purchases.getOfferings();
       if (offerings.current != null) {
         _availablePackages = offerings.current!.availablePackages;
 
-        // Map RevenueCat packages to _products for UI
+        // Map RevenueCat packages to _products list for UI
         _products = _availablePackages.map((package) {
-          // Example: identifier = coin_100_package
-          final amount = int.parse(package.identifier.split('_')[1]);
+          final parts = package.identifier.split('_');
+          final amount = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
           final price = package.storeProduct.priceString;
-          return {'amount': amount, 'price': price, 'package': package};
+          return {
+            'amount': amount,
+            'price': price,
+            'package': package,
+          };
         }).toList();
 
         setState(() {});
       }
     } catch (e) {
       print("Error fetching offerings: $e");
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
+  // Purchase a package
   void purchasePackage(Package package) async {
     try {
       final result = await Purchases.purchasePackage(package);
-      if (result.customerInfo.entitlements.all['coins']?.isActive ?? false) {
-        // Coins delivered
-        print("Purchase successful: ${package.identifier}");
-        // TODO: Update user coin balance locally/server
-      }
+
+      // For consumable, purchase is successful if no exception
+      print("Purchase successful: ${package.identifier}");
+
+      // TODO: Update user coin balance locally or on your server
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Successfully purchased ${package.storeProduct.priceString} for ${package.identifier}")),
+      );
     } catch (e) {
       print("Purchase failed: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Purchase failed. Please try again.")),
+      );
     }
   }
 
@@ -63,19 +85,16 @@ class _TopUpScreenState extends State<TopUpScreen> {
       appBar: CustomAppBar(title: 'Top Up'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        child: Column(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
           children: [
-            // Informational text
             Text(
               'Select the amount of coins you want to purchase.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.black54,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: Colors.black54),
             ),
             SizedBox(height: 24.h),
-            // Grid of products
             Expanded(
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -86,7 +105,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                 ),
                 itemCount: _products.length,
                 itemBuilder: (context, index) {
-                  final product = _products[index];
+                  final product = _products[_products.length - 1 - index];
                   final isSelected = _selectedIndex == index;
 
                   return ProductCard(
@@ -94,9 +113,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                     price: product['price'],
                     isSelected: isSelected,
                     onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
+                      setState(() => _selectedIndex = index);
                     },
                   );
                 },
@@ -119,7 +136,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
   }
 }
 
-// A reusable widget for the product card
+// Reusable Product Card widget
 class ProductCard extends StatelessWidget {
   final int amount;
   final String price;
@@ -158,11 +175,9 @@ class ProductCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Coin Icon (replace with your asset)
             Icon(Icons.monetization_on,
                 size: 40.sp, color: AppColors.primaryColor),
             SizedBox(height: 12.h),
-            // Amount
             Text(
               '$amount Coins',
               style: TextStyle(
@@ -171,7 +186,6 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8.h),
-            // Price
             Text(
               price,
               style: TextStyle(
