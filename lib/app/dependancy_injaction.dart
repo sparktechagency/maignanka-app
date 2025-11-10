@@ -24,6 +24,7 @@ import 'package:maignanka_app/features/controllers/post/post_controller.dart';
 import 'package:maignanka_app/features/controllers/post/post_create_controller.dart';
 import 'package:maignanka_app/features/controllers/profile_details/profile_controller.dart';
 import 'package:maignanka_app/features/controllers/settings/setting_controller.dart';
+import 'package:maignanka_app/features/controllers/wallet/topup_controller.dart';
 import 'package:maignanka_app/features/controllers/wallet/wallet_controller.dart';
 import 'package:maignanka_app/features/views/bottom_nav_bar/controller/custom_bottom_nav_bar_controller.dart';
 import 'package:maignanka_app/features/controllers/auth/change_pass_controller.dart';
@@ -59,4 +60,5 @@ class DependencyInjection implements Bindings {
     Get.put(BalanceController());
     Get.put(WalletController());
     Get.put(GalleryController());
+    Get.put(TopUpController());
   }}

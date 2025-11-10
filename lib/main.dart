@@ -7,6 +7,7 @@ import 'package:maignanka_app/app/helpers/device_utils.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
+import 'package:maignanka_app/features/controllers/wallet/topup_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/get_fcm_token.dart';
 import 'package:maignanka_app/services/internet/connectivity.dart';
@@ -18,12 +19,6 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Purchases.setDebugLogsEnabled(true);
-  await Purchases.setup("goog_roiTqZOZAIDzcaJYHBLsxAgQJsn");
-
-
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance;
   await FirebaseNotificationService.printFCMToken();

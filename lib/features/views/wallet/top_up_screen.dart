@@ -17,19 +17,6 @@ class _TopUpScreenState extends State<TopUpScreen> {
   int? _selectedIndex;
   bool _isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-   // initRevenueCat();
-    fetchOfferings();
-  }
-
-  // Initialize RevenueCat SDK
-  void initRevenueCat() async {
-    await Purchases.setDebugLogsEnabled(true);
-    await Purchases.setup("YOUR_REVENUECAT_API_KEY");
-  }
-
   // Fetch Offerings from RevenueCat
   void fetchOfferings() async {
     setState(() => _isLoading = true);
