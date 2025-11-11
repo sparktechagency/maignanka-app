@@ -92,40 +92,76 @@ class TopUpController extends GetxController {
 
   /// Purchase selected package safely
   Future<void> purchasePackage(Package package) async {
+    try {
       final customerInfo = await Purchases.purchasePackage(package);
 
       final hasActiveEntitlement = customerInfo.entitlements.active.isNotEmpty;
       if (hasActiveEntitlement) {
-        ToastMessageHelper.showToastMessage("✅ Purchase successful!");
-
         debugPrint("🎉 Active entitlements: ${customerInfo.entitlements.active.keys}");
+        final transaction = customerInfo.nonSubscriptionTransactions.isNotEmpty
+            ? customerInfo.nonSubscriptionTransactions.first
+            : null;
+        final parts = package.identifier.split('_');
+        final coinAmount = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
+
+        // Call backend API to verify and credit coins
+        // await coinBuy(
+        //   productId: package.identifier,
+        //   coinAmount: coinAmount,
+        //   transactionId: transaction?.transactionIdentifier ?? '',
+        //   revenueCatUserId: customerInfo.originalAppUserId,
+        // );
       } else {
         ToastMessageHelper.showToastMessage("Purchase completed, but activation pending.");
       }
+    } catch (e) {
+      debugPrint("❌ Purchase error: $e");
+      ToastMessageHelper.showToastMessage("Purchase failed. Please try again.");
     }
+  }
 
 
-
+  /// Send purchase details to backend for verification and coin credit
 
   bool isLoadingCoin = false;
 
-  Future<void> coinBuy() async {
+  Future<void> coinBuy({
+    required String productId,
+    required int coinAmount,
+    required String transactionId,
+    required String revenueCatUserId,
+  }) async {
     isLoadingCoin = true;
     update();
 
+    try {
+      final response = await ApiClient.postData(
+        ApiUrls.coinBuy,
+        {
+          'product_id': productId,
+          'coin_amount': coinAmount,
+          'transaction_id': transactionId,
+          'revenue_cat_user_id': revenueCatUserId,
+          'platform': GetPlatform.isAndroid ? 'android' : 'ios',
+        },
+      );
 
-    final response = await ApiClient.postData(
-      ApiUrls.coinBuy,
-      {},
-    );
-
-    final responseBody = response.body;
-    if (response.statusCode == 200) {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
-      Get.find<BalanceController>().balanceGet();
-      Get.back();
+      final responseBody = response.body;
+      if (response.statusCode == 200) {
+        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Coins added successfully!");
+        Get.find<BalanceController>().balanceGet();
+        Get.back();
+      } else {
+        ToastMessageHelper.showToastMessage(
+            responseBody['message'] ?? "Failed to process purchase."
+        );
+      }
+    } catch (e) {
+      debugPrint("❌ API error: $e");
+      ToastMessageHelper.showToastMessage("Network error. Please try again.");
+    } finally {
+      isLoadingCoin = false;
+      update();
     }
-    isLoadingCoin = false;
-    update();
   }
 }
