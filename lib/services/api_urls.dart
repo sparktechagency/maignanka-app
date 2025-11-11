@@ -43,6 +43,7 @@ class ApiUrls {
   static  const String  postCreate = '/timeline/post';
   static  const String  gifts = '/gifts';
   static  const String  balance = '/balance';
+  static  const String  coinBuy = '/balance';
   static  const String  gallery = '/gallery';
   static  const String  sendGifts = '/balance/';
   static  const String  topUp = '/stripe/create-payment-intent';

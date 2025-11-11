@@ -17,8 +17,8 @@ class LoginController extends GetxController {
 
   final TextEditingController passwordController = TextEditingController(text: kDebugMode ? 'Ka32Ni22' : '');
   //
-  // final emailController = TextEditingController();
-  // final passwordController = TextEditingController();
+   //final emailController = TextEditingController();
+   //final passwordController = TextEditingController();
 
   bool isLoading = false;
 

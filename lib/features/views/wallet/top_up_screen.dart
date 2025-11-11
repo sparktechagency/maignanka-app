@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/features/controllers/wallet/topup_controller.dart';
 import 'package:maignanka_app/features/views/wallet/widgets/product_card.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../widgets/widgets.dart';
 
@@ -14,8 +15,21 @@ class TopUpScreen extends StatefulWidget {
 }
 
 class _TopUpScreenState extends State<TopUpScreen> {
+
+  final TopUpController _topUpController = Get.find<TopUpController>();
+
+
+  @override
+  void initState() {
+    _topUpController.fetchOfferings();
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return CustomScaffold(
       appBar: CustomAppBar(title: 'Top Up'),
       body: GetBuilder<TopUpController>(
@@ -66,10 +80,10 @@ class _TopUpScreenState extends State<TopUpScreen> {
                           onPressed:
                               controller.selectedIndex == null
                                   ? null
-                                  : () {
-                                    final package = controller.products[controller.selectedIndex!]['package'] as Package;
+                                  : () async{
+                                    final package = controller.products[controller.selectedIndex!]['package'] as purchases.Package;
                                     controller.purchasePackage(package);
-                                  },
+                              },
                         ),
                       ],
                     ),
