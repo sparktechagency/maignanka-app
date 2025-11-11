@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:maignanka_app/features/controllers/wallet/topup_controller.dart';
 import 'package:maignanka_app/features/views/wallet/widgets/product_card.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
-import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../widgets/widgets.dart';
 
 class TopUpScreen extends StatefulWidget {
