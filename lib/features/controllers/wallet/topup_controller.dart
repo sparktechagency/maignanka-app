@@ -105,12 +105,12 @@ class TopUpController extends GetxController {
         final coinAmount = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
 
         // Call backend API to verify and credit coins
-        // await coinBuy(
-        //   productId: package.identifier,
-        //   coinAmount: coinAmount,
-        //   transactionId: transaction?.transactionIdentifier ?? '',
-        //   revenueCatUserId: customerInfo.originalAppUserId,
-        // );
+        await coinBuy(
+          productId: package.identifier,
+          coinAmount: coinAmount,
+          transactionId: transaction?.transactionIdentifier ?? '',
+          revenueCatUserId: customerInfo.originalAppUserId,
+        );
       } else {
         ToastMessageHelper.showToastMessage("Purchase completed, but activation pending.");
       }
@@ -140,10 +140,12 @@ class TopUpController extends GetxController {
         {
           'product_id': productId,
           'coin_amount': coinAmount,
+          'amount': 4.99,
           'transaction_id': transactionId,
           'revenue_cat_user_id': revenueCatUserId,
           'platform': GetPlatform.isAndroid ? 'android' : 'ios',
         },
+
       );
 
       final responseBody = response.body;
