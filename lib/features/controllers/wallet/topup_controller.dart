@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
@@ -30,7 +31,7 @@ class TopUpController extends GetxController {
   Future<void> _initRevenueCat() async {
     try {
       await Purchases.setDebugLogsEnabled(true);
-      await Purchases.setup(Keys.topUpKey);
+      await Purchases.setup(Platform.isAndroid ? Keys.topUpKey : Keys.topUpIosKey);
 
       // Optional: Identify user (if you have user IDs)
       // await Purchases.logIn("user_${userId}");
