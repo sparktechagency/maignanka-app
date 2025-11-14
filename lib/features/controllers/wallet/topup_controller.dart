@@ -9,17 +9,19 @@ import 'package:maignanka_app/services/api_urls.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class TopUpController extends GetxController {
-  /// Holds the list of product maps for display
+  /// UI product list
   final products = <Map<String, dynamic>>[];
 
-  /// List of available RevenueCat packages
+  /// RevenueCat packages
   List<Package> availablePackages = [];
 
-  /// Currently selected package index
+  /// Selected UI index
   int? selectedIndex;
 
-  /// Loading state for UI updates
+  /// UI loading
   bool isLoading = true;
+
+  bool isLoadingCoin = false;
 
   @override
   void onInit() {
@@ -27,14 +29,19 @@ class TopUpController extends GetxController {
     _initRevenueCat();
   }
 
-  /// Initialize RevenueCat with your public SDK key
+  // ---------------------------
+  // 🔹 1. Initialize RevenueCat
+  // ---------------------------
   Future<void> _initRevenueCat() async {
     try {
       await Purchases.setDebugLogsEnabled(true);
-      await Purchases.setup(Platform.isAndroid ? Keys.topUpKey : Keys.topUpIosKey);
 
-      // Optional: Identify user (if you have user IDs)
-      // await Purchases.logIn("user_${userId}");
+      await Purchases.setup(
+        Platform.isAndroid ? Keys.topUpKey : Keys.topUpIosKey,
+      );
+
+      // If logged-in user exists → always login to RevenueCat
+      // await Purchases.logIn(userId.toString());
 
       await fetchOfferings();
     } catch (e) {
@@ -45,24 +52,24 @@ class TopUpController extends GetxController {
     }
   }
 
-  /// Fetch available offerings from RevenueCat
+  // ---------------------------
+  // 🔹 2. Fetch Offerings
+  // ---------------------------
   Future<void> fetchOfferings() async {
     isLoading = true;
     update();
 
     try {
       final offerings = await Purchases.getOfferings();
-
       final currentOffering = offerings.current;
+
       if (currentOffering == null || currentOffering.availablePackages.isEmpty) {
         ToastMessageHelper.showToastMessage("No coin packages available right now.");
-        debugPrint("⚠️ No available packages found in RevenueCat.");
         return;
       }
 
       availablePackages = currentOffering.availablePackages;
 
-      // Extract clean data for UI usage
       products
         ..clear()
         ..addAll(
@@ -80,7 +87,7 @@ class TopUpController extends GetxController {
           }),
         );
 
-      debugPrint("✅ Fetched ${products.length} packages from RevenueCat.");
+      debugPrint("✅ ${products.length} packages loaded.");
     } catch (e) {
       debugPrint("❌ Error fetching offerings: $e");
       ToastMessageHelper.showToastMessage("Failed to load coin packages.");
@@ -90,46 +97,48 @@ class TopUpController extends GetxController {
     }
   }
 
-  /// Purchase selected package safely
+  // ---------------------------
+  // 🔹 3. Purchase Package
+  // ---------------------------
   Future<void> purchasePackage(Package package) async {
     try {
       final customerInfo = await Purchases.purchasePackage(package);
 
-      final hasActiveEntitlement = customerInfo.entitlements.active.isNotEmpty;
-      if (hasActiveEntitlement) {
-        debugPrint("🎉 Active entitlements: ${customerInfo.entitlements.active.keys}");
-        final transaction = customerInfo.nonSubscriptionTransactions.isNotEmpty
-            ? customerInfo.nonSubscriptionTransactions.first
-            : null;
-        final parts = package.identifier.split('_');
-        final coinAmount = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
+      // For consumables always take latest non-subscription purchase
+      final transaction = customerInfo.nonSubscriptionTransactions.isNotEmpty
+          ? customerInfo.nonSubscriptionTransactions.last
+          : null;
 
-        // Call backend API to verify and credit coins
-        await coinBuy(
-          productId: package.identifier,
-          coinAmount: coinAmount,
-          transactionId: transaction?.transactionIdentifier ?? '',
-          revenueCatUserId: customerInfo.originalAppUserId,
-        );
-      } else {
-        ToastMessageHelper.showToastMessage("Purchase completed, but activation pending.");
+      if (transaction == null) {
+        ToastMessageHelper.showToastMessage("Purchase failed (no transaction).");
+        return;
       }
+
+      final parts = package.identifier.split('_');
+      final coinAmount = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
+
+      await coinBuy(
+        productId: package.identifier,
+        coinAmount: coinAmount,
+        transactionId: transaction.transactionIdentifier ?? '',
+        revenueCatUserId: customerInfo.originalAppUserId,
+        price: package.storeProduct.price,
+      );
     } catch (e) {
       debugPrint("❌ Purchase error: $e");
-      ToastMessageHelper.showToastMessage("Purchase failed. Please try again.");
+      ToastMessageHelper.showToastMessage("Purchase failed. Try again.");
     }
   }
 
-
-  /// Send purchase details to backend for verification and coin credit
-
-  bool isLoadingCoin = false;
-
+  // ---------------------------
+  // 🔹 4. Backend Verification
+  // ---------------------------
   Future<void> coinBuy({
     required String productId,
     required int coinAmount,
     required String transactionId,
     required String revenueCatUserId,
+    required double price,
   }) async {
     isLoadingCoin = true;
     update();
@@ -140,27 +149,25 @@ class TopUpController extends GetxController {
         {
           'product_id': productId,
           'coin_amount': coinAmount,
-          'amount': 4.99,
+          'amount': price, // Dynamic Price
           'transaction_id': transactionId,
           'revenue_cat_user_id': revenueCatUserId,
           'platform': GetPlatform.isAndroid ? 'android' : 'ios',
         },
-
       );
 
-      final responseBody = response.body;
+      final body = response.body;
+
       if (response.statusCode == 200) {
-        ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Coins added successfully!");
+        ToastMessageHelper.showToastMessage(body['message'] ?? "Coins added successfully!");
         Get.find<BalanceController>().balanceGet();
         Get.back();
       } else {
-        ToastMessageHelper.showToastMessage(
-            responseBody['message'] ?? "Failed to process purchase."
-        );
+        ToastMessageHelper.showToastMessage(body['message'] ?? "Failed to process purchase.");
       }
     } catch (e) {
       debugPrint("❌ API error: $e");
-      ToastMessageHelper.showToastMessage("Network error. Please try again.");
+      ToastMessageHelper.showToastMessage("Network error. Try again.");
     } finally {
       isLoadingCoin = false;
       update();

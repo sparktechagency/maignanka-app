@@ -1,4 +1,4 @@
-package com.kisdates.maignanka_app
+package com.kislabs.kis
 
 import io.flutter.embedding.android.FlutterActivity
 

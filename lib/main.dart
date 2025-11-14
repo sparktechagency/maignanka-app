@@ -7,14 +7,12 @@ import 'package:maignanka_app/app/helpers/device_utils.dart';
 import 'package:maignanka_app/app/helpers/prefs_helper.dart';
 import 'package:maignanka_app/app/theme/app_theme.dart';
 import 'package:maignanka_app/app/utils/app_constants.dart';
-import 'package:maignanka_app/features/controllers/wallet/topup_controller.dart';
 import 'package:maignanka_app/routes/app_routes.dart';
 import 'package:maignanka_app/services/get_fcm_token.dart';
 import 'package:maignanka_app/services/internet/connectivity.dart';
 import 'package:maignanka_app/services/internet/no_internet_wrapper.dart';
 import 'package:maignanka_app/services/socket_services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {

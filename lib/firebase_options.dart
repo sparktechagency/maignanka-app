@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '956043368979',
     projectId: 'kis-577ad',
     storageBucket: 'kis-577ad.firebasestorage.app',
-    iosBundleId: 'com.example.maignankaApp',
+    iosBundleId: 'com.kislabs.kis',
   );
 
 }
