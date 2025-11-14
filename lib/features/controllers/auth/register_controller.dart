@@ -78,7 +78,6 @@ class RegisterController extends GetxController {
         _cleanTextField();
         ToastMessageHelper.showToastMessage(responseBody['message'] ?? "OTP sent to your email",
         );
-
       }
       Get.toNamed(AppRoutes.otpScreen, arguments: {'screenType': 'sign-up'});
 

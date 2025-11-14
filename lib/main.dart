@@ -19,21 +19,30 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Get.put(ConnectivityController());
+  runApp(const MaignankaApp());
+
+
+  // Initialize Firebase if it's not already initialized
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    print('Firebase already initialized: $e');
+  }
+
   await FirebaseMessaging.instance;
   await FirebaseNotificationService.printFCMToken();
   await FirebaseNotificationService.initialize();
+
   String token = await PrefsHelper.getString(AppConstants.bearerToken);
   if (token.isNotEmpty) {
     await SocketServices.init();
   }
 
 
-  Get.put(ConnectivityController());
-
   DeviceUtils.lockDevicePortrait();
-  runApp(const MaignankaApp());
 }
+
 
 class MaignankaApp extends StatelessWidget {
   const MaignankaApp({super.key});
