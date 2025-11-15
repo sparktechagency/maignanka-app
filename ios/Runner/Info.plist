@@ -45,5 +45,14 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSMicrophoneUsageDescription</key>
+    <string>This app requires microphone access to enable voice and audio features.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to your location while you are using the app to provide better location-based features.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app requires continuous location access to deliver accurate location-based services.</string>
+
+
 </dict>
 </plist>
