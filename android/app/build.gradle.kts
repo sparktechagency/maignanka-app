@@ -51,11 +51,12 @@ android {
 
     buildTypes {
         release {
-            // Enable code shrinking and obfuscation
             isMinifyEnabled = true
             isShrinkResources = true
 
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -63,10 +64,6 @@ android {
             )
         }
 
-        debug {
-            // Optional: keep debug same as before
-            signingConfig = signingConfigs.getByName("release")
-        }
     }
 }
 
