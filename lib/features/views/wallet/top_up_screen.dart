@@ -60,7 +60,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                                 ),
                             itemCount: controller.products.length,
                             itemBuilder: (context, index) {
-                              final product = controller.products[controller.products.length - 1 - index];
+                              final product = controller.products[index];
                               final isSelected = controller.selectedIndex == index;
                               return ProductCard(
                                 amount: product['amount'],
