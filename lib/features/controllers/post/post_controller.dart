@@ -145,7 +145,7 @@ class PostController extends GetxController {
       postLikeMap[postId] = currentLiked;
       update();
 
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Failed");
+      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Failed");
     }
 
     return !currentLiked;
