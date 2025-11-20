@@ -111,8 +111,11 @@ class PostController extends GetxController {
 
 
   final Map<String, bool> postLikeMap = {};
+  final Map<String, bool> postLikeLoading = {}; // Loading state track করার জন্য
 
   bool isLiked(String postId) => postLikeMap[postId] ?? false;
+
+  bool isLikeLoading(String postId) => postLikeLoading[postId] ?? false;
 
   void setInitialLike(String postId, bool status) {
     postLikeMap[postId] = status;
@@ -120,14 +123,25 @@ class PostController extends GetxController {
   }
 
   Future<bool> likeButtonAction(bool currentLiked, String postId) async {
+    // Loading শুরু
+    postLikeLoading[postId] = true;
+    update();
+
+    // Optimistic update
     postLikeMap[postId] = !currentLiked;
     update();
 
     final response = await ApiClient.postData(ApiUrls.like(postId), {});
 
     final responseBody = response.body;
+
+    // Loading শেষ
+    postLikeLoading[postId] = false;
+
     if (response.statusCode == 200) {
+      update();
     } else {
+      // Failed হলে আগের state এ ফিরিয়ে আনুন
       postLikeMap[postId] = currentLiked;
       update();
 

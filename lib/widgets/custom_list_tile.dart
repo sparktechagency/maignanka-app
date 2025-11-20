@@ -29,7 +29,7 @@ class CustomListTile extends StatelessWidget {
       ),      onTap: onTap,
       //selectedColor: selectedColor,
      // selected: selectedColor != null ? true : false,
-      contentPadding: EdgeInsets.symmetric(horizontal: 6.h),
+      contentPadding: EdgeInsets.symmetric(horizontal: 6.h,vertical: 0),
       leading:  Stack(
         children: [
           CustomImageAvatar(

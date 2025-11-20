@@ -180,11 +180,17 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                           );
                         },
                       ),                      SizedBox(width: 6.w),
-                      CustomText(
-                        right: 10.w,
-                        fontSize: 10.sp,
-                        textAlign: TextAlign.start,
-                        text: data.likesCount.toString(),
+                      GetBuilder<PostController>(
+                          builder: (controller) {
+                            return CustomText(
+                              right: 10.w,
+                              fontSize: 10.sp,
+                              textAlign: TextAlign.start,
+                              text: controller.isLikeLoading(widget.postData.sId ?? '')
+                                  ? '...'
+                                  : data.likesCount.toString(),
+                            );
+                          }
                       ),
 
                       /// Comment Icon

@@ -69,7 +69,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               CustomListTile(
                                 image: data.userID?.profilePicture ?? '',
                                 title: data.userID?.name ?? '',
-                                subTitle: data.userID?.email ?? '',
+                                subTitle: TimeFormatHelper.getTimeAgo(DateTime.parse(data.createdAt ?? '')),
                               ),
                               CustomText(
                                 left: 60.w,
