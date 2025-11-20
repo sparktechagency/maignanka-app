@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/app/helpers/toast_message_helper.dart';
+import 'package:maignanka_app/features/controllers/post/post_controller.dart';
 import 'package:maignanka_app/features/models/comment_model_data.dart';
 import 'package:maignanka_app/services/api_client.dart';
 import 'package:maignanka_app/services/api_urls.dart';
@@ -47,6 +48,7 @@ class CommentController extends GetxController {
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
       commentData.addAll(post);
+      Get.find<PostController>().postGet();
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
