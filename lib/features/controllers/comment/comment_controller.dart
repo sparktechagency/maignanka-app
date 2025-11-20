@@ -48,7 +48,7 @@ class CommentController extends GetxController {
       totalPage = responseBody['pagination']?['totalPages'] ?? totalPage;
 
       commentData.addAll(post);
-      Get.find<PostController>().postGet();
+      //Get.find<PostController>().postGet(i);
 
     } else {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
