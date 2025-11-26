@@ -1,14 +1,14 @@
 class ApiUrls {
-  //static const String baseUrl = "http://217.15.170.117";
-  static const String baseUrl = "https://kisdate.merinasib.shop";
+  //static const String baseUrl = "https://kisdate.merinasib.shop";
+  static const String baseUrl = "https://api.kisdate.com";
 
 
-  //static const String imageBaseUrl = "http://217.15.170.117/";
-  static const String imageBaseUrl = "https://kisdate.merinasib.shop/";
+  //static const String imageBaseUrl = "https://kisdate.merinasib.shop/";
+  static const String imageBaseUrl = "https://api.kisdate.com/";
 
 
-  //static const String socketUrl = "http://217.15.170.117";
-  static const String socketUrl = "https://kisdate.merinasib.shop";
+  //static const String socketUrl = "https://kisdate.merinasib.shop";
+ static const String socketUrl = "https://api.kisdate.com";
 
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';

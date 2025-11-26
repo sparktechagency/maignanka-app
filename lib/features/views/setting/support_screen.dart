@@ -30,7 +30,7 @@ class SupportScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             TextButton.icon(
               onPressed: () async {
-                final Uri url = Uri.parse('tel:(609)327-7992');
+                final Uri url = Uri.parse('tel:+1 786 449 6686');
                 if (await launchUrl(url)) {
                   await launchUrl(url);
                 } else {
@@ -38,7 +38,7 @@ class SupportScreen extends StatelessWidget {
                 }
               },
               label: CustomText(
-                text: '(609)327-7992',
+                text: '+1 786 449 6686',
                 color: Colors.black,
               ),
               icon: Icon(
@@ -51,7 +51,7 @@ class SupportScreen extends StatelessWidget {
               onPressed: () async {
                 final Uri emailUrl = Uri(
                   scheme: 'mailto',
-                  path: 'exmple@gmail.com',
+                  path: 'support@kisdates.com',
                   query:
                       'subject=Support Inquiry&body=Hello, I need assistance with...',
                 );
@@ -62,7 +62,7 @@ class SupportScreen extends StatelessWidget {
                 }
               },
               label: CustomText(
-                text: 'exmple@gmail.com',
+                text: 'support@kisdates.com',
                 color: Colors.black,
               ),
               icon: Icon(
