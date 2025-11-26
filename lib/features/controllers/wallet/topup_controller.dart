@@ -90,7 +90,7 @@ class TopUpController extends GetxController {
       debugPrint("✅ ${products.length} packages loaded.");
     } catch (e) {
       debugPrint("❌ Error fetching offerings: $e");
-      ToastMessageHelper.showToastMessage("Failed to load coin packages.");
+      //ToastMessageHelper.showToastMessage("Failed to load coin packages.");
     } finally {
       isLoading = false;
       update();
