@@ -151,6 +151,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
           ),
 
           /// Social Actions (Like, Comment, Gift)
+          /// Social Actions (Like, Comment, Gift)
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
             child: Row(
@@ -162,33 +163,55 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     children: [
                       GetBuilder<PostController>(
                         builder: (controller) {
-                          final isLiked = controller.isLiked(widget.postData.sId!);
+                          final isLiked = controller.isLiked(widget.postData.sId!) ||
+                              widget.postData.isLiked == true;
 
                           return LikeButton(
                             size: 20.r,
                             isLiked: isLiked,
                             onTap: (bool currentLiked) async {
-                              return await controller.likeButtonAction(currentLiked, widget.postData.sId!);
+                              return await controller.likeButtonAction(
+                                  currentLiked,
+                                  widget.postData.sId!
+                              );
                             },
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked || widget.postData.isLiked == true ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
-                                color: isLiked || widget.postData.isLiked == true ? AppColors.primaryColor : AppColors.appGreyColor,
+                                isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
+                                color: isLiked ? AppColors.primaryColor : AppColors.appGreyColor,
                                 size: 18.r,
                               );
                             },
                           );
                         },
-                      ),                      SizedBox(width: 6.w),
+                      ),
+                      SizedBox(width: 6.w),
+
+                      /// ✅ Like count o GetBuilder er moddhe
                       GetBuilder<PostController>(
                           builder: (controller) {
+                            // ✅ Controller theke updated post data find koro
+                            PostModelData? updatedPost;
+
+                            if (controller.selectedValueType == 'my') {
+                              updatedPost = controller.myPostData.firstWhereOrNull(
+                                      (post) => post.sId == widget.postData.sId
+                              );
+                            } else {
+                              updatedPost = controller.allPostData.firstWhereOrNull(
+                                      (post) => post.sId == widget.postData.sId
+                              );
+                            }
+
+                            final likeCount = updatedPost?.likesCount ?? widget.postData.likesCount ?? 0;
+
                             return CustomText(
                               right: 10.w,
                               fontSize: 10.sp,
                               textAlign: TextAlign.start,
                               text: controller.isLikeLoading(widget.postData.sId ?? '')
                                   ? '...'
-                                  : data.likesCount.toString(),
+                                  : likeCount.toString(),
                             );
                           }
                       ),
@@ -232,15 +255,14 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                   onTap: () {
                     widget.isSocialAction?.call();
                     if (widget.isSocialAction == null) {
-                      Get.toNamed(AppRoutes.giftsScreen,arguments: {'userId' : data.userID!});
+                      Get.toNamed(AppRoutes.giftsScreen, arguments: {'userId': data.userID!});
                     }
                   },
                   child: Assets.icons.gift.svg(),
                 ),
               ],
             ),
-          ),
-        ],
+          ),        ],
       ),
     );
   }

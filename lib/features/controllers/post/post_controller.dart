@@ -42,7 +42,7 @@ class PostController extends GetxController {
 
 
 
-  bool isLoadMore = false;    // for pagination
+  bool isLoadMore = false;
 
 
   Future<void> postGet({String? userId = '', bool isInitialLoad = false}) async {
@@ -55,8 +55,8 @@ class PostController extends GetxController {
       page = 1;
       totalPage = -1;
 
-      isLoading = true;   // ✅ show main loader
-      isLoadMore = false; // ensure no conflict
+      isLoading = true;
+      isLoadMore = false;
       update();
     }
 
@@ -82,7 +82,7 @@ class PostController extends GetxController {
     }
 
     isLoading = false;
-    isLoadMore = false; // ✅ reset after done
+    isLoadMore = false;
     update();
   }
 
@@ -111,7 +111,7 @@ class PostController extends GetxController {
 
 
   final Map<String, bool> postLikeMap = {};
-  final Map<String, bool> postLikeLoading = {}; // Loading state track করার জন্য
+  final Map<String, bool> postLikeLoading = {};
 
   bool isLiked(String postId) => postLikeMap[postId] ?? false;
 
@@ -123,34 +123,43 @@ class PostController extends GetxController {
   }
 
   Future<bool> likeButtonAction(bool currentLiked, String postId) async {
-    // Loading শুরু
     postLikeLoading[postId] = true;
     update();
 
-    // Optimistic update
     postLikeMap[postId] = !currentLiked;
+    _updatePostLikeCount(postId, !currentLiked);
     update();
 
     final response = await ApiClient.postData(ApiUrls.like(postId), {});
 
-    final responseBody = response.body;
-
-    // Loading শেষ
     postLikeLoading[postId] = false;
 
     if (response.statusCode == 200) {
       update();
     } else {
-      // Failed হলে আগের state এ ফিরিয়ে আনুন
       postLikeMap[postId] = currentLiked;
+      _updatePostLikeCount(postId, currentLiked);
       update();
-
-      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Failed");
     }
 
     return !currentLiked;
   }
 
+  void _updatePostLikeCount(String postId, bool isLiked) {
+    final allPostIndex = allPostData.indexWhere((post) => post.sId == postId);
+    if (allPostIndex != -1) {
+      allPostData[allPostIndex].isLiked = isLiked;
+      allPostData[allPostIndex].likesCount =
+          (allPostData[allPostIndex].likesCount ?? 0) + (isLiked ? 1 : -1);
+    }
+
+    final myPostIndex = myPostData.indexWhere((post) => post.sId == postId);
+    if (myPostIndex != -1) {
+      myPostData[myPostIndex].isLiked = isLiked;
+      myPostData[myPostIndex].likesCount =
+          (myPostData[myPostIndex].likesCount ?? 0) + (isLiked ? 1 : -1);
+    }
+  }
 
 
 
@@ -224,15 +233,6 @@ class PostController extends GetxController {
   /// Fetch search results
   Future<void> postSearchGet(String search, {bool isInitialLoad = false}) async {
     searchPostData.clear();
-    // if (isInitialLoad) {
-    //   searchPostData.clear();
-    //   searchPage = 1;
-    //   searchTotalPage = -1;
-    //   lastSearch = search; // Save the keyword
-    // }
-    //
-    // // Prevent multiple calls at once
-    // if (isLoadingSearch) return;
 
     isLoadingSearch = true;
     update();
@@ -267,7 +267,7 @@ class PostController extends GetxController {
 
   /// Load more search results
   Future<void> loadMoreSearch() async {
-    if (isLoadingSearch) return; // Prevent multiple requests
+    if (isLoadingSearch) return;
     print('============> Page $searchPage');
 
     if (searchPage < searchTotalPage) {
