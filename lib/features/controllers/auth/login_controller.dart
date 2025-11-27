@@ -23,74 +23,123 @@ class LoginController extends GetxController {
   bool isLoading = false;
 
   Future<void> login() async {
+    // Prevent multiple simultaneous login attempts
+    if (isLoading) return;
+
     isLoading = true;
     update();
 
-    String? fcmToken = await FirebaseNotificationService.getFCMToken();
-
-
-    var bodyParams = {
-      "email": emailController.text.trim(),
-      "password": passwordController.text,
-      'fcm' : fcmToken,
-    };
-
-    final response = await ApiClient.postData(
-      ApiUrls.login,
-      bodyParams,
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    final responseBody = response.body;
-    if (response.statusCode == 200) {
-      final String? token = responseBody['token'];
-      final bool isEmailVerified = responseBody['data']?['isEmailVerified'] ?? false;
-      final bool profilePicture = responseBody['data']?['profilePicture'] == 'uploads/man.png' ?? false;
-      final int completed = responseBody['data']?['completed'] ?? 0;
-
-
-      await PrefsHelper.setBool(AppConstants.isEmailVerified, isEmailVerified);
-      await PrefsHelper.setBool(AppConstants.profilePicture, profilePicture);
-      await PrefsHelper.setInt(AppConstants.completed, completed);
-
-      if (token != null) {
-        debugPrint('====================> response token save: $token');
-        await PrefsHelper.setString(AppConstants.bearerToken, token);
-
+    try {
+      // Add timeout for FCM token
+      String? fcmToken;
+      try {
+        fcmToken = await FirebaseNotificationService.getFCMToken()
+            .timeout(const Duration(seconds: 5));
+      } catch (e) {
+        debugPrint('FCM Token error: $e');
+        fcmToken = null; // Continue without FCM token
       }
-      if(!isEmailVerified){
-        Get.toNamed(AppRoutes.otpScreen, arguments: {'screenType': 'sign-up'});
-      }else if(profilePicture){
-        Get.toNamed(AppRoutes.uploadPhotoScreen);
 
-      }else if(completed == 25){
-        Get.toNamed(AppRoutes.bioScreen);
+      var bodyParams = {
+        "email": emailController.text.trim(),
+        "password": passwordController.text,
+        'fcm': fcmToken,
+      };
 
-      }else if(completed == 50){
-        Get.toNamed(AppRoutes.goalsScreen);
+      // Add timeout for API call
+      final response = await ApiClient.postData(
+        ApiUrls.login,
+        bodyParams,
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception('Request timeout. Please check your internet connection.');
+        },
+      );
 
-      }else if(completed == 75){
-        Get.toNamed(AppRoutes.interestsScreen);
+      final responseBody = response.body;
 
-      }else if(completed == 90){
-        Get.toNamed(AppRoutes.enableLocationScreen);
+      if (response.statusCode == 200) {
+        final String? token = responseBody['token'];
+        final bool isEmailVerified = responseBody['data']?['isEmailVerified'] ?? false;
 
-      }
-      else{
-        Get.offAllNamed(AppRoutes.customBottomNavBar);
-        Get.find<CustomBottomNavBarController>().onChange(0);
-        String token = await PrefsHelper.getString(AppConstants.bearerToken);
-        if(token.isNotEmpty){
+        // Fixed: This was checking string equality wrong
+        final bool needsProfilePicture =
+            responseBody['data']?['profilePicture'] == 'uploads/man.png';
 
-          await SocketServices.init();
+        final int completed = responseBody['data']?['completed'] ?? 0;
+
+        // Save preferences
+        await PrefsHelper.setBool(AppConstants.isEmailVerified, isEmailVerified);
+        await PrefsHelper.setBool(AppConstants.profilePicture, needsProfilePicture);
+        await PrefsHelper.setInt(AppConstants.completed, completed);
+
+        if (token != null && token.isNotEmpty) {
+          debugPrint('====================> response token save: $token');
+          await PrefsHelper.setString(AppConstants.bearerToken, token);
+        } else {
+          throw Exception('Invalid token received');
         }
-      }
-    } else {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Login failed.");
-    }
 
-    isLoading = false;
-    update();
+        // Navigation logic - fixed the order
+        if (!isEmailVerified) {
+          Get.toNamed(AppRoutes.otpScreen, arguments: {'screenType': 'sign-up'});
+        } else if (needsProfilePicture) {
+          Get.toNamed(AppRoutes.uploadPhotoScreen);
+        } else if (completed == 25) {
+          Get.toNamed(AppRoutes.bioScreen);
+        } else if (completed == 50) {
+          Get.toNamed(AppRoutes.goalsScreen);
+        } else if (completed == 75) {
+          Get.toNamed(AppRoutes.interestsScreen);
+        } else if (completed == 90) {
+          Get.toNamed(AppRoutes.enableLocationScreen);
+        } else {
+          // Navigate to home
+          Get.offAllNamed(AppRoutes.customBottomNavBar);
+          Get.find<CustomBottomNavBarController>().onChange(0);
+
+          // Initialize socket with error handling
+          try {
+            String savedToken = await PrefsHelper.getString(AppConstants.bearerToken);
+            if (savedToken.isNotEmpty) {
+              await SocketServices.init();
+            }
+          } catch (socketError) {
+            debugPrint('Socket initialization error: $socketError');
+            // Don't block navigation due to socket error
+          }
+        }
+      } else if (response.statusCode == 401) {
+        ToastMessageHelper.showToastMessage("Invalid email or password");
+      } else if (response.statusCode == 500) {
+        ToastMessageHelper.showToastMessage("Server error. Please try again later.");
+      } else {
+        ToastMessageHelper.showToastMessage(
+            responseBody['message'] ?? "Login failed. Please try again."
+        );
+      }
+    } catch (e) {
+      debugPrint('Login error: $e');
+
+      // Better error messages for users
+      String errorMessage = "Login failed. Please try again.";
+
+      if (e.toString().contains('timeout')) {
+        errorMessage = "Connection timeout. Please check your internet.";
+      } else if (e.toString().contains('SocketException')) {
+        errorMessage = "No internet connection. Please check your network.";
+      } else if (e.toString().contains('FormatException')) {
+        errorMessage = "Invalid server response. Please contact support.";
+      }
+
+      ToastMessageHelper.showToastMessage(errorMessage);
+    } finally {
+      // ALWAYS reset loading state
+      isLoading = false;
+      update();
+    }
   }
 
 
