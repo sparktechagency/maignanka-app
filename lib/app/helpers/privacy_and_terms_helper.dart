@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maignanka_app/app/utils/app_colors.dart';
+import 'package:maignanka_app/routes/app_routes.dart';
 
 class PrivacyAndTermsHelper extends StatelessWidget {
   PrivacyAndTermsHelper({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class PrivacyAndTermsHelper extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      //Get.toNamed(AppRoutes.termsScreen);
+                      Get.toNamed(AppRoutes.termsScreen);
                     },
                 ),
                 const TextSpan(text: "and "),
@@ -45,7 +46,7 @@ class PrivacyAndTermsHelper extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      //Get.toNamed(AppRoutes.privacyPolicyScreen); // example navigation
+                      Get.toNamed(AppRoutes.policyScreen);
                     },
                 ),
               ],

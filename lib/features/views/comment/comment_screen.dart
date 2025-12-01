@@ -53,7 +53,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     if(controller.isLoading){
                       return CustomLoader();
                     }else if(controller.commentData.isEmpty){
-                      Center(child: CustomText(text: 'No Comment found.'),);
+                      Center(child: CustomText(text: 'No Comment found.',color: Colors.black,),);
                     }
                     return ListView.builder(
                       controller: _scrollController,

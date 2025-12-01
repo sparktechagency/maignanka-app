@@ -51,7 +51,7 @@ class CommentController extends GetxController {
       //Get.find<PostController>().postGet(i);
 
     } else {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
     isLoading = false;

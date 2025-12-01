@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:maignanka_app/features/controllers/settings/setting_controller.dart';
 import 'package:maignanka_app/widgets/custom_app_bar.dart';
+import 'package:maignanka_app/widgets/custom_loader.dart';
 import 'package:shimmer/shimmer.dart';
 
 
@@ -30,21 +31,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       appBar: const CustomAppBar(title: "Privacy Policy"),
       body: GetBuilder<SettingController>(builder: (controller) {
         if (controller.isLoading) {
-          return Padding(
-            padding: EdgeInsets.all(sizeH * .02),
-            child: Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              period: const Duration(milliseconds: 800),
-              child: Center(
-                child: Container(
-                  height: sizeH * 0.8,
-                  width: double.infinity,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          );
+          return Center(child: CustomLoader());
         } else {
           return ListView(
             padding: EdgeInsets.all(sizeH * .02),

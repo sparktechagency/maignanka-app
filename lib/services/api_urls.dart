@@ -1,6 +1,6 @@
 class ApiUrls {
   //static const String baseUrl = "https://kisdate.merinasib.shop";
-  static const String baseUrl = "https://api.kisdate.com";
+ static const String baseUrl = "https://api.kisdate.com";
 
 
   //static const String imageBaseUrl = "https://kisdate.merinasib.shop/";

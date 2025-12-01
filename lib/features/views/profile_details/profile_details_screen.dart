@@ -28,7 +28,6 @@ class ProfileDetailsScreen extends StatefulWidget {
 
 class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
   final _controller = Get.find<ProfileController>();
-  final _matchController = Get.find<MatchController>();
   final _pageController = PageController();
   int _currentPage = 0;
 
@@ -113,44 +112,54 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
   }
 
   Widget buildMatchActionSection(ProfileDetailsModelData data) {
-    final isLoading = _matchController.isLoading;
+
     final padding = EdgeInsets.symmetric(horizontal: 16.w);
 
     switch (data.status) {
       case 'nothing':
-        return Padding(
-          padding: padding,
-          child: isLoading
-              ? const CustomLoader()
-              : CustomButton(
-            onPressed: () => _matchController.matchCreateDetails(userId),
-            label: 'Love',
-          ),
+        return GetBuilder<MatchController>(
+          builder: (controller) {
+            return Padding(
+              padding: padding,
+              child: controller.isLoadingDetails
+                  ? const CustomLoader()
+                  : CustomButton(
+                onPressed: () => controller.matchCreateDetails(userId),
+                label: 'Love',
+              ),
+            );
+          }
         );
 
       case 'liked_by_me':
-        return Padding(
-          padding: padding,
-          child: isLoading
-              ? const CustomLoader()
-              : CustomButton(
-            onPressed: () => _matchController.likeRewind(userId),
+        return GetBuilder<MatchController>(
+          builder: (controller) {
+            return Padding(
+              padding: padding,
+              child: controller.isLoadingRewind
+                  ? const CustomLoader()
+                  : CustomButton(
+                onPressed: () => controller.likeRewind(userId),
 
-            label: 'Cancel',
-          ),
+                label: 'Cancel',
+              ),
+            );
+          }
         );
 
       case 'liked_by_opponent':
+        return GetBuilder<MatchController>(
+            builder: (controller) {
         return Padding(
           padding: padding,
-          child: isLoading
+          child: controller.isLoadingDetails
               ? const CustomLoader()
               : CustomButton(
             height: 38.h,
-            onPressed: () => _matchController.matchCreateDetails(userId,isAccept: true,imageUrl: '${ApiUrls.imageBaseUrl}${data.pictures?.first.imageURL}'),
+            onPressed: () => controller.matchCreateDetails(userId,isAccept: true,imageUrl: '${ApiUrls.imageBaseUrl}${data.pictures?.first.imageURL}'),
             label: 'Accept',
           ),
-        );
+        );});
 
       case 'both':
         return Padding(
@@ -168,9 +177,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
               ),
               SizedBox(width: 10.w),
               Expanded(
-                child: isLoading
-                    ? const CustomLoader()
-                    : CustomButton(
+                child: CustomButton(
                   height: 38.h,
                   onPressed: () {
                     Get.toNamed(AppRoutes.customBottomNavBar);

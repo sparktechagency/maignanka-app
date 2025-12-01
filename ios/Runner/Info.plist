@@ -7,7 +7,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>Maignanka App</string>
+    <string>KIS</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -26,22 +26,26 @@
     <string>$(FLUTTER_BUILD_NUMBER)</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>This app requires continuous location access to deliver accurate location-based services.</string>
+
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs access to your location while you are using the app to provide better location-based features.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app requires microphone access to enable voice and audio features.</string>
+    <string>We need your location to show you nearby users and match you with people in your area.</string>
+
     <key>NSCameraUsageDescription</key>
-    <string>Camera access is required to capture photos for your profile and posts.</string>
+    <string>Camera access is required to take photos for your profile and posts.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to your photo library to select and upload images.</string>
+    <string>We need access to your photo library to select and upload images for your profile and posts.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need permission to save photos to your library.</string>
+
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Microphone access is required for voice messages and video calls.</string>
+
     <key>NSUserNotificationAlertStyle</key>
     <string>alert</string>
+
     <key>FirebaseAppDelegateProxyEnabled</key>
     <false/>
+
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
     <key>UIBackgroundModes</key>
@@ -55,15 +59,16 @@
     <string>Main</string>
     <key>UIStatusBarStyle</key>
     <string>UIStatusBarStyleDefault</string>
+
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
     </array>
-    <key>UISupportedInterfaceOrientations~ipad</key>
+
+    <key>LSApplicationQueriesSchemes</key>
     <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
+        <string>tel</string>
+        <string>mailto</string>
     </array>
 </dict>
 </plist>

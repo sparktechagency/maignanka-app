@@ -156,7 +156,7 @@ class LoginController extends GetxController {
 
     final responseBody = response.body;
     if (response.statusCode == 200) {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Logout out failed.");
+     // ToastMessageHelper.showToastMessage(responseBody['message'] ?? "Logout out failed.");
       final socket = SocketServices();
       // socket.reset();
       socket.disconnect();
