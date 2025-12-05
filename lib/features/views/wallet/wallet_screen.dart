@@ -47,20 +47,20 @@ class _WalletScreenState extends State<WalletScreen> {
     return CustomScaffold(
       appBar: CustomAppBar(
         title: 'Wallet',
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.0.r),
-            child: CustomButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.bankInfoScreen);
-              },
-              label: 'Bank info',
-              height: 24.h,
-              width: 100.w,
-              fontSize: 12.sp,
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.all(8.0.r),
+        //     child: CustomButton(
+        //       onPressed: () {
+        //         Get.toNamed(AppRoutes.bankInfoScreen);
+        //       },
+        //       label: 'Bank info',
+        //       height: 24.h,
+        //       width: 100.w,
+        //       fontSize: 12.sp,
+        //     ),
+        //   ),
+        // ],
       ),
 
       body: Column(
@@ -334,16 +334,16 @@ class _WalletScreenState extends State<WalletScreen> {
                 },
                 label: 'Top Up',
               ),
-              CustomButton(
-                radius: 10.r,
-                fontSize: 14.sp,
-                width: 100.w,
-                height: 28.h,
-                onPressed: () {
-                  _buildCustomDialog();
-                },
-                label: 'Withdraw',
-              ),
+              // CustomButton(
+              //   radius: 10.r,
+              //   fontSize: 14.sp,
+              //   width: 100.w,
+              //   height: 28.h,
+              //   onPressed: () {
+              //     _buildCustomDialog();
+              //   },
+              //   label: 'Withdraw',
+              // ),
             ],
           ),
         ),
