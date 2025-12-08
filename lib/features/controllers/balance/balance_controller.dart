@@ -12,7 +12,8 @@ class BalanceController extends GetxController {
   bool isLoadingBank = false;
   bool isLoadingBankGet = false;
 
-  String balance = '';
+  String balance = '0';
+  String? earnedBalance = '0';
 
 
   final TextEditingController bankNameController = TextEditingController();
@@ -36,7 +37,8 @@ class BalanceController extends GetxController {
 
     if (response.statusCode == 200) {
 
-      balance = responseBody['data']?['balance'].toString() ?? '';
+      balance = responseBody['data']?['walletInfo']?['balance'].toString() ?? '';
+      earnedBalance = responseBody['data']?['received'].toString() ?? '';
 
     } else {
       //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");

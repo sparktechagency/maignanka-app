@@ -40,13 +40,6 @@ class WalletController extends GetxController {
 
 
 
-  void calculateTopUp(String value) {
-    final enteredPoints = double.tryParse(value) ?? 0;
-    final grossAmount = enteredPoints * 0.035;
-    final netAmount = grossAmount * 0.70;
-      amounts = netAmount;
-      update();
-  }
 
 
   void calculateWithdraw(String value) {
