@@ -156,7 +156,6 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  // CRITICAL: Note Section - Apple Reviewer will read this
   Widget _buildNoteSection() {
     return Container(
       padding: EdgeInsets.all(12.r),
@@ -411,11 +410,10 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           Row(
             children: [
-              Assets.icons.coin.svg(height: 14.h, width: 14.w),
               CustomText(
                 left: 4.w,
                 color: color,
-                text: '${isWithdraw ? '-' : '+'}${data.amount?.toString() ?? '0'}',
+                text: '\$${isWithdraw ? '-' : '+'}${data.amount?.toString() ?? '0'}',
                 fontWeight: FontWeight.w700,
                 fontSize: 14.sp,
               ),
