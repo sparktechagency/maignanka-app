@@ -37,8 +37,8 @@ class BalanceController extends GetxController {
 
     if (response.statusCode == 200) {
 
-      balance = responseBody['data']?['walletInfo']?['balance'].toString() ?? '';
-      earnedBalance = responseBody['data']?['received'].toString() ?? '';
+      balance = responseBody['data']?['balance'].toString() ?? '';
+      earnedBalance = responseBody['data']?['balance'].toString() ?? '';
 
     } else {
       //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");

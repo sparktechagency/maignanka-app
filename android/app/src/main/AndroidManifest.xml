@@ -8,7 +8,7 @@
 
 
     <application
-        android:label="maignanka_app"
+        android:label="KIS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
