@@ -12,6 +12,7 @@ import 'package:maignanka_app/services/api_urls.dart';
 class MatchController extends GetxController {
 
   bool isLoading = false;
+  bool isLoadingDetails = false;
   bool isLoadingRewind = false;
 
   final DiscoverController _discoverController = Get.find<DiscoverController>();
@@ -77,7 +78,7 @@ class MatchController extends GetxController {
   }
   Future<void> matchCreateDetails(String userId,{bool isAccept = false,String imageUrl = ''}) async {
 
-      isLoading = true;
+    isLoadingDetails = true;
       update();
 
     final response = await ApiClient.postData(
@@ -87,7 +88,7 @@ class MatchController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       Get.find<ProfileController>().profileDetailsGet(userId);
       if(isAccept && imageUrl != ''){
         Get.toNamed(AppRoutes.loveScreen,arguments: {'imageUrl' : imageUrl});
@@ -97,7 +98,7 @@ class MatchController extends GetxController {
       ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
     }
 
-    isLoading = false;
+    isLoadingDetails = false;
     update();
   }
 
@@ -114,7 +115,7 @@ class MatchController extends GetxController {
     final responseBody = response.body;
 
     if (response.statusCode == 200) {
-      ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
+      //ToastMessageHelper.showToastMessage(responseBody['message'] ?? "");
       Get.find<ProfileController>().profileDetailsGet(userId);
 
     } else {
