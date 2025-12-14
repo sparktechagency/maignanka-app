@@ -36,8 +36,8 @@ android {
         applicationId = "com.kisdates.maignanka_app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = 7
-        versionName = "1.0.0"
+        versionCode = 9
+        versionName = "1.0.3"
     }
 
     signingConfigs {
