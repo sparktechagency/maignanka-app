@@ -7,7 +7,6 @@
 -keep public class * extends android.app.Fragment
 -keep public class * extends androidx.fragment.app.Fragment
 
-# Keep model classes (যদি Firebase বা JSON ব্যবহার করো)
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
