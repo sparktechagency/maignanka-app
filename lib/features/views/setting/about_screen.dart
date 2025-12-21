@@ -18,7 +18,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   void initState() {
-    Get.find<SettingController>().getTerms();
+    Get.find<SettingController>().getAbout();
     super.initState();
   }
   @override
@@ -37,7 +37,7 @@ class _AboutScreenState extends State<AboutScreen> {
               SizedBox(height: sizeH * .01),
               HtmlWidget(
                 controller.aboutDescription ?? '',
-                textStyle: TextStyle(fontSize: 14.sp),
+                textStyle: TextStyle(fontSize: 12.sp,color: Colors.black),
               ),
             ],
           );

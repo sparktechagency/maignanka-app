@@ -37,10 +37,10 @@ class _TermsScreenState extends State<TermsScreen> {
             padding: EdgeInsets.all(sizeH * .02),
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
-              SizedBox(height: sizeH * .01),
+              //SizedBox(height: sizeH * .01),
               HtmlWidget(
                 controller.termsDescription ?? '',
-                textStyle: TextStyle(fontSize: 14.sp),
+                textStyle: TextStyle(fontSize: 12.sp),
               ),
             ],
           );

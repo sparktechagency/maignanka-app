@@ -40,7 +40,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
               SizedBox(height: sizeH * .01),
               HtmlWidget(
                 controller.privacyDescription ?? '',
-                textStyle: TextStyle(fontSize: 14.sp),
+                textStyle: TextStyle(fontSize: 12.sp),
               ),
             ],
           );

@@ -59,7 +59,7 @@ class SettingController extends GetxController {
     isLoading = true;
     update();
 
-      final response = await ApiClient.getData(ApiUrls.terms,headers: {});
+      final response = await ApiClient.getData(ApiUrls.privacy,headers: {});
 
       final responseBody = response.body;
 
